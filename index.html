@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Jobsuche PWA für zwei Profile — Ort, Entfernung und Remote. Quellen: Arbeitsagentur u. a."
+    />
+    <meta name="theme-color" content="#1e4a37" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Jobsuche" />
+    <title>Jobsuche</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Source+Sans+3:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="hero">
+        <div class="brand">
+          <div class="brand__mark" aria-hidden="true"></div>
+          <div class="brand__text">
+            <div class="brand__name">Jobsuche</div>
+            <div class="brand__tag">Gemeinsam Stellen finden · Sachsen &amp; darüber hinaus</div>
+          </div>
+        </div>
+        <p class="hero__lead">
+          Profil wählen, Ort und Entfernung einstellen, optional (teils) Remote —
+          Treffer aus der Arbeitsagentur plus Direktlinks zu weiteren Portalen.
+        </p>
+      </header>
+
+      <section class="panel" aria-label="Suche">
+        <p class="section-label">Profil</p>
+        <div id="profile-switch" class="profile-switch" role="group" aria-label="Profil wählen"></div>
+        <p id="profile-summary"></p>
+
+        <form id="search-form" class="form-grid">
+          <div class="field">
+            <label for="location">Ort</label>
+            <input
+              id="location"
+              name="location"
+              type="text"
+              autocomplete="address-level2"
+              placeholder="z. B. Pirna, Dresden, Leipzig"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label>
+              Entfernung
+              <span id="distance-label" style="font-weight: 400; color: var(--muted)"></span>
+            </label>
+            <div id="distance-steps" class="chips" role="group" aria-label="Entfernung in fünf Stufen"></div>
+          </div>
+
+          <div class="toggles">
+            <label class="toggle">
+              <input id="include-remote" type="checkbox" checked />
+              <span>(Teils) Remote / Homeoffice mitbewerten</span>
+            </label>
+            <label class="toggle">
+              <input id="remote-only" type="checkbox" />
+              <span>Nur Remote / Homeoffice</span>
+            </label>
+            <label class="toggle">
+              <input id="live-ba" type="checkbox" checked />
+              <span>Live-Suche Arbeitsagentur (sonst Demo-Daten)</span>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-primary" type="submit">Stellen suchen</button>
+            <p id="status" class="status" role="status" aria-live="polite"></p>
+          </div>
+
+          <p id="source-banner" class="banner" hidden></p>
+
+          <details class="details">
+            <summary>Erweitert: CORS-Proxy für Arbeitsagentur</summary>
+            <div class="field">
+              <label for="proxy">Worker-Origin (optional)</label>
+              <input
+                id="proxy"
+                type="url"
+                placeholder="https://jobsuche-ba-proxy.&lt;account&gt;.workers.dev"
+              />
+              <p class="hint" id="proxy-default-hint"></p>
+              <p class="hint">
+                Nach dem Deploy (<code>proxy/README.md</code>) Origin hier oder dauerhaft in
+                <code>js/config.js</code> → <code>DEFAULT_PROXY_ORIGIN</code> setzen.
+                Die App nutzt dann <code>GET /search</code>. Ohne Proxy: Nacht-Cache
+                (<code>data/jobs-cache.json</code>) bzw. Demo.
+              </p>
+            </div>
+          </details>
+        </form>
+      </section>
+
+      <div class="layout">
+        <section aria-label="Ergebnisse">
+          <div class="results-head">
+            <h2>Ergebnisse</h2>
+          </div>
+          <ul id="results" class="results"></ul>
+          <p id="empty" class="empty" hidden>Keine Treffer — Ort oder Profil anpassen.</p>
+        </section>
+
+        <aside class="side" aria-label="Weitere Quellen">
+          <h2>Weitere Quellen</h2>
+          <p class="hint" style="margin-bottom: 0.75rem">
+            LinkedIn, Xing, Indeed, StepStone und Karriere.sachsen.de sind als
+            vorausgefüllte Suchlinks verfügbar (kein öffentlicher Browser-API-Zugriff).
+          </p>
+          <div id="external-links" class="ext-links"></div>
+        </aside>
+      </div>
+
+      <div id="install-hint" class="install-hint">
+        <span>Als App installierbar (PWA) — im Browser „Zum Startbildschirm / Installieren“.</span>
+        <button type="button" id="install-hint-dismiss" aria-label="Hinweis schließen">OK</button>
+      </div>
+
+      <footer class="footer">
+        Statische PWA für GitHub Pages · Profile aus lokal hinterlegten Unterlagen ·
+        keine Bewerbungsdaten werden an Dritte gesendet außer den gewählten Portalen.
+      </footer>
+    </div>
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>
