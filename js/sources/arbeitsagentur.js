@@ -8,7 +8,11 @@
 
 export const BA_BASE =
   "https://rest.arbeitsagentur.de/jobboerse/jobsuche-service/pc/v4/jobs";
+export const BA_APP_BASE =
+  "https://rest.arbeitsagentur.de/jobboerse/jobsuche-service/pc/v4/app/jobs";
 export const BA_API_KEY = "jobboerse-jobsuche";
+export const BA_APP_UA =
+  "Jobsuche/2.9.2 (de.arbeitsagentur.jobboerse; build:1077; iOS 15.1.0) Alamofire/5.4.4";
 
 /**
  * @param {object} opts
@@ -51,38 +55,57 @@ export async function searchArbeitsagentur(opts) {
   const headers = { Accept: "application/json" };
 
   if (origin) {
-    // Hardened worker: /search forwards params and injects API key
-    url = `${origin}/search?${params}`;
+    // Worker injects API key. Use /health?ping=jobs&q=&loc= — agentic CF
+    // previews only allow the /health path and may WAF "was"/"wo" query names.
+    const proxyParams = new URLSearchParams({
+      ping: "jobs",
+      q: query,
+      loc: location,
+      r: String(radiusKm),
+      n: String(size),
+      p: String(page),
+      angebotsart: "1",
+    });
+    if (includeRemote) proxyParams.set("arbeitszeit", "ho");
+    url = `${origin}/health?${proxyParams}`;
   } else if (proxyPrefix && /[?&]url=$/.test(proxyPrefix)) {
     // Legacy url= proxy style
     url = `${proxyPrefix}${encodeURIComponent(`${BA_BASE}?${params}`)}`;
   } else {
-    url = `${BA_BASE}?${params}`;
+    // Direct (Node / Actions): try app endpoint + documented Jobsuche UA first
     headers["X-API-Key"] = BA_API_KEY;
-    // Helps some BA edge nodes when called from CI / Node
-    headers["User-Agent"] =
-      "JobsucheCache/1.0 (+https://github.com/michael-linuxdev/jobs)";
+    headers["User-Agent"] = BA_APP_UA;
     headers["Accept-Language"] = "de-DE,de;q=0.9";
   }
 
-  const res = await fetch(url, {
-    headers,
-    // Node has no CORS; browsers ignore mode on same opaque rules
-    ...(typeof window !== "undefined" ? { mode: "cors" } : {}),
-  });
-  if (!res.ok) {
-    throw new Error(`Arbeitsagentur HTTP ${res.status}`);
+  const tryUrls = url
+    ? [url]
+    : [`${BA_APP_BASE}?${params}`, `${BA_BASE}?${params}`];
+
+  let lastErr = null;
+  for (const tryUrl of tryUrls) {
+    try {
+      const res = await fetch(tryUrl, {
+        headers,
+        ...(typeof window !== "undefined" ? { mode: "cors" } : {}),
+      });
+      if (!res.ok) {
+        lastErr = new Error(`Arbeitsagentur HTTP ${res.status}`);
+        continue;
+      }
+      const data = await res.json();
+      const payload =
+        typeof data.contents === "string" ? JSON.parse(data.contents) : data;
+      if (payload?.error && !payload?.stellenangebote && !payload?.jobs) {
+        lastErr = new Error(payload.error);
+        continue;
+      }
+      return normalizeBaResponse(payload, query);
+    } catch (err) {
+      lastErr = err;
+    }
   }
-
-  const data = await res.json();
-  const payload =
-    typeof data.contents === "string" ? JSON.parse(data.contents) : data;
-
-  if (payload?.error && !payload?.stellenangebote) {
-    throw new Error(payload.error);
-  }
-
-  return normalizeBaResponse(payload, query);
+  throw lastErr || new Error("Arbeitsagentur unreachable");
 }
 
 /** Strip trailing slash; accept legacy "?url=" prefixes by taking origin only. */
@@ -132,9 +155,15 @@ export function normalizeBaResponse(payload, query) {
         `${title} ${job.stellenbeschreibung || ""}`
       );
 
+    const externe =
+      job.externeUrl || job.externeURL || item.externeUrl || null;
     const detailUrl = ref
       ? `https://www.arbeitsagentur.de/jobsuche/jobdetail/${encodeURIComponent(ref)}`
-      : `https://www.arbeitsagentur.de/jobsuche/suche?was=${encodeURIComponent(query)}`;
+      : typeof externe === "string" && /^https:\/\//i.test(externe)
+        ? externe
+        : null;
+
+    if (!detailUrl) return null;
 
     return {
       id: `ba-${ref || i}-${title}`.slice(0, 120),
@@ -148,7 +177,7 @@ export function normalizeBaResponse(payload, query) {
       published: job.aktuelleVeroeffentlichungsdatum || job.datum || null,
       matchQuery: query,
     };
-  });
+  }).filter(Boolean);
 }
 
 export function baPortalSearchUrl({ query, location, radiusKm }) {
