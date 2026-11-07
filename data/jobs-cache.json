@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T17:45:09.434Z",
+  "generatedAt": "2026-11-07T21:51:19.650Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -33,21 +33,6 @@
           ]
         },
         {
-          "id": "ba-12659-cf2841195f2a4a6-S",
-          "title": "IT-Administrator (m/w/d) ",
-          "company": "Experts & Talents Dresden GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12659-cf2841195f2a4a6-S",
-          "remote": false,
-          "published": "2026-11-05",
-          "matchQuery": "IT-Administrator Microsoft 365",
-          "profiles": [
-            "it_m365"
-          ]
-        },
-        {
           "id": "ba-11868-13887030-S",
           "title": "IT-Administrator (m/w/d)",
           "company": "I.K. Hofmann GmbH",
@@ -57,6 +42,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/11868-13887030-S",
           "remote": true,
           "published": "2026-10-02",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-12659-cf2841195f2a4a6-S",
+          "title": "IT-Administrator (m/w/d) ",
+          "company": "Experts & Talents Dresden GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12659-cf2841195f2a4a6-S",
+          "remote": false,
+          "published": "2026-11-05",
           "matchQuery": "IT-Administrator Microsoft 365",
           "profiles": [
             "it_m365"
@@ -542,21 +542,6 @@
           ]
         },
         {
-          "id": "ba-16852-44536153-1027-S",
-          "title": "Senior Marketing Manager (m/w/d)",
-          "company": "BASF Schwarzheide GmbH",
-          "location": "Schwarzheide",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
-          "remote": true,
-          "published": "2026-10-28",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003940710-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
           "company": "Lipz Media GmbH",
@@ -566,6 +551,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -1276,21 +1276,6 @@
           ]
         },
         {
-          "id": "ba-14751-437A3093-S",
-          "title": "Heilerziehungspfleger - Psychiatrie (m/w/d)",
-          "company": "TRUECARE GmbH NL Dresden",
-          "location": "Arnsdorf bei Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14751-437A3093-S",
-          "remote": true,
-          "published": "2026-11-02",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10001-1001623238-S",
           "title": "Heilerziehungspfleger (m/w/d)",
           "company": "Elbland Reha und Präventions GmbH",
@@ -1300,6 +1285,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1001623238-S",
           "remote": false,
           "published": "2025-07-25",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-14751-437A3093-S",
+          "title": "Heilerziehungspfleger - Psychiatrie (m/w/d)",
+          "company": "TRUECARE GmbH NL Dresden",
+          "location": "Arnsdorf bei Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14751-437A3093-S",
+          "remote": true,
+          "published": "2026-11-02",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
