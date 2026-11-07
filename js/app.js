@@ -11,6 +11,7 @@ import {
   baPortalSearchUrl,
   normalizeProxyOrigin,
 } from "./sources/arbeitsagentur.js";
+import { EXTERNAL_SOURCES } from "./sources/deeplinks.js";
 
 const STORAGE_KEY = "jobsuche-prefs-v2";
 
@@ -87,14 +88,21 @@ function isRealJobUrl(url) {
   try {
     const u = new URL(url);
     if (u.protocol !== "https:") return false;
-    // Real BA detail pages — not invented demo search URLs
+    // BA detail pages
     if (
-      u.hostname === "www.arbeitsagentur.de" &&
+      u.hostname.endsWith("arbeitsagentur.de") &&
       u.pathname.includes("/jobsuche/jobdetail/")
     ) {
       return true;
     }
-    // Some BA payloads may only expose portal search — reject those as list items
+    // Employer apply links from BA payload (externeUrl)
+    if (
+      !u.hostname.endsWith("arbeitsagentur.de") &&
+      !u.hostname.includes("example.") &&
+      u.pathname.length > 1
+    ) {
+      return true;
+    }
     return false;
   } catch {
     return false;
@@ -377,17 +385,29 @@ function renderJobs() {
   }
 }
 
-function renderPortalLink() {
-  const a = $("#ba-portal-link");
-  if (!a) return;
+function renderPortals() {
   const profile = PROFILES[state.profileId];
   const radiusKm = DISTANCE_STEPS[state.distanceIndex].km;
   const location = state.location.trim() || DEFAULT_LOCATION;
-  a.href = baPortalSearchUrl({
-    query: profile.queries[0],
-    location,
-    radiusKm,
-  });
+  const query = profile.queries[0];
+
+  const ba = $("#ba-portal-link");
+  if (ba) {
+    ba.href = baPortalSearchUrl({ query, location, radiusKm });
+  }
+
+  const root = $("#portal-links");
+  if (!root) return;
+  root.innerHTML = "";
+  for (const src of EXTERNAL_SOURCES) {
+    const a = document.createElement("a");
+    a.className = "portal portal--secondary";
+    a.href = src.build({ query, location, radiusKm });
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.innerHTML = `<strong>${escapeHtml(src.label)}</strong><span>${escapeHtml(src.note)}</span>`;
+    root.appendChild(a);
+  }
 }
 
 function renderStatus() {
@@ -399,9 +419,7 @@ function renderStatus() {
   if (state.dataSource === "cache") {
     banner.hidden = false;
     banner.textContent =
-      "Anzeige aus dem Nightly-Cache (echte BA-Daten). Für frische Live-Treffer Proxy in js/config.js oder unter Erweitert setzen.";
-  } else if (state.dataSource === "live") {
-    banner.hidden = true;
+      "Anzeige aus dem BA-Cache (GitHub Action). Live nutzt den Proxy unter Erweitert / js/config.js.";
   } else {
     banner.hidden = true;
   }
@@ -421,7 +439,7 @@ function render() {
   renderProfiles();
   renderDistance();
   renderJobs();
-  renderPortalLink();
+  renderPortals();
   renderStatus();
   $("#live-ba").checked = state.liveBa;
   $("#include-remote").checked = state.includeRemote;

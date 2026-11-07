@@ -1,5 +1,5 @@
 /* Jobsuche service worker — cache app shell for offline / installable PWA */
-const CACHE = "jobsuche-v4";
+const CACHE = "jobsuche-v5";
 const SHELL = [
   "./",
   "./index.html",
@@ -8,6 +8,7 @@ const SHELL = [
   "./js/config.js",
   "./js/profiles.js",
   "./js/sources/arbeitsagentur.js",
+  "./js/sources/deeplinks.js",
   "./data/jobs-cache.json",
   "./manifest.webmanifest",
   "./icons/icon.svg",

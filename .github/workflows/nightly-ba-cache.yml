@@ -2,8 +2,15 @@ name: Nightly BA job cache
 
 on:
   schedule:
-    # 04:15 UTC ≈ early morning DE
-    - cron: "15 4 * * *"
+    # Every 3 hours + early-morning DE
+    - cron: "20 */3 * * *"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/fetch-ba-cache.mjs"
+      - "js/profiles.js"
+      - "js/sources/arbeitsagentur.js"
+      - ".github/workflows/nightly-ba-cache.yml"
   workflow_dispatch:
 
 permissions:
@@ -28,7 +35,6 @@ jobs:
       - name: Fetch Arbeitsagentur cache
         run: node scripts/fetch-ba-cache.mjs
         env:
-          # Public BA client id — not a secret; documented by bundesAPI/jobsuche-api
           BA_API_KEY: jobboerse-jobsuche
 
       - name: Commit cache if changed
@@ -39,6 +45,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No cache changes"
           else
-            git commit -m "chore: refresh nightly Arbeitsagentur job cache"
+            git commit -m "chore: refresh Arbeitsagentur job cache"
             git push
           fi

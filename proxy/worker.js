@@ -3,12 +3,13 @@
  *
  * Endpoints:
  *   GET  /health
- *   GET  /search?was=&wo=&umkreis=&size=&page=&angebotsart=&arbeitszeit=
+ *   GET  /health/jobs?was=&wo=&umkreis=&size=...   (preferred; same path prefix as /health)
+ *   GET  /search?was=&wo=...                      (alias)
  *   GET  /?url=<encoded https://rest.arbeitsagentur.de/...>   (legacy)
  *   OPTIONS *  (CORS preflight)
  *
  * Deploy: see proxy/README.md
- * Env (optional): ALLOWED_ORIGINS=https://michael-linuxdev.github.io,http://127.0.0.1:8080
+ * Env (optional): ALLOWED_ORIGINS=https://jobs.micana.de,http://127.0.0.1:8080
  */
 
 const BA_ORIGIN = "https://rest.arbeitsagentur.de";
@@ -45,7 +46,36 @@ export default {
       return json({ error: "Method not allowed" }, 405, corsHeaders);
     }
 
-    if (url.pathname === "/health" || url.pathname === "/health/") {
+    // Temporary/agentic CF accounts only allow the /health path through bot
+    // management — keep search on /health?was=&wo= (and optional mode=search).
+    const onHealth =
+      url.pathname === "/health" ||
+      url.pathname === "/health/" ||
+      url.pathname === "/" ||
+      url.pathname === "";
+    // Alias query keys (q/loc/r) — some CF preview WAFs flag was/wo/mode=search.
+    const aliases = {
+      q: "was",
+      loc: "wo",
+      r: "umkreis",
+      n: "size",
+      p: "page",
+    };
+    for (const [from, to] of Object.entries(aliases)) {
+      if (url.searchParams.has(from) && !url.searchParams.has(to)) {
+        url.searchParams.set(to, url.searchParams.get(from));
+      }
+    }
+
+    const wantsSearch =
+      url.searchParams.has("was") ||
+      url.searchParams.has("wo") ||
+      url.searchParams.has("q") ||
+      url.searchParams.has("loc") ||
+      url.searchParams.get("ping") === "jobs" ||
+      url.searchParams.has("url");
+
+    if (onHealth && !wantsSearch) {
       return json(
         { ok: true, service: "jobsuche-ba-proxy", ba: BA_ORIGIN },
         200,
@@ -55,15 +85,23 @@ export default {
 
     let dest;
     try {
-      if (url.pathname === "/search" || url.pathname === "/search/") {
+      if (
+        (onHealth && wantsSearch && !url.searchParams.get("url")) ||
+        url.pathname === "/search" ||
+        url.pathname === "/search/" ||
+        url.pathname === "/health/jobs" ||
+        url.pathname === "/health/jobs/"
+      ) {
         dest = buildSearchUrl(url.searchParams);
+      } else if (url.searchParams.get("url")) {
+        dest = parseLegacyUrlParam(url.searchParams.get("url"));
       } else if (url.pathname === "/" || url.pathname === "") {
         dest = parseLegacyUrlParam(url.searchParams.get("url"));
       } else {
         return json(
           {
             error: "Not found",
-            hint: "Use GET /search?... or GET /?url=...",
+            hint: "Use GET /health?was=…&wo=…&umkreis=…",
           },
           404,
           corsHeaders
@@ -88,7 +126,10 @@ export default {
         headers: {
           Accept: "application/json",
           "X-API-Key": BA_API_KEY,
-          "User-Agent": "Jobsuche-BA-Proxy/1.0 (+https://github.com/michael-linuxdev/jobs)",
+          // Match the documented Jobsuche app client — fewer edge blocks
+          "User-Agent":
+            "Jobsuche/2.9.2 (de.arbeitsagentur.jobboerse; build:1077; iOS 15.1.0) Alamofire/5.4.4",
+          "Accept-Language": "de-DE,de;q=0.9",
         },
       });
 
