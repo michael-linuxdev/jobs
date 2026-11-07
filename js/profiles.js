@@ -1,4 +1,4 @@
-/** Profile definitions derived from Lebenslauf Michael + Social-Media-Kurs (Wife). */
+/** Role-based search profiles (no personal names in UI). */
 export const DISTANCE_STEPS = [
   { km: 10, label: "10 km" },
   { km: 25, label: "25 km" },
@@ -9,11 +9,18 @@ export const DISTANCE_STEPS = [
 
 export const DEFAULT_LOCATION = "Pirna";
 
+/** Map legacy localStorage / cache ids → current role ids. */
+export const PROFILE_ID_ALIASES = {
+  michael: "it_m365",
+  wife_social: "social_media",
+  wife_erzieher: "erzieher_hep",
+};
+
 export const PROFILES = {
-  michael: {
-    id: "michael",
-    name: "Michael",
-    short: "IT · M365 · Security",
+  it_m365: {
+    id: "it_m365",
+    name: "IT / M365 / Security",
+    short: "IT-Administrator",
     role: "IT-Administrator",
     summary:
       "Match auf IT-Admin, Microsoft 365, Entra ID, Intune, PowerShell, Azure und Security.",
@@ -41,11 +48,11 @@ export const PROFILES = {
     ],
     defaultLocation: "Pirna",
   },
-  wife_social: {
-    id: "wife_social",
-    name: "Partnerin · Social Media",
-    short: "Social Media (Einstieg)",
-    role: "Social Media Managerin (Einstieg)",
+  social_media: {
+    id: "social_media",
+    name: "Social Media (Einstieg)",
+    short: "Content · Community · Marketing",
+    role: "Social Media Manager/-in (Einstieg)",
     summary:
       "Einstiegsstellen nach IHK-/HSB-Kurs: Content, Community, Monitoring, digitale Kommunikation.",
     queries: [
@@ -69,11 +76,11 @@ export const PROFILES = {
     ],
     defaultLocation: "Dresden",
   },
-  wife_erzieher: {
-    id: "wife_erzieher",
-    name: "Partnerin · Erziehung",
-    short: "Erzieher / HEP",
-    role: "Erzieherin / Heilerziehungspflegerin",
+  erzieher_hep: {
+    id: "erzieher_hep",
+    name: "Erzieher / HEP",
+    short: "Kita · Hort · Assistenz",
+    role: "Erzieher/-in / Heilerziehungspflege",
     summary:
       "Alternativspur: Erzieher/-in und Heilerziehungspflege in Kita, Hort, Wohnen und Assistenz.",
     queries: [
@@ -97,3 +104,11 @@ export const PROFILES = {
     defaultLocation: "Dresden",
   },
 };
+
+export function resolveProfileId(id) {
+  if (!id) return "it_m365";
+  if (PROFILES[id]) return id;
+  const mapped = PROFILE_ID_ALIASES[id];
+  if (mapped && PROFILES[mapped]) return mapped;
+  return "it_m365";
+}

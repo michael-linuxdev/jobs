@@ -6,8 +6,8 @@
     "radiusKm": 50
   },
   "profiles": {
-    "michael": {
-      "profileId": "michael",
+    "it_m365": {
+      "profileId": "it_m365",
       "location": "Pirna",
       "radiusKm": 50,
       "queries": [
@@ -27,7 +27,7 @@
           "published": "2026-03-15",
           "matchQuery": "IT-Administrator Microsoft 365",
           "profiles": [
-            "michael"
+            "it_m365"
           ]
         },
         {
@@ -42,7 +42,7 @@
           "published": "2026-03-12",
           "matchQuery": "Systemadministrator Entra ID Intune",
           "profiles": [
-            "michael"
+            "it_m365"
           ]
         },
         {
@@ -57,14 +57,14 @@
           "published": "2026-03-10",
           "matchQuery": "Cloud Administrator Azure",
           "profiles": [
-            "michael"
+            "it_m365"
           ]
         }
       ],
       "errors": []
     },
-    "wife_social": {
-      "profileId": "wife_social",
+    "social_media": {
+      "profileId": "social_media",
       "location": "Dresden",
       "radiusKm": 50,
       "queries": [
@@ -84,7 +84,7 @@
           "published": "2026-03-18",
           "matchQuery": "Social Media Managerin Einstieg",
           "profiles": [
-            "wife_social"
+            "social_media"
           ]
         },
         {
@@ -99,7 +99,7 @@
           "published": "2026-03-08",
           "matchQuery": "Community Manager",
           "profiles": [
-            "wife_social"
+            "social_media"
           ]
         },
         {
@@ -114,14 +114,14 @@
           "published": "2026-03-05",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
-            "wife_social"
+            "social_media"
           ]
         }
       ],
       "errors": []
     },
-    "wife_erzieher": {
-      "profileId": "wife_erzieher",
+    "erzieher_hep": {
+      "profileId": "erzieher_hep",
       "location": "Dresden",
       "radiusKm": 50,
       "queries": [
@@ -141,7 +141,7 @@
           "published": "2026-03-16",
           "matchQuery": "Erzieherin",
           "profiles": [
-            "wife_erzieher"
+            "erzieher_hep"
           ]
         },
         {
@@ -156,7 +156,7 @@
           "published": "2026-03-11",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
-            "wife_erzieher"
+            "erzieher_hep"
           ]
         },
         {
@@ -171,7 +171,7 @@
           "published": "2026-03-01",
           "matchQuery": "Erzieher Kita",
           "profiles": [
-            "wife_erzieher"
+            "erzieher_hep"
           ]
         }
       ],
