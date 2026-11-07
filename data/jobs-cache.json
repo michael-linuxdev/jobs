@@ -1,7 +1,7 @@
 {
-  "generatedAt": null,
-  "source": "empty",
-  "api": "pc/v4/jobs",
+  "generatedAt": "2026-11-07T12:00:30.041Z",
+  "source": "arbeitsagentur",
+  "api": "html-ssr/jobsuche/suche",
   "defaults": {
     "radiusKm": 50
   },
@@ -10,34 +10,1503 @@
       "profileId": "it_m365",
       "location": "Pirna",
       "radiusKm": 50,
-      "queries": [],
-      "jobCount": 0,
-      "jobs": [],
+      "queries": [
+        "IT-Administrator Microsoft 365",
+        "Systemadministrator Entra ID Intune",
+        "IT Security Administrator"
+      ],
+      "jobCount": 20,
+      "jobs": [
+        {
+          "id": "ba-12633-5b1c9e8e_JB5270691-S",
+          "title": "IT-Administrator (m/w/d)",
+          "company": "DIS AG Personaldienstleistungen",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12633-5b1c9e8e_JB5270691-S",
+          "remote": true,
+          "published": "2026-10-21",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-12659-cf2841195f2a4a6-S",
+          "title": "IT-Administrator (m/w/d) ",
+          "company": "Experts & Talents Dresden GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12659-cf2841195f2a4a6-S",
+          "remote": false,
+          "published": "2026-11-05",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-11868-13887030-S",
+          "title": "IT-Administrator (m/w/d)",
+          "company": "I.K. Hofmann GmbH",
+          "location": "Klipphausen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/11868-13887030-S",
+          "remote": true,
+          "published": "2026-10-02",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-12634-BB-645216-7878-2148-S",
+          "title": "IT Administrator IT-Security (m/w/d)",
+          "company": "Akkodis Germany Tech Experts GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12634-BB-645216-7878-2148-S",
+          "remote": false,
+          "published": "2026-11-06",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-13892-3141861_4078636-S",
+          "title": "IT Administrator Quereinsteiger (w/m/d)",
+          "company": "Heytex Neugersdorf GmbH",
+          "location": "Ebersbach-Neugersdorf",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/13892-3141861_4078636-S",
+          "remote": true,
+          "published": "2026-10-02",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10001-1001508831-S",
+          "title": "Microsoft Exchange Administrator (m/w/d)",
+          "company": "Dresden-IT GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1001508831-S",
+          "remote": true,
+          "published": "2026-09-22",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10001-1003354329-S",
+          "title": "Senior IT-Administrator (m/w/d) – Schwerpunkt Infrastruktur & Netzwerk",
+          "company": "Akademie für berufliche Bildung gGmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003354329-S",
+          "remote": false,
+          "published": "2026-09-07",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10001-1002813738-S",
+          "title": "Senior IT-Administrator / Teamlead (m/w/d) – Großraum Dresden",
+          "company": "reddo IT-SERVICE GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002813738-S",
+          "remote": true,
+          "published": "2026-08-18",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-12633-f695b4b5_JB5276626-S",
+          "title": "IT-Systemadministrator (m/w/d)",
+          "company": "DIS AG Personaldienstleistungen",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12633-f695b4b5_JB5276626-S",
+          "remote": true,
+          "published": "2026-10-20",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-12633-558554d3_JB5271781-S",
+          "title": "Systemadministrator (m/w/d)",
+          "company": "DIS AG Personaldienstleistungen",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12633-558554d3_JB5271781-S",
+          "remote": true,
+          "published": "2026-10-21",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10001-1003712928-S",
+          "title": "Mitarbeitende IT Systemadministration (m/w/d)",
+          "company": "r2 Handels GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003712928-S",
+          "remote": true,
+          "published": "2026-09-16",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10001-1003963592-S",
+          "title": "IT-Systemadministrator / IT-Techniker (m/w/d)",
+          "company": "Compentis GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003963592-S",
+          "remote": false,
+          "published": "2026-11-04",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10001-1003912489-S",
+          "title": "Systemadministrator/ IT-Fachmann (m/w/d)",
+          "company": "meiko Textil GmbH",
+          "location": "Schirgiswalde-Kirschau",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003912489-S",
+          "remote": false,
+          "published": "2026-10-26",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10000-1207560486-S",
+          "title": "IT System Administrator / IT Generalist (m/w/d)",
+          "company": "Silgan Metal Packaging Meissen GmbH",
+          "location": "Meißen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1207560486-S",
+          "remote": true,
+          "published": "2026-08-17",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10001-1003667666-S",
+          "title": "IT-Support- / IT-Projektmitarbeiter: in (m/w/d)",
+          "company": "ITP GmbH",
+          "location": "Ottendorf-Okrilla",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003667666-S",
+          "remote": true,
+          "published": "2026-10-09",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10001-1003573495-S",
+          "title": "IT Infrastructure & Operations",
+          "company": "TRICERA energy GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003573495-S",
+          "remote": true,
+          "published": "2026-10-05",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10001-1003758340-S",
+          "title": "IT- Systemadministrator (m/w/d)",
+          "company": "TL Concept GmbH",
+          "location": "Klipphausen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003758340-S",
+          "remote": false,
+          "published": "2026-09-24",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-12634-BB-645172-7878-7121-S",
+          "title": "IT Security Engineer (m/w/d)",
+          "company": "Akkodis Germany Tech Experts GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12634-BB-645172-7878-7121-S",
+          "remote": false,
+          "published": "2026-11-06",
+          "matchQuery": "Systemadministrator Entra ID Intune",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10000-1206917885-S",
+          "title": "IT-Security Specialist (m/w/d)",
+          "company": "Ziegler Metallbearbeitung GmbH",
+          "location": "Nebelschütz",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1206917885-S",
+          "remote": true,
+          "published": "2026-10-28",
+          "matchQuery": "Systemadministrator Entra ID Intune",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10000-1206395340-S",
+          "title": "Datacenter Administrator (m/w/d)",
+          "company": "IBH connect GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1206395340-S",
+          "remote": true,
+          "published": "2026-05-08",
+          "matchQuery": "IT Security Administrator",
+          "profiles": [
+            "it_m365"
+          ]
+        }
+      ],
       "errors": []
     },
     "social_media": {
       "profileId": "social_media",
       "location": "Dresden",
       "radiusKm": 50,
-      "queries": [],
-      "jobCount": 0,
-      "jobs": [],
+      "queries": [
+        "Social Media Manager",
+        "Social Media Managerin Einstieg",
+        "Online Marketing Social Media"
+      ],
+      "jobCount": 29,
+      "jobs": [
+        {
+          "id": "ba-10000-1203909989-S",
+          "title": "Social Media Manager (m/w/d) – Standort Dresden",
+          "company": "clicks digital GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1203909989-S",
+          "remote": false,
+          "published": "2026-09-18",
+          "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-17020-0068149236-S",
+          "title": "Social Media Manager / Content Creator (m/w/d)",
+          "company": "IMS Robotics GmbH",
+          "location": "Ottendorf-Okrilla",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/17020-0068149236-S",
+          "remote": false,
+          "published": "2026-10-16",
+          "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003906377-S",
+          "title": "Marketing Assistent - Vollzeit (m/w/d)",
+          "company": "Herzfeen Sachsen GmbH Ambulanter Pflegedienst",
+          "location": "Meißen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003906377-S",
+          "remote": false,
+          "published": "2026-10-23",
+          "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10000-1208447333-S",
+          "title": "Sachbearbeiterin/Sachbearbeiter (m/w/d) Social Media Projekt - politische Bildung im digitalen Raum",
+          "company": "Sächsische Landeszentrale für politische Bildung",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208447333-S",
+          "remote": true,
+          "published": "2026-10-28",
+          "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1002108883-S",
+          "title": "Mitarbeiter (m/w/d) für die Gastfamiliengewinnung – Host Family Recruiter",
+          "company": "Amigos de la Cultura e.V.",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002108883-S",
+          "remote": false,
+          "published": "2026-10-28",
+          "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1002871283-S",
+          "title": "Sachbearbeiter/in Kundenservice # Bürokraft mit Social Media Erfahrung",
+          "company": "HTI-Line GmbH",
+          "location": "Döbeln",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002871283-S",
+          "remote": false,
+          "published": "2026-04-02",
+          "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003893772-S",
+          "title": "Ausbilder:in (m/w/d) Bereich Medien",
+          "company": "ASG - Anerkannte Schulgesellschaft Sachsen mbH NL Dresden",
+          "location": "Bautzen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003893772-S",
+          "remote": false,
+          "published": "2026-10-21",
+          "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003816213-S",
+          "title": "Content & Marketing Manager für Social Media & Newsletter",
+          "company": "Marie Bormann Wollblüte",
+          "location": "Klingenberg, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003816213-S",
+          "remote": false,
+          "published": "2026-10-07",
+          "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003616504-S",
+          "title": "Gestaltungstechnische/r Assistent/in Web und Soziale Medien",
+          "company": "Graphixer GmbH",
+          "location": "Kamenz",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003616504-S",
+          "remote": false,
+          "published": "2026-08-28",
+          "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003567639-S",
+          "title": "Leitung Online-Marketing (m/w/d)",
+          "company": "Apalis Home GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003567639-S",
+          "remote": true,
+          "published": "2026-08-20",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-12122-980157109-S",
+          "title": "Sachbearbeiter Marketing (m/w/d)",
+          "company": "persona Service AG & Co. KG Niederlassung Freiberg",
+          "location": "Großschirma",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-980157109-S",
+          "remote": false,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003912536-S",
+          "title": "Mitarbeiter Marketing & Webdesign (m/w/d)",
+          "company": "meiko Textil GmbH",
+          "location": "Schirgiswalde-Kirschau",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003912536-S",
+          "remote": false,
+          "published": "2026-10-26",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-14271-1648034-1-S",
+          "title": "Referent Marketing und Kommunikation (m/w/d)",
+          "company": "Johanniter-Unfall-Hilfe e.V. Landesverband Sachsen",
+          "location": "Coswig bei Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14271-1648034-1-S",
+          "remote": true,
+          "published": "2026-10-28",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10000-1204965070-S",
+          "title": "Marketing Automation & Data Specialist (m/w/d)",
+          "company": "clicks digital GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1204965070-S",
+          "remote": false,
+          "published": "2026-09-18",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940710-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
+          "company": "Lipz Media GmbH",
+          "location": "Radeberg, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940768-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freital",
+          "company": "Lipz Media GmbH",
+          "location": "Freital",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940768-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003943054-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Heidenau",
+          "company": "Lipz Media GmbH",
+          "location": "Heidenau, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943054-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003942921-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Coswig",
+          "company": "Lipz Media GmbH",
+          "location": "Coswig bei Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003942921-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003943058-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Wilsdruff",
+          "company": "Lipz Media GmbH",
+          "location": "Wilsdruff",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943058-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940732-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Meißen",
+          "company": "Lipz Media GmbH",
+          "location": "Meißen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940732-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003639526-S",
+          "title": "Rezeptionist mit Affinität zu Vetrieb & Marketing m/w/d",
+          "company": "Parkhotel Neustadt GmbH",
+          "location": "Neustadt in Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003639526-S",
+          "remote": false,
+          "published": "2026-09-02",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940787-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Dippoldiswalde",
+          "company": "Lipz Media GmbH",
+          "location": "Dippoldiswalde",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940787-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940817-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Großenhain",
+          "company": "Lipz Media GmbH",
+          "location": "Großenhain, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940817-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940498-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Bischofswerda",
+          "company": "Lipz Media GmbH",
+          "location": "Bischofswerda",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940498-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940682-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Kamenz",
+          "company": "Lipz Media GmbH",
+          "location": "Kamenz",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940682-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003943072-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Nossen",
+          "company": "Lipz Media GmbH",
+          "location": "Nossen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943072-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003941543-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freiberg",
+          "company": "Lipz Media GmbH",
+          "location": "Freiberg, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003941543-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003943067-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Neustadt/Sachsen",
+          "company": "Lipz Media GmbH",
+          "location": "Neustadt in Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943067-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        }
+      ],
       "errors": []
     },
     "erzieher_hep": {
       "profileId": "erzieher_hep",
       "location": "Dresden",
       "radiusKm": 50,
-      "queries": [],
-      "jobCount": 0,
-      "jobs": [],
+      "queries": [
+        "Erzieherin",
+        "Erzieher Kita",
+        "Heilerziehungspflegerin"
+      ],
+      "jobCount": 48,
+      "jobs": [
+        {
+          "id": "ba-10001-1003149518-S",
+          "title": "Erzieher*in (m/w/d) mit Reisetätigkeit",
+          "company": "feltenbummler GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003149518-S",
+          "remote": false,
+          "published": "2026-10-12",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-14225-9e65984168e52d2c-S",
+          "title": "Sozialarbeiter - Erzieher (m/w/d)",
+          "company": "Spurwechsel GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14225-9e65984168e52d2c-S",
+          "remote": true,
+          "published": "2026-10-23",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003846526-S",
+          "title": "Sozialarbeiter*in/ Erzieher/in für stationäre Jugendhilfeeinrichtung",
+          "company": "Kühn & Kollegen GmbH Hilfen zur Erziehung Dresden",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003846526-S",
+          "remote": false,
+          "published": "2026-10-13",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208576445-S",
+          "title": "1 Erzieher (w/m/d) für Familienorientiertes Wohnen in Gräfenhain",
+          "company": "Bürgerhilfe Sachsen e.V.",
+          "location": "Königsbrück",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208576445-S",
+          "remote": false,
+          "published": "2026-11-06",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003931522-S",
+          "title": "staatlich anerkannter Erzieher (m/w/d)",
+          "company": "Studentenwerk Freiberg Anstalt öffentl. Rechts",
+          "location": "Freiberg, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003931522-S",
+          "remote": false,
+          "published": "2026-10-29",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1207854897-S",
+          "title": "Nr. 28/2026 - Erzieher (m/w/d)",
+          "company": "Diakonisches Werk Meißen gGmbH",
+          "location": "Riesa",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1207854897-S",
+          "remote": true,
+          "published": "2026-09-10",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208359140-S",
+          "title": "Erzieher/in (m/w/d), mindestens 3 Monate",
+          "company": "ASB Kinderbetreuungsgesellschaft gGmbH",
+          "location": "Riesa",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208359140-S",
+          "remote": true,
+          "published": "2026-10-20",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-15478-0058980978-S",
+          "title": "Erzieher / Pädagogische Fachkraft (w/m/d) für educcare Kitas im Süden & Westen",
+          "company": "educcare Bildungskindertagesstätten gGmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/15478-0058980978-S",
+          "remote": false,
+          "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1002203126-S",
+          "title": "Erzieher / Sozialpädagoge / Heilpädagoge in unserer Einrichtung in Glashütte (m/w/d)",
+          "company": "Panta Rhei gGmbH",
+          "location": "Glashütte, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002203126-S",
+          "remote": false,
+          "published": "2026-11-02",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1203888672-S",
+          "title": "Sozialpädagogen / Erzieher für unsere stationäre Kinder- und Jugendhilfeeinrichtung",
+          "company": "Deutsches Rotes Kreuz Kreisverband Sebnitz e.V. Sitz Sebnitz",
+          "location": "Sebnitz",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1203888672-S",
+          "remote": false,
+          "published": "2026-04-02",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003817195-S",
+          "title": "Sozialpädagogen/ Staatlich anerkannte Erzieher (m/w/d) in der ambulanten Jugendarbeit Bautzen",
+          "company": "BBZ Bautzen e.V.",
+          "location": "Bautzen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003817195-S",
+          "remote": false,
+          "published": "2026-10-07",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1002834292-S",
+          "title": "Erzieher/Sozialpädagoge/Heilerziehungspfleger (m/w/d)–Betreuung im eigenen Zuhause Mittelsachsen",
+          "company": "Kurs- Wechsel e.V.",
+          "location": "Döbeln",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002834292-S",
+          "remote": false,
+          "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208497958-S",
+          "title": "Mitarbeiter*in im Team heilpädagogische Familienwohngruppe WG Blasewitz",
+          "company": "LEOS-Dresden Jugend- und Familienhilfe GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208497958-S",
+          "remote": false,
+          "published": "2026-11-02",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003961533-S",
+          "title": "Dipl. Sozialpädagoge (m/w/d) für TANDEM - Projekt",
+          "company": "Transfer GmbH & Co.KG Hof",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003961533-S",
+          "remote": false,
+          "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003943098-S",
+          "title": "Assistenz Wohnen (m/w/d) Wohnhof Gohlis",
+          "company": "Lebenshilfe Dresden e.V.",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943098-S",
+          "remote": false,
+          "published": "2026-10-30",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003118006-S",
+          "title": "\"Wir schaffen neue Ankerpunkte\" - Gründung einer Erziehungsstelle/ Sozialpädagogischen Pflegestelle",
+          "company": "Familienanker Kinder-, Jugend-, Familienhilfe GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003118006-S",
+          "remote": false,
+          "published": "2026-08-21",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003193572-S",
+          "title": "Pädagogische Fachkraft (m/w/d) mit Reisetätigkeit",
+          "company": "feltenbummler GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003193572-S",
+          "remote": false,
+          "published": "2026-10-12",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1205650474-S",
+          "title": "Assistenz für Menschen mit Behinderung (m/w/d)",
+          "company": "Stiftung EDDI (Stiftung)",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1205650474-S",
+          "remote": false,
+          "published": "2026-09-09",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003799469-S",
+          "title": "Pädagogischer Mitarbeiter (m/w/d) für 20 Stunden pro Woche",
+          "company": "SZL Suchtzentrum gGmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003799469-S",
+          "remote": false,
+          "published": "2026-10-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003888580-S",
+          "title": "Fachkraft in Kindertagesstätten (m/w/d) Kita Anne",
+          "company": "Jugendsozialwerk Dresden gGmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003888580-S",
+          "remote": false,
+          "published": "2026-10-21",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003899365-S",
+          "title": "Berufseinstiegsbegleiter/Sozialpädagoge/Pädagoge/Meister/Techniker/Fachwirt (m/w/d) - BerEb",
+          "company": "Transfer GmbH & Co.KG Hof",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003899365-S",
+          "remote": false,
+          "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1002649008-S",
+          "title": "mobile Betreuungskraft",
+          "company": "Seniorenhelfer Sachsen GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002649008-S",
+          "remote": false,
+          "published": "2026-09-07",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-12964-JOBSOL43967-S",
+          "title": "Berufseinstiegsbegleiter (m/w/d) an Schulen im LK Bautzen",
+          "company": "BBZ Bautzen e.V.",
+          "location": "Bautzen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12964-JOBSOL43967-S",
+          "remote": true,
+          "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-12964-JOBSOL48771-S",
+          "title": "Berufseinstiegsbegleiter (m/w/d) an Schulen in der Region Hoyerswerda",
+          "company": "BBZ Bautzen e.V.",
+          "location": "Bautzen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12964-JOBSOL48771-S",
+          "remote": true,
+          "published": "2026-11-04",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-19976-a4tqpaqp01-S",
+          "title": "Pädagogische Fachkraft in unserer Kita (m/w/d)",
+          "company": "DRK-Kreisverband Freiberg- Rochlitz e.V.",
+          "location": "Brand-Erbisdorf",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/19976-a4tqpaqp01-S",
+          "remote": true,
+          "published": "2026-10-29",
+          "matchQuery": "Erzieher Kita",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003916562-S",
+          "title": "Pädagogische Fachkraft Kita (m/w/d) mit HPZQ",
+          "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
+          "location": "Meißen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003916562-S",
+          "remote": false,
+          "published": "2026-10-27",
+          "matchQuery": "Erzieher Kita",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1205789622-S",
+          "title": "Heilerzieher-/ Krankenpfleger-/ AltenpflegerInnen",
+          "company": "simplemiles GmbH",
+          "location": "Pirna",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1205789622-S",
+          "remote": false,
+          "published": "2026-03-10",
+          "matchQuery": "Erzieher Kita",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003885094-S",
+          "title": "Elternbegleiterin (m/w/d) für die Arbeit im Projekt ElternChanceN im Familienzentrum",
+          "company": "Der Kinderschutzbund RV Freiberg e.V.",
+          "location": "Freiberg, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003885094-S",
+          "remote": false,
+          "published": "2026-10-20",
+          "matchQuery": "Erzieher Kita",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1203956086-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "jobs in time medical GmbH NL Leipzig",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1203956086-S",
+          "remote": false,
+          "published": "2025-10-01",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208383305-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "Implus Dresden gGmbH",
+          "location": "Radebeul",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208383305-S",
+          "remote": true,
+          "published": "2026-10-26",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1206612593-S",
+          "title": "Heilerziehungspfleger/-in (m/w/d)",
+          "company": "Häusliche Pflege und Betreuung Friedrich GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1206612593-S",
+          "remote": false,
+          "published": "2026-10-21",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-15054-0015101:01-S",
+          "title": "Heilerziehungspfleger (m/w/d) für Schulbegleitung in Förderschule",
+          "company": "Malteser Hilfsdienst gGmbH Bundesgeschäftsstelle Köln",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/15054-0015101%3A01-S",
+          "remote": true,
+          "published": "2026-11-03",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-14751-437A3117-S",
+          "title": "Heilerziehungspfleger - Rehabilitation (m/w/d)",
+          "company": "TRUECARE GmbH NL Dresden",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14751-437A3117-S",
+          "remote": true,
+          "published": "2026-11-02",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-14751-437A3093-S",
+          "title": "Heilerziehungspfleger - Psychiatrie (m/w/d)",
+          "company": "TRUECARE GmbH NL Dresden",
+          "location": "Arnsdorf bei Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14751-437A3093-S",
+          "remote": true,
+          "published": "2026-11-02",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1001623238-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "Elbland Reha und Präventions GmbH",
+          "location": "Großenhain, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1001623238-S",
+          "remote": false,
+          "published": "2025-07-25",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-12122-180325-1691262-0-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "persona service AG & Co.KG Niederlassung Chemnitz-Nord",
+          "location": "Döbeln",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-180325-1691262-0-S",
+          "remote": false,
+          "published": "2025-05-15",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1206911419-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "Lebenshilfe e.V.Döbeln Familienentlastender Dienst",
+          "location": "Döbeln",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1206911419-S",
+          "remote": false,
+          "published": "2026-06-22",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003836032-S",
+          "title": "Ergotherapeut*in oder Heilerziehungspfleger*in (m/w/d)",
+          "company": "Heim \"Haus am Karswald\" Wohnstätte f. Menschen mit Assistenz- und Pflegebedarf",
+          "location": "Arnsdorf bei Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003836032-S",
+          "remote": false,
+          "published": "2026-10-09",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003147660-S",
+          "title": "Heilerziehungspfleger*in (m/w/d) mit Reisetätigkeit",
+          "company": "feltenbummler GmbH",
+          "location": "Bautzen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003147660-S",
+          "remote": false,
+          "published": "2026-10-12",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1001629588-S",
+          "title": "Pflegefachkraft/ Heilerziehungspfleger in Einzelassistenz (w/m/d)",
+          "company": "PSBZ Bartels GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1001629588-S",
+          "remote": false,
+          "published": "2026-09-28",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003817473-S",
+          "title": "Ergotherapeut/ Physiotherapeut/ Heilerziehungspfleger (m/w/d)  für den Grünen Bereich",
+          "company": "Gut Leben gGmbH allgemein",
+          "location": "Bannewitz",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003817473-S",
+          "remote": false,
+          "published": "2026-10-07",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1207545018-S",
+          "title": "Heilerziehungspfleger (w / m / d)",
+          "company": "Panta Rhei gGmbH",
+          "location": "Glashütte, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1207545018-S",
+          "remote": false,
+          "published": "2026-08-14",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-14271-1640587-1-S",
+          "title": "Heilerziehungspfleger (m/w/d) in der Schulbegleitung im Regionalverband Dresden",
+          "company": "Johanniter-Unfall-Hilfe e.V. Landesverband Sachsen",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14271-1640587-1-S",
+          "remote": true,
+          "published": "2026-10-07",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003607476-S",
+          "title": "Ergo-/ Physiotherapeut, Heilerziehungspfleger (m/w/d) im Bereich Hauswirtschaft (Arbeitstrainer:in)",
+          "company": "Gut Leben gGmbH allgemein",
+          "location": "Bannewitz",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003607476-S",
+          "remote": false,
+          "published": "2026-10-26",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003841114-S",
+          "title": "Wir suchen dich! Heilerziehungspfleger (m/w/d) für unser Wohnheim Coswig",
+          "company": "MEISOP gGmbH",
+          "location": "Coswig bei Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003841114-S",
+          "remote": false,
+          "published": "2026-10-12",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1001908923-S",
+          "title": "Heilerziehungspfleger / Pflegefachkraft / Ergo. in einer Wohngruppe für Menschen mit Behinderungen",
+          "company": "Epilepsiezentrum Kleinwachau gGmbH",
+          "location": "Radeberg, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1001908923-S",
+          "remote": false,
+          "published": "2026-10-16",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003924568-S",
+          "title": "Betreuungsfachkraft (m/w/d)",
+          "company": "Lebenshilfe Sächsische Schweiz -Osterzgebirge e. V.",
+          "location": "Pirna",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003924568-S",
+          "remote": false,
+          "published": "2026-10-28",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-16649-FEA10A891627C088683-S",
+          "title": "Mitarbeiter Barthelteam (m/w/d)",
+          "company": "Rudolf Presl GmbH & Co. Klinik Bavaria Rehabilitations KG",
+          "location": "Kreischa bei Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16649-FEA10A891627C088683-S",
+          "remote": true,
+          "published": "2026-06-09",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        }
+      ],
       "errors": []
     }
   },
   "meta": {
-    "totalJobs": 0,
+    "totalJobs": 97,
     "partial": false,
-    "allFailed": false,
-    "note": "Noch kein Nightly-Lauf. Die Action schreibt echte BA-Treffer hier hinein."
+    "allFailed": false
   }
 }
