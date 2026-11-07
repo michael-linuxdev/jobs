@@ -1,7 +1,7 @@
 # Jobsuche
 
-Statische, installierbare PWA für die gemeinsame Jobsuche zweier Profile
-(Michael · IT / Partnerin · Social Media oder Erzieher/HEP).
+Statische, installierbare PWA für die gemeinsame Jobsuche mit Rollen-Profilen
+(IT / M365 / Security · Social Media Einstieg · Erzieher / HEP).
 
 ## Lokal starten
 

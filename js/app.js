@@ -2,6 +2,8 @@ import {
   PROFILES,
   DISTANCE_STEPS,
   DEFAULT_LOCATION,
+  PROFILE_ID_ALIASES,
+  resolveProfileId,
 } from "./profiles.js";
 import { DEFAULT_PROXY_ORIGIN, JOBS_CACHE_URL } from "./config.js";
 import {
@@ -14,7 +16,7 @@ import { EXTERNAL_SOURCES } from "./sources/deeplinks.js";
 const STORAGE_KEY = "jobsuche-prefs-v1";
 
 const state = {
-  profileId: "michael",
+  profileId: "it_m365",
   location: DEFAULT_LOCATION,
   distanceIndex: 2, // 50 km
   includeRemote: true,
@@ -35,7 +37,7 @@ function loadPrefs() {
     if (!raw) return;
     const p = JSON.parse(raw);
     Object.assign(state, {
-      profileId: p.profileId || state.profileId,
+      profileId: resolveProfileId(p.profileId || state.profileId),
       location: p.location || state.location,
       distanceIndex:
         typeof p.distanceIndex === "number"
@@ -95,7 +97,12 @@ async function loadNightlyCache(profileId) {
   const res = await fetch(JOBS_CACHE_URL, { cache: "no-cache" });
   if (!res.ok) throw new Error(`Cache HTTP ${res.status}`);
   const data = await res.json();
-  const block = data?.profiles?.[profileId];
+  const legacyId = Object.entries(PROFILE_ID_ALIASES).find(
+    ([, current]) => current === profileId
+  )?.[0];
+  const block =
+    data?.profiles?.[profileId] ||
+    (legacyId ? data?.profiles?.[legacyId] : null);
   const jobs = block?.jobs || [];
   return {
     jobs,

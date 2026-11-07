@@ -13,7 +13,9 @@
       "remote": true,
       "published": "2026-03-15",
       "matchQuery": "IT-Administrator Microsoft 365",
-      "profiles": ["michael"]
+      "profiles": [
+        "it_m365"
+      ]
     },
     {
       "id": "demo-m2",
@@ -26,7 +28,9 @@
       "remote": false,
       "published": "2026-03-12",
       "matchQuery": "Systemadministrator Entra ID Intune",
-      "profiles": ["michael"]
+      "profiles": [
+        "it_m365"
+      ]
     },
     {
       "id": "demo-m3",
@@ -39,7 +43,9 @@
       "remote": true,
       "published": "2026-03-10",
       "matchQuery": "Cloud Administrator Azure",
-      "profiles": ["michael"]
+      "profiles": [
+        "it_m365"
+      ]
     },
     {
       "id": "demo-s1",
@@ -52,7 +58,9 @@
       "remote": true,
       "published": "2026-03-18",
       "matchQuery": "Social Media Managerin Einstieg",
-      "profiles": ["wife_social"]
+      "profiles": [
+        "social_media"
+      ]
     },
     {
       "id": "demo-s2",
@@ -65,7 +73,9 @@
       "remote": false,
       "published": "2026-03-08",
       "matchQuery": "Community Manager",
-      "profiles": ["wife_social"]
+      "profiles": [
+        "social_media"
+      ]
     },
     {
       "id": "demo-s3",
@@ -78,7 +88,9 @@
       "remote": true,
       "published": "2026-03-05",
       "matchQuery": "Online Marketing Social Media",
-      "profiles": ["wife_social"]
+      "profiles": [
+        "social_media"
+      ]
     },
     {
       "id": "demo-e1",
@@ -91,7 +103,9 @@
       "remote": false,
       "published": "2026-03-16",
       "matchQuery": "Erzieherin",
-      "profiles": ["wife_erzieher"]
+      "profiles": [
+        "erzieher_hep"
+      ]
     },
     {
       "id": "demo-e2",
@@ -104,7 +118,9 @@
       "remote": false,
       "published": "2026-03-11",
       "matchQuery": "Heilerziehungspflegerin",
-      "profiles": ["wife_erzieher"]
+      "profiles": [
+        "erzieher_hep"
+      ]
     },
     {
       "id": "demo-e3",
@@ -117,7 +133,9 @@
       "remote": false,
       "published": "2026-03-01",
       "matchQuery": "Erzieher Kita",
-      "profiles": ["wife_erzieher"]
+      "profiles": [
+        "erzieher_hep"
+      ]
     }
   ]
 }
