@@ -1,0 +1,44 @@
+name: Nightly BA job cache
+
+on:
+  schedule:
+    # 04:15 UTC ≈ early morning DE
+    - cron: "15 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nightly-ba-cache
+  cancel-in-progress: true
+
+jobs:
+  fetch-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Fetch Arbeitsagentur cache
+        run: node scripts/fetch-ba-cache.mjs
+        env:
+          # Public BA client id — not a secret; documented by bundesAPI/jobsuche-api
+          BA_API_KEY: jobboerse-jobsuche
+
+      - name: Commit cache if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/jobs-cache.json
+          if git diff --staged --quiet; then
+            echo "No cache changes"
+          else
+            git commit -m "chore: refresh nightly Arbeitsagentur job cache"
+            git push
+          fi

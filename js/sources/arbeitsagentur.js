@@ -1,81 +1,118 @@
 /**
- * Bundesagentur für Arbeit Jobsuche (inoffizielle, aber öffentlich genutzte API).
+ * Bundesagentur für Arbeit Jobsuche (inoffizielle, öffentlich genutzte API).
  * Docs: https://github.com/bundesAPI/jobsuche-api
  *
- * GitHub Pages: Direct browser calls often fail (CORS + custom X-API-Key).
- * Optional proxyPrefix rewrites the request, e.g. Cloudflare Worker that
- * forwards to rest.arbeitsagentur.de and adds CORS + API key.
+ * Browser: prefer Cloudflare Worker via proxyOrigin → GET /search?...
+ * Node / Actions: call BA directly with X-API-Key (no CORS).
  */
 
-const BA_BASE =
+export const BA_BASE =
   "https://rest.arbeitsagentur.de/jobboerse/jobsuche-service/pc/v4/jobs";
-const BA_API_KEY = "jobboerse-jobsuche";
+export const BA_API_KEY = "jobboerse-jobsuche";
 
 /**
  * @param {object} opts
  * @param {string} opts.query
  * @param {string} opts.location
  * @param {number} opts.radiusKm
- * @param {boolean} opts.includeRemote
- * @param {string} [opts.proxyPrefix] e.g. "https://my-worker.example/ba?"
+ * @param {boolean} [opts.includeRemote]
+ * @param {string} [opts.proxyOrigin] Worker origin, e.g. https://….workers.dev
+ * @param {string} [opts.proxyPrefix] Legacy: full prefix ending with ?url= or bare origin
  * @param {number} [opts.size]
+ * @param {number} [opts.page]
  */
 export async function searchArbeitsagentur(opts) {
   const {
     query,
     location,
     radiusKm,
-    includeRemote,
+    includeRemote = false,
+    proxyOrigin = "",
     proxyPrefix = "",
     size = 25,
+    page = 1,
   } = opts;
 
   const params = new URLSearchParams({
     was: query,
     wo: location,
     umkreis: String(radiusKm),
-    page: "1",
+    page: String(page),
     size: String(size),
     angebotsart: "1",
   });
 
-  // Heim-/Telearbeit as additional Arbeitszeit filter when remote desired
   if (includeRemote) {
     params.set("arbeitszeit", "ho");
   }
 
+  const origin = normalizeProxyOrigin(proxyOrigin || proxyPrefix);
   let url;
   const headers = { Accept: "application/json" };
 
-  if (proxyPrefix) {
-    // Proxy is expected to inject X-API-Key and CORS headers.
+  if (origin) {
+    // Hardened worker: /search forwards params and injects API key
+    url = `${origin}/search?${params}`;
+  } else if (proxyPrefix && /[?&]url=$/.test(proxyPrefix)) {
+    // Legacy url= proxy style
     url = `${proxyPrefix}${encodeURIComponent(`${BA_BASE}?${params}`)}`;
   } else {
     url = `${BA_BASE}?${params}`;
     headers["X-API-Key"] = BA_API_KEY;
+    // Helps some BA edge nodes when called from CI / Node
+    headers["User-Agent"] =
+      "JobsucheCache/1.0 (+https://github.com/michael-linuxdev/jobs)";
+    headers["Accept-Language"] = "de-DE,de;q=0.9";
   }
 
-  const res = await fetch(url, { headers, mode: "cors" });
+  const res = await fetch(url, {
+    headers,
+    // Node has no CORS; browsers ignore mode on same opaque rules
+    ...(typeof window !== "undefined" ? { mode: "cors" } : {}),
+  });
   if (!res.ok) {
     throw new Error(`Arbeitsagentur HTTP ${res.status}`);
   }
 
   const data = await res.json();
-  // Proxy wrappers like allorigins return { contents: "..." }
   const payload =
     typeof data.contents === "string" ? JSON.parse(data.contents) : data;
+
+  if (payload?.error && !payload?.stellenangebote) {
+    throw new Error(payload.error);
+  }
 
   return normalizeBaResponse(payload, query);
 }
 
-function normalizeBaResponse(payload, query) {
+/** Strip trailing slash; accept legacy "?url=" prefixes by taking origin only. */
+export function normalizeProxyOrigin(value) {
+  if (!value) return "";
+  let v = String(value).trim();
+  if (!v) return "";
+  // If user pasted https://host/?url= or https://host/search
+  try {
+    if (v.includes("://")) {
+      const u = new URL(v.includes("?") ? v : v);
+      return `${u.protocol}//${u.host}`;
+    }
+  } catch {
+    /* fall through */
+  }
+  return v.replace(/\/+$/, "");
+}
+
+export function normalizeBaResponse(payload, query) {
   const list = payload?.stellenangebote || payload?.jobs || [];
   return list.map((item, i) => {
     const job = item.stellenangebot || item;
     const title =
       job.titel || job.beruf || job.jobTitel || query || "Stellenangebot";
     const company =
-      job.arbeitgeber || job.arbeitgeberName || item.arbeitgeber || "Arbeitgeber";
+      job.arbeitgeber ||
+      job.arbeitgeberName ||
+      item.arbeitgeber ||
+      "Arbeitgeber";
     const ort =
       job.arbeitsort?.ort ||
       job.arbeitsOrt?.ort ||
@@ -100,7 +137,7 @@ function normalizeBaResponse(payload, query) {
       : `https://www.arbeitsagentur.de/jobsuche/suche?was=${encodeURIComponent(query)}`;
 
     return {
-      id: `ba-${ref || i}-${title}`.slice(0, 80),
+      id: `ba-${ref || i}-${title}`.slice(0, 120),
       title,
       company,
       location: ort,
@@ -110,7 +147,6 @@ function normalizeBaResponse(payload, query) {
       remote: isRemote,
       published: job.aktuelleVeroeffentlichungsdatum || job.datum || null,
       matchQuery: query,
-      raw: undefined,
     };
   });
 }

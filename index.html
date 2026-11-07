@@ -84,24 +84,23 @@
             <p id="status" class="status" role="status" aria-live="polite"></p>
           </div>
 
-          <p id="demo-banner" class="banner" hidden>
-            Live-API blockiert (CORS/Netzwerk). Es werden Demo-Treffer gezeigt — siehe
-            erweiterte Einstellungen für einen CORS-Proxy.
-          </p>
+          <p id="source-banner" class="banner" hidden></p>
 
           <details class="details">
             <summary>Erweitert: CORS-Proxy für Arbeitsagentur</summary>
             <div class="field">
-              <label for="proxy">Proxy-Präfix (optional)</label>
+              <label for="proxy">Worker-Origin (optional)</label>
               <input
                 id="proxy"
                 type="url"
-                placeholder="https://dein-worker.example/proxy?url="
+                placeholder="https://jobsuche-ba-proxy.&lt;account&gt;.workers.dev"
               />
+              <p class="hint" id="proxy-default-hint"></p>
               <p class="hint">
-                Der Proxy muss die BA-API aufrufen, den Header
-                <code>X-API-Key: jobboerse-jobsuche</code> setzen und CORS erlauben.
-                Ohne Proxy fällt die App auf Demo-Daten + Portal-Links zurück.
+                Nach dem Deploy (<code>proxy/README.md</code>) Origin hier oder dauerhaft in
+                <code>js/config.js</code> → <code>DEFAULT_PROXY_ORIGIN</code> setzen.
+                Die App nutzt dann <code>GET /search</code>. Ohne Proxy: Nacht-Cache
+                (<code>data/jobs-cache.json</code>) bzw. Demo.
               </p>
             </div>
           </details>

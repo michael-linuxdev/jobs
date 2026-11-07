@@ -3,9 +3,11 @@ import {
   DISTANCE_STEPS,
   DEFAULT_LOCATION,
 } from "./profiles.js";
+import { DEFAULT_PROXY_ORIGIN, JOBS_CACHE_URL } from "./config.js";
 import {
   searchArbeitsagentur,
   baPortalSearchUrl,
+  normalizeProxyOrigin,
 } from "./sources/arbeitsagentur.js";
 import { EXTERNAL_SOURCES } from "./sources/deeplinks.js";
 
@@ -18,11 +20,12 @@ const state = {
   includeRemote: true,
   remoteOnly: false,
   liveBa: true,
-  proxyPrefix: "",
+  proxyOrigin: DEFAULT_PROXY_ORIGIN,
   status: "idle",
   statusText: "",
   jobs: [],
-  usedDemo: false,
+  dataSource: null, // "live" | "cache" | "demo"
+  cacheMeta: null,
   externalLinks: [],
 };
 
@@ -41,7 +44,13 @@ function loadPrefs() {
       includeRemote: p.includeRemote !== false,
       remoteOnly: !!p.remoteOnly,
       liveBa: p.liveBa !== false,
-      proxyPrefix: p.proxyPrefix || "",
+      // localStorage override only if user set a non-empty value
+      proxyOrigin:
+        typeof p.proxyOrigin === "string" && p.proxyOrigin.trim()
+          ? p.proxyOrigin.trim()
+          : typeof p.proxyPrefix === "string" && p.proxyPrefix.trim()
+            ? p.proxyPrefix.trim()
+            : DEFAULT_PROXY_ORIGIN,
     });
   } catch {
     /* ignore */
@@ -58,9 +67,13 @@ function savePrefs() {
       includeRemote: state.includeRemote,
       remoteOnly: state.remoteOnly,
       liveBa: state.liveBa,
-      proxyPrefix: state.proxyPrefix,
+      proxyOrigin: state.proxyOrigin,
     })
   );
+}
+
+function effectiveProxyOrigin() {
+  return normalizeProxyOrigin(state.proxyOrigin || DEFAULT_PROXY_ORIGIN);
 }
 
 function $(sel) {
@@ -76,6 +89,24 @@ function scoreJob(job, profile) {
   if (job.remote && state.includeRemote) score += 1;
   if (state.remoteOnly && !job.remote) score -= 50;
   return score;
+}
+
+async function loadNightlyCache(profileId) {
+  const res = await fetch(JOBS_CACHE_URL, { cache: "no-cache" });
+  if (!res.ok) throw new Error(`Cache HTTP ${res.status}`);
+  const data = await res.json();
+  const block = data?.profiles?.[profileId];
+  const jobs = block?.jobs || [];
+  return {
+    jobs,
+    meta: {
+      generatedAt: data.generatedAt || null,
+      location: block?.location || null,
+      radiusKm: block?.radiusKm || data?.defaults?.radiusKm || null,
+      source: data.source || "cache",
+      note: data.meta?.note || null,
+    },
+  };
 }
 
 async function loadDemoJobs(profileId) {
@@ -97,62 +128,9 @@ function buildExternalLinks(profile, location, radiusKm) {
   }));
 }
 
-async function runSearch() {
-  const profile = PROFILES[state.profileId];
-  const radiusKm = DISTANCE_STEPS[state.distanceIndex].km;
-  const location = state.location.trim() || DEFAULT_LOCATION;
-
-  state.status = "loading";
-  state.statusText = "Suche läuft …";
-  state.usedDemo = false;
-  state.jobs = [];
-  state.externalLinks = buildExternalLinks(profile, location, radiusKm);
-  render();
-  savePrefs();
-
-  let collected = [];
-  let liveError = null;
-
-  if (state.liveBa) {
-    const queries = profile.queries.slice(0, 3);
-    const results = await Promise.allSettled(
-      queries.map((q) =>
-        searchArbeitsagentur({
-          query: q,
-          location,
-          radiusKm,
-          // BA `arbeitszeit=ho` is exclusive — only use for „nur Remote“
-          includeRemote: state.remoteOnly,
-          proxyPrefix: state.proxyPrefix.trim(),
-          size: 20,
-        })
-      )
-    );
-    for (const r of results) {
-      if (r.status === "fulfilled") collected.push(...r.value);
-      else liveError = r.reason;
-    }
-  }
-
-  if (!collected.length) {
-    try {
-      collected = await loadDemoJobs(profile.id);
-      state.usedDemo = true;
-      state.statusText = liveError
-        ? `Live-API nicht erreichbar (${liveError.message || liveError}). Demo-Ergebnisse geladen.`
-        : "Demo-Ergebnisse (Live-Suche aus oder leer).";
-    } catch (e) {
-      state.status = "error";
-      state.statusText = `Keine Ergebnisse: ${e.message}`;
-      render();
-      return;
-    }
-  } else {
-    state.statusText = `${collected.length} Treffer von der Arbeitsagentur.`;
-  }
-
+function finalizeJobs(collected, profile) {
   const seen = new Set();
-  collected = collected.filter((j) => {
+  let jobs = collected.filter((j) => {
     const key = `${j.title}|${j.company}`.toLowerCase();
     if (seen.has(key)) return false;
     seen.add(key);
@@ -160,12 +138,118 @@ async function runSearch() {
   });
 
   if (state.remoteOnly) {
-    collected = collected.filter((j) => j.remote);
+    jobs = jobs.filter((j) => j.remote);
   }
 
-  collected.sort((a, b) => scoreJob(b, profile) - scoreJob(a, profile));
-  state.jobs = collected;
+  jobs.sort((a, b) => scoreJob(b, profile) - scoreJob(a, profile));
+  return jobs;
+}
+
+async function tryLiveSearch(profile, location, radiusKm) {
+  const proxyOrigin = effectiveProxyOrigin();
+  const queries = profile.queries.slice(0, 3);
+  const results = await Promise.allSettled(
+    queries.map((q) =>
+      searchArbeitsagentur({
+        query: q,
+        location,
+        radiusKm,
+        includeRemote: state.remoteOnly,
+        proxyOrigin,
+        size: 20,
+      })
+    )
+  );
+
+  const jobs = [];
+  let lastError = null;
+  for (const r of results) {
+    if (r.status === "fulfilled") jobs.push(...r.value);
+    else lastError = r.reason;
+  }
+  return { jobs, error: lastError, proxyOrigin };
+}
+
+async function runSearch() {
+  const profile = PROFILES[state.profileId];
+  const radiusKm = DISTANCE_STEPS[state.distanceIndex].km;
+  const location = state.location.trim() || DEFAULT_LOCATION;
+
+  state.status = "loading";
+  state.statusText = "Suche läuft …";
+  state.dataSource = null;
+  state.cacheMeta = null;
+  state.jobs = [];
+  state.externalLinks = buildExternalLinks(profile, location, radiusKm);
+  render();
+  savePrefs();
+
+  let collected = [];
+  let liveError = null;
+  let usedProxy = "";
+
+  // 1) Live (optional) — needs proxy on GitHub Pages
+  if (state.liveBa) {
+    try {
+      const live = await tryLiveSearch(profile, location, radiusKm);
+      collected = live.jobs;
+      liveError = live.error;
+      usedProxy = live.proxyOrigin;
+      if (collected.length) {
+        state.dataSource = "live";
+        state.statusText = usedProxy
+          ? `${collected.length} Live-Treffer (via Proxy).`
+          : `${collected.length} Live-Treffer (direkte BA-API).`;
+      }
+    } catch (e) {
+      liveError = e;
+    }
+  }
+
+  // 2) Nightly cache — primary offline-friendly path when live fails/empty
+  if (!collected.length) {
+    try {
+      const cache = await loadNightlyCache(profile.id);
+      if (cache.jobs.length) {
+        collected = cache.jobs;
+        state.dataSource = "cache";
+        state.cacheMeta = cache.meta;
+        const when = cache.meta.generatedAt
+          ? new Date(cache.meta.generatedAt).toLocaleString("de-DE")
+          : "unbekannt";
+        const where = cache.meta.location
+          ? `${cache.meta.location} / ${cache.meta.radiusKm || "?"} km`
+          : "Default-Ort";
+        state.statusText = liveError
+          ? `Live fehlgeschlagen (${liveError.message || liveError}). Nacht-Cache (${when}, ${where}).`
+          : `Nacht-Cache (${when}, ${where}) — ${collected.length} Treffer.`;
+      }
+    } catch (e) {
+      if (!liveError) liveError = e;
+    }
+  }
+
+  // 3) Demo seed
+  if (!collected.length) {
+    try {
+      collected = await loadDemoJobs(profile.id);
+      state.dataSource = "demo";
+      state.statusText = liveError
+        ? `Kein Live/Cache (${liveError.message || liveError}). Demo-Daten.`
+        : "Demo-Daten (noch kein Cache).";
+    } catch (e) {
+      state.status = "error";
+      state.statusText = `Keine Ergebnisse: ${e.message}`;
+      render();
+      return;
+    }
+  }
+
+  state.jobs = finalizeJobs(collected, profile);
   state.status = "ready";
+  if (!state.jobs.length && state.remoteOnly) {
+    state.statusText += " — nach Remote-Filter keine Treffer.";
+  }
   render();
 }
 
@@ -233,11 +317,15 @@ function renderJobs() {
   empty.hidden = true;
 
   for (const job of state.jobs) {
+    const label =
+      state.dataSource === "cache" && !String(job.sourceLabel || "").includes("Cache")
+        ? `${job.sourceLabel || "Arbeitsagentur"} (Cache)`
+        : job.sourceLabel || job.source;
     const li = document.createElement("li");
     li.className = "job-card";
     li.innerHTML = `
       <div class="job-card__top">
-        <p class="job-card__source">${escapeHtml(job.sourceLabel || job.source)}</p>
+        <p class="job-card__source">${escapeHtml(label)}</p>
         ${job.remote ? `<span class="badge">Remote / HO</span>` : ""}
       </div>
       <h3 class="job-card__title"><a href="${escapeAttr(job.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(job.title)}</a></h3>
@@ -286,9 +374,28 @@ function renderStatus() {
   const el = $("#status");
   el.dataset.state = state.status;
   el.textContent = state.statusText;
-  $("#demo-banner").hidden = !state.usedDemo;
+  const banner = $("#source-banner");
+  if (state.dataSource === "cache") {
+    banner.hidden = false;
+    banner.textContent =
+      "Nacht-Cache aktiv (GitHub Action). Für Live-Treffer Cloudflare-Worker deployen und Proxy-Origin setzen — siehe proxy/README.md.";
+  } else if (state.dataSource === "demo") {
+    banner.hidden = false;
+    banner.textContent =
+      "Demo-Daten. Nightly Cache oder CORS-Proxy einrichten für echte BA-Treffer.";
+  } else {
+    banner.hidden = true;
+  }
   const profile = PROFILES[state.profileId];
   $("#profile-summary").textContent = profile.summary;
+
+  const proxyHint = $("#proxy-default-hint");
+  if (proxyHint) {
+    const eff = effectiveProxyOrigin();
+    proxyHint.textContent = eff
+      ? `Aktiv: ${eff} → GET /search`
+      : "Kein Proxy gesetzt — Live nur ohne CORS (lokal ggf. ok); sonst Cache.";
+  }
 }
 
 function render() {
@@ -300,7 +407,7 @@ function render() {
   $("#live-ba").checked = state.liveBa;
   $("#include-remote").checked = state.includeRemote;
   $("#remote-only").checked = state.remoteOnly;
-  $("#proxy").value = state.proxyPrefix;
+  $("#proxy").value = state.proxyOrigin || "";
 }
 
 function escapeHtml(s) {
@@ -346,8 +453,9 @@ function bind() {
     savePrefs();
   });
   $("#proxy").addEventListener("change", (e) => {
-    state.proxyPrefix = e.target.value.trim();
+    state.proxyOrigin = e.target.value.trim();
     savePrefs();
+    renderStatus();
   });
 
   $("#search-form").addEventListener("submit", (e) => {

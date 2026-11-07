@@ -1,0 +1,10 @@
+{
+  "name": "jobsuche",
+  "private": true,
+  "type": "module",
+  "description": "Static Jobsuche PWA + BA cache scripts",
+  "scripts": {
+    "fetch-cache": "node scripts/fetch-ba-cache.mjs",
+    "serve": "python3 -m http.server 8080"
+  }
+}

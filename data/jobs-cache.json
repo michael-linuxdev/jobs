@@ -1,0 +1,187 @@
+{
+  "generatedAt": "2026-11-07T09:37:33.714Z",
+  "source": "seed",
+  "api": "pc/v4/jobs",
+  "defaults": {
+    "radiusKm": 50
+  },
+  "profiles": {
+    "michael": {
+      "profileId": "michael",
+      "location": "Pirna",
+      "radiusKm": 50,
+      "queries": [
+        "(seed from sample-jobs.json)"
+      ],
+      "jobCount": 3,
+      "jobs": [
+        {
+          "id": "demo-m1",
+          "title": "IT-Administrator Microsoft 365 / Intune (m/w/d)",
+          "company": "Beispiel GmbH Sachsen",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur (Seed-Cache)",
+          "url": "https://www.arbeitsagentur.de/jobsuche/suche?was=IT-Administrator%20Microsoft%20365&wo=Dresden",
+          "remote": true,
+          "published": "2026-03-15",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "michael"
+          ]
+        },
+        {
+          "id": "demo-m2",
+          "title": "Systemadministrator Entra ID & Security",
+          "company": "Mittelstand IT Partner",
+          "location": "Pirna",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur (Seed-Cache)",
+          "url": "https://www.arbeitsagentur.de/jobsuche/suche?was=Systemadministrator%20Entra%20ID&wo=Pirna",
+          "remote": false,
+          "published": "2026-03-12",
+          "matchQuery": "Systemadministrator Entra ID Intune",
+          "profiles": [
+            "michael"
+          ]
+        },
+        {
+          "id": "demo-m3",
+          "title": "Cloud / Azure Administrator (Hybrid)",
+          "company": "TechCare Solutions",
+          "location": "Leipzig",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur (Seed-Cache)",
+          "url": "https://www.arbeitsagentur.de/jobsuche/suche?was=Cloud%20Administrator%20Azure&wo=Leipzig",
+          "remote": true,
+          "published": "2026-03-10",
+          "matchQuery": "Cloud Administrator Azure",
+          "profiles": [
+            "michael"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    "wife_social": {
+      "profileId": "wife_social",
+      "location": "Dresden",
+      "radiusKm": 50,
+      "queries": [
+        "(seed from sample-jobs.json)"
+      ],
+      "jobCount": 3,
+      "jobs": [
+        {
+          "id": "demo-s1",
+          "title": "Social Media Managerin (Junior / Einstieg)",
+          "company": "Agentur Elbflorenz",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur (Seed-Cache)",
+          "url": "https://www.arbeitsagentur.de/jobsuche/suche?was=Social%20Media%20Managerin%20Einstieg&wo=Dresden",
+          "remote": true,
+          "published": "2026-03-18",
+          "matchQuery": "Social Media Managerin Einstieg",
+          "profiles": [
+            "wife_social"
+          ]
+        },
+        {
+          "id": "demo-s2",
+          "title": "Content & Community Manager (Teilzeit möglich)",
+          "company": "Regionaler Einzelhandel",
+          "location": "Freital",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur (Seed-Cache)",
+          "url": "https://www.arbeitsagentur.de/jobsuche/suche?was=Community%20Manager&wo=Freital",
+          "remote": false,
+          "published": "2026-03-08",
+          "matchQuery": "Community Manager",
+          "profiles": [
+            "wife_social"
+          ]
+        },
+        {
+          "id": "demo-s3",
+          "title": "Online-Marketing / Social Media Assistenz",
+          "company": "Tourismus Sachsen",
+          "location": "Meißen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur (Seed-Cache)",
+          "url": "https://www.arbeitsagentur.de/jobsuche/suche?was=Online%20Marketing%20Social%20Media&wo=Meißen",
+          "remote": true,
+          "published": "2026-03-05",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "wife_social"
+          ]
+        }
+      ],
+      "errors": []
+    },
+    "wife_erzieher": {
+      "profileId": "wife_erzieher",
+      "location": "Dresden",
+      "radiusKm": 50,
+      "queries": [
+        "(seed from sample-jobs.json)"
+      ],
+      "jobCount": 3,
+      "jobs": [
+        {
+          "id": "demo-e1",
+          "title": "Erzieherin / Erzieher (m/w/d) Kita",
+          "company": "Städtische Kita",
+          "location": "Pirna",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur (Seed-Cache)",
+          "url": "https://www.arbeitsagentur.de/jobsuche/suche?was=Erzieherin%20Kita&wo=Pirna",
+          "remote": false,
+          "published": "2026-03-16",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "wife_erzieher"
+          ]
+        },
+        {
+          "id": "demo-e2",
+          "title": "Heilerziehungspflegerin (Wohnen / Assistenz)",
+          "company": "Träger der Eingliederungshilfe",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur (Seed-Cache)",
+          "url": "https://www.arbeitsagentur.de/jobsuche/suche?was=Heilerziehungspflegerin&wo=Dresden",
+          "remote": false,
+          "published": "2026-03-11",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "wife_erzieher"
+          ]
+        },
+        {
+          "id": "demo-e3",
+          "title": "Erzieher/-in Hort und Ganztag",
+          "company": "Grundschule Region Sächsische Schweiz",
+          "location": "Königstein",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur (Seed-Cache)",
+          "url": "https://www.arbeitsagentur.de/jobsuche/suche?was=Erzieher%20Hort&wo=Königstein",
+          "remote": false,
+          "published": "2026-03-01",
+          "matchQuery": "Erzieher Kita",
+          "profiles": [
+            "wife_erzieher"
+          ]
+        }
+      ],
+      "errors": []
+    }
+  },
+  "meta": {
+    "totalJobs": 9,
+    "partial": false,
+    "allFailed": false,
+    "note": "Seed until the nightly GitHub Action writes a live BA cache."
+  }
+}

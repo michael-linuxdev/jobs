@@ -1,0 +1,12 @@
+name = "jobsuche-ba-proxy"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# Optional: restrict browser Origins (comma-separated). Empty = allow *.
+# Set via `wrangler secret` is not needed — use [vars] or dashboard.
+# Example after Pages is live:
+# [vars]
+# ALLOWED_ORIGINS = "https://michael-linuxdev.github.io,http://127.0.0.1:8080,http://localhost:8080"
+
+[vars]
+ALLOWED_ORIGINS = ""
