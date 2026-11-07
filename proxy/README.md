@@ -14,6 +14,8 @@ Die App ruft: `GET {origin}/health?ping=jobs&q=…&loc=…&r=…&n=…`
 
 (`/health` + Alias-Query, weil manche Preview-Accounts andere Pfade blocken.)
 
+Der Worker scraped die **HTML-Jobsuche** (SSR-JSON), nicht die REST-API — die REST-API antwortet von vielen Cloud-IPs mit 403. HTML-Fetch kann auf Free-Workers an Zeitlimits scheitern; der **Committed Cache** (`data/jobs-cache.json`) ist dann die zuverlässige Quelle.
+
 ### Wichtig — Account claimen / dauerhaft machen
 
 Der Worker liegt auf einem **Wrangler-Temporary-/Preview-Account** („Fog Sense“). Bitte **zeitnah claimen**, sonst läuft er ab:
