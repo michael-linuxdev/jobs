@@ -11,14 +11,13 @@ import {
   baPortalSearchUrl,
   normalizeProxyOrigin,
 } from "./sources/arbeitsagentur.js";
-import { EXTERNAL_SOURCES } from "./sources/deeplinks.js";
 
-const STORAGE_KEY = "jobsuche-prefs-v1";
+const STORAGE_KEY = "jobsuche-prefs-v2";
 
 const state = {
   profileId: "it_m365",
   location: DEFAULT_LOCATION,
-  distanceIndex: 2, // 50 km
+  distanceIndex: 2,
   includeRemote: true,
   remoteOnly: false,
   liveBa: true,
@@ -26,14 +25,16 @@ const state = {
   status: "idle",
   statusText: "",
   jobs: [],
-  dataSource: null, // "live" | "cache" | "demo"
+  dataSource: null, // "live" | "cache" | null
   cacheMeta: null,
-  externalLinks: [],
+  emptyReason: null,
 };
 
 function loadPrefs() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw =
+      localStorage.getItem(STORAGE_KEY) ||
+      localStorage.getItem("jobsuche-prefs-v1");
     if (!raw) return;
     const p = JSON.parse(raw);
     Object.assign(state, {
@@ -46,7 +47,6 @@ function loadPrefs() {
       includeRemote: p.includeRemote !== false,
       remoteOnly: !!p.remoteOnly,
       liveBa: p.liveBa !== false,
-      // localStorage override only if user set a non-empty value
       proxyOrigin:
         typeof p.proxyOrigin === "string" && p.proxyOrigin.trim()
           ? p.proxyOrigin.trim()
@@ -82,6 +82,25 @@ function $(sel) {
   return document.querySelector(sel);
 }
 
+function isRealJobUrl(url) {
+  if (!url || typeof url !== "string") return false;
+  try {
+    const u = new URL(url);
+    if (u.protocol !== "https:") return false;
+    // Real BA detail pages — not invented demo search URLs
+    if (
+      u.hostname === "www.arbeitsagentur.de" &&
+      u.pathname.includes("/jobsuche/jobdetail/")
+    ) {
+      return true;
+    }
+    // Some BA payloads may only expose portal search — reject those as list items
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 function scoreJob(job, profile) {
   const hay = `${job.title} ${job.company} ${job.location}`.toLowerCase();
   let score = 0;
@@ -97,47 +116,36 @@ async function loadNightlyCache(profileId) {
   const res = await fetch(JOBS_CACHE_URL, { cache: "no-cache" });
   if (!res.ok) throw new Error(`Cache HTTP ${res.status}`);
   const data = await res.json();
+
+  // Only accept real BA cache runs — never seed/demo/empty filler
+  if (data.source !== "arbeitsagentur") {
+    return { jobs: [], meta: { source: data.source || "empty", rejected: true } };
+  }
+
   const legacyId = Object.entries(PROFILE_ID_ALIASES).find(
     ([, current]) => current === profileId
   )?.[0];
   const block =
     data?.profiles?.[profileId] ||
     (legacyId ? data?.profiles?.[legacyId] : null);
-  const jobs = block?.jobs || [];
+  const jobs = (block?.jobs || []).filter((j) => isRealJobUrl(j.url));
+
   return {
     jobs,
     meta: {
       generatedAt: data.generatedAt || null,
       location: block?.location || null,
       radiusKm: block?.radiusKm || data?.defaults?.radiusKm || null,
-      source: data.source || "cache",
+      source: data.source,
       note: data.meta?.note || null,
     },
   };
 }
 
-async function loadDemoJobs(profileId) {
-  const res = await fetch("./data/sample-jobs.json", { cache: "no-cache" });
-  if (!res.ok) throw new Error("Demo-Daten fehlen");
-  const data = await res.json();
-  return (data.jobs || []).filter(
-    (j) => !j.profiles || j.profiles.includes(profileId)
-  );
-}
-
-function buildExternalLinks(profile, location, radiusKm) {
-  const primary = profile.queries[0];
-  return EXTERNAL_SOURCES.map((src) => ({
-    id: src.id,
-    label: src.label,
-    note: src.note,
-    url: src.build({ query: primary, location, radiusKm }),
-  }));
-}
-
 function finalizeJobs(collected, profile) {
   const seen = new Set();
   let jobs = collected.filter((j) => {
+    if (!isRealJobUrl(j.url)) return false;
     const key = `${j.title}|${j.company}`.toLowerCase();
     if (seen.has(key)) return false;
     seen.add(key);
@@ -170,51 +178,72 @@ async function tryLiveSearch(profile, location, radiusKm) {
 
   const jobs = [];
   let lastError = null;
+  let anyAttempted = false;
   for (const r of results) {
+    anyAttempted = true;
     if (r.status === "fulfilled") jobs.push(...r.value);
     else lastError = r.reason;
   }
-  return { jobs, error: lastError, proxyOrigin };
+  return { jobs, error: lastError, proxyOrigin, anyAttempted };
+}
+
+function emptyMessage({ liveError, proxyOrigin, triedLive, triedCache }) {
+  const parts = [];
+  if (!proxyOrigin && triedLive) {
+    parts.push(
+      "Kein CORS-Proxy konfiguriert — Live-Abfrage von GitHub Pages aus blockiert die BA-API."
+    );
+  } else if (liveError) {
+    parts.push(`Live-Abfrage fehlgeschlagen: ${liveError.message || liveError}.`);
+  }
+  if (triedCache) {
+    parts.push(
+      "Kein gültiger Nightly-Cache (echte BA-Treffer) vorhanden — Action einmal ausführen oder auf den nächtlichen Lauf warten."
+    );
+  }
+  parts.push("Es werden keine Demo- oder Platzhalterstellen angezeigt.");
+  return parts.join(" ");
 }
 
 async function runSearch() {
   const profile = PROFILES[state.profileId];
   const radiusKm = DISTANCE_STEPS[state.distanceIndex].km;
   const location = state.location.trim() || DEFAULT_LOCATION;
+  const proxyOrigin = effectiveProxyOrigin();
 
   state.status = "loading";
   state.statusText = "Suche läuft …";
   state.dataSource = null;
   state.cacheMeta = null;
+  state.emptyReason = null;
   state.jobs = [];
-  state.externalLinks = buildExternalLinks(profile, location, radiusKm);
   render();
   savePrefs();
 
   let collected = [];
   let liveError = null;
-  let usedProxy = "";
+  let triedLive = false;
+  let triedCache = false;
 
-  // 1) Live (optional) — needs proxy on GitHub Pages
   if (state.liveBa) {
+    triedLive = true;
     try {
       const live = await tryLiveSearch(profile, location, radiusKm);
       collected = live.jobs;
       liveError = live.error;
-      usedProxy = live.proxyOrigin;
       if (collected.length) {
         state.dataSource = "live";
-        state.statusText = usedProxy
-          ? `${collected.length} Live-Treffer (via Proxy).`
-          : `${collected.length} Live-Treffer (direkte BA-API).`;
+        state.statusText = proxyOrigin
+          ? `${collected.length} Live-Treffer (Arbeitsagentur via Proxy)`
+          : `${collected.length} Live-Treffer (Arbeitsagentur)`;
       }
     } catch (e) {
       liveError = e;
     }
   }
 
-  // 2) Nightly cache — primary offline-friendly path when live fails/empty
   if (!collected.length) {
+    triedCache = true;
     try {
       const cache = await loadNightlyCache(profile.id);
       if (cache.jobs.length) {
@@ -224,39 +253,29 @@ async function runSearch() {
         const when = cache.meta.generatedAt
           ? new Date(cache.meta.generatedAt).toLocaleString("de-DE")
           : "unbekannt";
-        const where = cache.meta.location
-          ? `${cache.meta.location} / ${cache.meta.radiusKm || "?"} km`
-          : "Default-Ort";
-        state.statusText = liveError
-          ? `Live fehlgeschlagen (${liveError.message || liveError}). Nacht-Cache (${when}, ${where}).`
-          : `Nacht-Cache (${when}, ${where}) — ${collected.length} Treffer.`;
+        state.statusText = `${collected.length} Treffer aus Nightly-Cache (${when})`;
       }
     } catch (e) {
       if (!liveError) liveError = e;
     }
   }
 
-  // 3) Demo seed
-  if (!collected.length) {
-    try {
-      collected = await loadDemoJobs(profile.id);
-      state.dataSource = "demo";
-      state.statusText = liveError
-        ? `Kein Live/Cache (${liveError.message || liveError}). Demo-Daten.`
-        : "Demo-Daten (noch kein Cache).";
-    } catch (e) {
-      state.status = "error";
-      state.statusText = `Keine Ergebnisse: ${e.message}`;
-      render();
-      return;
-    }
-  }
-
   state.jobs = finalizeJobs(collected, profile);
   state.status = "ready";
-  if (!state.jobs.length && state.remoteOnly) {
-    state.statusText += " — nach Remote-Filter keine Treffer.";
+
+  if (!state.jobs.length) {
+    state.dataSource = null;
+    state.emptyReason = emptyMessage({
+      liveError,
+      proxyOrigin,
+      triedLive,
+      triedCache,
+    });
+    state.statusText = "Keine echten Treffer";
+  } else if (state.remoteOnly) {
+    // already filtered
   }
+
   render();
 }
 
@@ -272,7 +291,7 @@ function renderProfiles() {
       "aria-pressed",
       p.id === state.profileId ? "true" : "false"
     );
-    btn.innerHTML = `<span class="profile-btn__name">${p.name}</span><span class="profile-btn__short">${p.short}</span>`;
+    btn.innerHTML = `<span class="profile-btn__name">${escapeHtml(p.name)}</span><span class="profile-btn__short">${escapeHtml(p.short)}</span>`;
     btn.addEventListener("click", () => {
       const defaults = new Set(
         Object.values(PROFILES).map((x) => x.defaultLocation)
@@ -315,93 +334,86 @@ function renderDistance() {
 function renderJobs() {
   const list = $("#results");
   const empty = $("#empty");
+  const count = $("#results-count");
   list.innerHTML = "";
+
+  if (count) {
+    count.textContent = state.jobs.length
+      ? `${state.jobs.length} Stelle${state.jobs.length === 1 ? "" : "n"}`
+      : "";
+  }
 
   if (!state.jobs.length) {
     empty.hidden = state.status === "loading";
+    empty.textContent =
+      state.status === "loading"
+        ? ""
+        : state.emptyReason ||
+          "Keine Treffer. Ort, Profil oder Remote-Filter anpassen.";
     return;
   }
   empty.hidden = true;
 
   for (const job of state.jobs) {
-    const label =
-      state.dataSource === "cache" && !String(job.sourceLabel || "").includes("Cache")
-        ? `${job.sourceLabel || "Arbeitsagentur"} (Cache)`
-        : job.sourceLabel || job.source;
+    const sourceLabel =
+      state.dataSource === "cache"
+        ? "Arbeitsagentur · Cache"
+        : "Arbeitsagentur · Live";
     const li = document.createElement("li");
-    li.className = "job-card";
+    li.className = "job-row";
     li.innerHTML = `
-      <div class="job-card__top">
-        <p class="job-card__source">${escapeHtml(label)}</p>
-        ${job.remote ? `<span class="badge">Remote / HO</span>` : ""}
-      </div>
-      <h3 class="job-card__title"><a href="${escapeAttr(job.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(job.title)}</a></h3>
-      <p class="job-card__meta">${escapeHtml(job.company)}${job.location ? ` · ${escapeHtml(job.location)}` : ""}</p>
-      ${job.published ? `<p class="job-card__date">${escapeHtml(job.published)}</p>` : ""}
+      <a class="job-row__link" href="${escapeAttr(job.url)}" target="_blank" rel="noopener noreferrer">
+        <div class="job-row__top">
+          <span class="job-row__source">${escapeHtml(sourceLabel)}</span>
+          ${job.remote ? `<span class="badge">Remote / HO</span>` : ""}
+        </div>
+        <h3 class="job-row__title">${escapeHtml(job.title)}</h3>
+        <p class="job-row__meta">${escapeHtml(job.company)}${job.location ? ` · ${escapeHtml(job.location)}` : ""}</p>
+        ${job.published ? `<p class="job-row__date">${escapeHtml(job.published)}</p>` : ""}
+        <span class="job-row__cta">Zur Stelle auf arbeitsagentur.de</span>
+      </a>
     `;
     list.appendChild(li);
   }
 }
 
-function renderExternal() {
-  const root = $("#external-links");
-  root.innerHTML = "";
+function renderPortalLink() {
+  const a = $("#ba-portal-link");
+  if (!a) return;
   const profile = PROFILES[state.profileId];
   const radiusKm = DISTANCE_STEPS[state.distanceIndex].km;
   const location = state.location.trim() || DEFAULT_LOCATION;
-
-  const baLi = document.createElement("a");
-  baLi.className = "ext-link";
-  baLi.href = baPortalSearchUrl({
+  a.href = baPortalSearchUrl({
     query: profile.queries[0],
     location,
     radiusKm,
   });
-  baLi.target = "_blank";
-  baLi.rel = "noopener noreferrer";
-  baLi.innerHTML = `<strong>Arbeitsagentur Portal</strong><span>Offizielle Jobsuche im Browser</span>`;
-  root.appendChild(baLi);
-
-  const links = state.externalLinks.length
-    ? state.externalLinks
-    : buildExternalLinks(profile, location, radiusKm);
-
-  for (const link of links) {
-    const a = document.createElement("a");
-    a.className = "ext-link";
-    a.href = link.url;
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    a.innerHTML = `<strong>${escapeHtml(link.label)}</strong><span>${escapeHtml(link.note)}</span>`;
-    root.appendChild(a);
-  }
 }
 
 function renderStatus() {
   const el = $("#status");
   el.dataset.state = state.status;
   el.textContent = state.statusText;
+
   const banner = $("#source-banner");
   if (state.dataSource === "cache") {
     banner.hidden = false;
     banner.textContent =
-      "Nacht-Cache aktiv (GitHub Action). Für Live-Treffer Cloudflare-Worker deployen und Proxy-Origin setzen — siehe proxy/README.md.";
-  } else if (state.dataSource === "demo") {
-    banner.hidden = false;
-    banner.textContent =
-      "Demo-Daten. Nightly Cache oder CORS-Proxy einrichten für echte BA-Treffer.";
+      "Anzeige aus dem Nightly-Cache (echte BA-Daten). Für frische Live-Treffer Proxy in js/config.js oder unter Erweitert setzen.";
+  } else if (state.dataSource === "live") {
+    banner.hidden = true;
   } else {
     banner.hidden = true;
   }
-  const profile = PROFILES[state.profileId];
-  $("#profile-summary").textContent = profile.summary;
+
+  $("#profile-summary").textContent = PROFILES[state.profileId].summary;
 
   const proxyHint = $("#proxy-default-hint");
   if (proxyHint) {
     const eff = effectiveProxyOrigin();
     proxyHint.textContent = eff
-      ? `Aktiv: ${eff} → GET /search`
-      : "Kein Proxy gesetzt — Live nur ohne CORS (lokal ggf. ok); sonst Cache.";
+      ? `Aktiv: ${eff}`
+      : "Noch nicht gesetzt — ohne Proxy keine Live-Treffer auf Pages.";
   }
 }
 
@@ -409,7 +421,7 @@ function render() {
   renderProfiles();
   renderDistance();
   renderJobs();
-  renderExternal();
+  renderPortalLink();
   renderStatus();
   $("#live-ba").checked = state.liveBa;
   $("#include-remote").checked = state.includeRemote;
@@ -469,10 +481,6 @@ function bind() {
     e.preventDefault();
     state.location = $("#location").value;
     runSearch();
-  });
-
-  $("#install-hint-dismiss")?.addEventListener("click", () => {
-    $("#install-hint").hidden = true;
   });
 }
 
