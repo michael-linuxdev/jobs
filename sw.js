@@ -1,5 +1,5 @@
 /* Jobsuche service worker — cache app shell for offline / installable PWA */
-const CACHE = "jobsuche-v3";
+const CACHE = "jobsuche-v4";
 const SHELL = [
   "./",
   "./index.html",
@@ -8,8 +8,6 @@ const SHELL = [
   "./js/config.js",
   "./js/profiles.js",
   "./js/sources/arbeitsagentur.js",
-  "./js/sources/deeplinks.js",
-  "./data/sample-jobs.json",
   "./data/jobs-cache.json",
   "./manifest.webmanifest",
   "./icons/icon.svg",
@@ -40,8 +38,6 @@ self.addEventListener("fetch", (event) => {
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
-
-  // Pass through cross-origin / API calls (BA, fonts, proxy)
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(

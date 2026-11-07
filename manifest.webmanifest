@@ -1,13 +1,13 @@
 {
   "name": "Jobsuche",
   "short_name": "Jobsuche",
-  "description": "Gemeinsame Jobsuche für zwei Profile — Ort, Entfernung, Remote.",
+  "description": "Jobsuche — echte Arbeitsagentur-Treffer nach Rolle, Ort und Entfernung.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#eef3ef",
-  "theme_color": "#1e4a37",
+  "background_color": "#e4eee8",
+  "theme_color": "#16352a",
   "lang": "de",
   "icons": [
     {

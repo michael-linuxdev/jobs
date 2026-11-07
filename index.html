@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Jobsuche PWA für zwei Profile — Ort, Entfernung und Remote. Quellen: Arbeitsagentur u. a."
+      content="Jobsuche — echte Stellen der Arbeitsagentur nach Rolle, Ort und Entfernung."
     />
-    <meta name="theme-color" content="#1e4a37" />
+    <meta name="theme-color" content="#16352a" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Jobsuche" />
     <title>Jobsuche</title>
@@ -17,123 +17,135 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Source+Sans+3:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,700&family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="app">
-      <header class="hero">
+    <div class="shell">
+      <header class="top">
         <div class="brand">
-          <div class="brand__mark" aria-hidden="true"></div>
-          <div class="brand__text">
-            <div class="brand__name">Jobsuche</div>
-            <div class="brand__tag">Gemeinsam Stellen finden · Sachsen &amp; darüber hinaus</div>
+          <img class="brand__icon" src="./icons/icon.svg" width="44" height="44" alt="" />
+          <div>
+            <p class="brand__name">Jobsuche</p>
+            <p class="brand__tag">Arbeitsagentur · Rollen · Ort · Entfernung</p>
           </div>
         </div>
-        <p class="hero__lead">
-          Profil wählen, Ort und Entfernung einstellen, optional (teils) Remote —
-          Treffer aus der Arbeitsagentur plus Direktlinks zu weiteren Portalen.
+        <p class="lede">
+          Nur echte Treffer — Live über Proxy oder Nightly-Cache. Keine Demo-Stellen,
+          keine toten Portal-Buttons.
         </p>
       </header>
 
-      <section class="panel" aria-label="Suche">
-        <p class="section-label">Profil</p>
-        <div id="profile-switch" class="profile-switch" role="group" aria-label="Profil wählen"></div>
-        <p id="profile-summary"></p>
-
-        <form id="search-form" class="form-grid">
-          <div class="field">
-            <label for="location">Ort</label>
-            <input
-              id="location"
-              name="location"
-              type="text"
-              autocomplete="address-level2"
-              placeholder="z. B. Pirna, Dresden, Leipzig"
-              required
-            />
+      <main class="main">
+        <section class="search" aria-label="Suche">
+          <div class="search__block">
+            <p class="eyebrow">Rolle</p>
+            <div
+              id="profile-switch"
+              class="profiles"
+              role="group"
+              aria-label="Rolle wählen"
+            ></div>
+            <p id="profile-summary" class="summary"></p>
           </div>
 
-          <div class="field">
-            <label>
-              Entfernung
-              <span id="distance-label" style="font-weight: 400; color: var(--muted)"></span>
-            </label>
-            <div id="distance-steps" class="chips" role="group" aria-label="Entfernung in fünf Stufen"></div>
-          </div>
-
-          <div class="toggles">
-            <label class="toggle">
-              <input id="include-remote" type="checkbox" checked />
-              <span>(Teils) Remote / Homeoffice mitbewerten</span>
-            </label>
-            <label class="toggle">
-              <input id="remote-only" type="checkbox" />
-              <span>Nur Remote / Homeoffice</span>
-            </label>
-            <label class="toggle">
-              <input id="live-ba" type="checkbox" checked />
-              <span>Live-Suche Arbeitsagentur (sonst Demo-Daten)</span>
-            </label>
-          </div>
-
-          <div class="actions">
-            <button class="btn btn-primary" type="submit">Stellen suchen</button>
-            <p id="status" class="status" role="status" aria-live="polite"></p>
-          </div>
-
-          <p id="source-banner" class="banner" hidden></p>
-
-          <details class="details">
-            <summary>Erweitert: CORS-Proxy für Arbeitsagentur</summary>
-            <div class="field">
-              <label for="proxy">Worker-Origin (optional)</label>
-              <input
-                id="proxy"
-                type="url"
-                placeholder="https://jobsuche-ba-proxy.&lt;account&gt;.workers.dev"
-              />
-              <p class="hint" id="proxy-default-hint"></p>
-              <p class="hint">
-                Nach dem Deploy (<code>proxy/README.md</code>) Origin hier oder dauerhaft in
-                <code>js/config.js</code> → <code>DEFAULT_PROXY_ORIGIN</code> setzen.
-                Die App nutzt dann <code>GET /search</code>. Ohne Proxy: Nacht-Cache
-                (<code>data/jobs-cache.json</code>) bzw. Demo.
-              </p>
+          <form id="search-form" class="search__form">
+            <div class="row">
+              <div class="field grow">
+                <label for="location">Ort</label>
+                <input
+                  id="location"
+                  name="location"
+                  type="text"
+                  autocomplete="address-level2"
+                  placeholder="z. B. Pirna, Dresden, Leipzig"
+                  required
+                />
+              </div>
             </div>
-          </details>
-        </form>
-      </section>
 
-      <div class="layout">
-        <section aria-label="Ergebnisse">
-          <div class="results-head">
-            <h2>Ergebnisse</h2>
-          </div>
-          <ul id="results" class="results"></ul>
-          <p id="empty" class="empty" hidden>Keine Treffer — Ort oder Profil anpassen.</p>
+            <div class="field">
+              <div class="field__head">
+                <label for="distance-steps">Entfernung</label>
+                <span id="distance-label" class="field__value"></span>
+              </div>
+              <div
+                id="distance-steps"
+                class="chips"
+                role="group"
+                aria-label="Entfernung in fünf Stufen"
+              ></div>
+            </div>
+
+            <div class="toggles">
+              <label class="toggle">
+                <input id="include-remote" type="checkbox" checked />
+                <span>Remote / Homeoffice mitbewerten</span>
+              </label>
+              <label class="toggle">
+                <input id="remote-only" type="checkbox" />
+                <span>Nur Remote / Homeoffice</span>
+              </label>
+              <label class="toggle">
+                <input id="live-ba" type="checkbox" checked />
+                <span>Live-Abfrage versuchen (Proxy empfohlen)</span>
+              </label>
+            </div>
+
+            <div class="actions">
+              <button class="btn" type="submit">Stellen suchen</button>
+              <p id="status" class="status" role="status" aria-live="polite"></p>
+            </div>
+
+            <p id="source-banner" class="banner" hidden></p>
+
+            <details class="advanced">
+              <summary>Erweitert · CORS-Proxy</summary>
+              <div class="field">
+                <label for="proxy">Worker-Origin</label>
+                <input
+                  id="proxy"
+                  type="url"
+                  placeholder="https://jobsuche-ba-proxy.example.workers.dev"
+                />
+                <p class="hint" id="proxy-default-hint"></p>
+                <p class="hint">
+                  Deploy: <code>proxy/README.md</code>. Dauerhaft:
+                  <code>js/config.js</code> → <code>DEFAULT_PROXY_ORIGIN</code>.
+                  Ohne Proxy: nur Nightly-Cache, falls vorhanden.
+                </p>
+              </div>
+            </details>
+          </form>
         </section>
 
-        <aside class="side" aria-label="Weitere Quellen">
-          <h2>Weitere Quellen</h2>
-          <p class="hint" style="margin-bottom: 0.75rem">
-            LinkedIn, Xing, Indeed, StepStone und Karriere.sachsen.de sind als
-            vorausgefüllte Suchlinks verfügbar (kein öffentlicher Browser-API-Zugriff).
-          </p>
-          <div id="external-links" class="ext-links"></div>
-        </aside>
-      </div>
+        <section class="results-panel" aria-label="Ergebnisse">
+          <div class="results-panel__head">
+            <h2>Ergebnisse</h2>
+            <span id="results-count" class="results-panel__count"></span>
+          </div>
+          <ul id="results" class="results"></ul>
+          <p id="empty" class="empty" hidden></p>
+          <a
+            id="ba-portal-link"
+            class="portal"
+            href="https://www.arbeitsagentur.de/jobsuche/suche"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <strong>Auf arbeitsagentur.de öffnen</strong>
+            <span>Offizielle Suche mit aktuellem Ort und Profil-Stichwort</span>
+          </a>
+        </section>
+      </main>
 
-      <div id="install-hint" class="install-hint">
-        <span>Als App installierbar (PWA) — im Browser „Zum Startbildschirm / Installieren“.</span>
-        <button type="button" id="install-hint-dismiss" aria-label="Hinweis schließen">OK</button>
-      </div>
-
-      <footer class="footer">
-        Statische PWA für GitHub Pages · Profile aus lokal hinterlegten Unterlagen ·
-        keine Bewerbungsdaten werden an Dritte gesendet außer den gewählten Portalen.
+      <footer class="foot">
+        <p>
+          PWA für <span class="mono">jobs.micana.de</span> · Quelle: Bundesagentur für Arbeit ·
+          Installierbar über den Browser
+        </p>
       </footer>
     </div>
     <script type="module" src="./js/app.js"></script>
