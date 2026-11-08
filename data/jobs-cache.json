@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T06:00:40.022Z",
+  "generatedAt": "2026-11-08T13:25:00.429Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -1216,6 +1216,21 @@
           ]
         },
         {
+          "id": "ba-12122-981903565-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "persona service AG & Co. KG",
+          "location": "Bischofswerda",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-981903565-S",
+          "remote": false,
+          "published": "2026-11-08",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-10000-1206612593-S",
           "title": "Heilerziehungspfleger/-in (m/w/d)",
           "company": "Häusliche Pflege und Betreuung Friedrich GmbH",
@@ -1480,21 +1495,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003924568-S",
           "remote": false,
           "published": "2026-10-28",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-16649-FEA10A891627C088683-S",
-          "title": "Mitarbeiter Barthelteam (m/w/d)",
-          "company": "Rudolf Presl GmbH & Co. Klinik Bavaria Rehabilitations KG",
-          "location": "Kreischa bei Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16649-FEA10A891627C088683-S",
-          "remote": true,
-          "published": "2026-06-09",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
