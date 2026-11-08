@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T13:25:00.429Z",
+  "generatedAt": "2026-11-08T19:41:53.534Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -778,7 +778,7 @@
         "Erzieher Kita",
         "Heilerziehungspflegerin"
       ],
-      "jobCount": 48,
+      "jobCount": 49,
       "jobs": [
         {
           "id": "ba-10001-1003149518-S",
@@ -1126,15 +1126,15 @@
           ]
         },
         {
-          "id": "ba-12964-JOBSOL48771-S",
-          "title": "Berufseinstiegsbegleiter (m/w/d) an Schulen in der Region Hoyerswerda",
-          "company": "BBZ Bautzen e.V.",
-          "location": "Bautzen, Sachsen",
+          "id": "ba-12122-982001146-S",
+          "title": "Heilerziehungspflege (m/w/d)",
+          "company": "persona service AG & Co. KG",
+          "location": "Bannewitz",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12964-JOBSOL48771-S",
-          "remote": true,
-          "published": "2026-11-04",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-982001146-S",
+          "remote": false,
+          "published": "2026-11-08",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1216,21 +1216,6 @@
           ]
         },
         {
-          "id": "ba-12122-981903565-S",
-          "title": "Heilerziehungspfleger (m/w/d)",
-          "company": "persona service AG & Co. KG",
-          "location": "Bischofswerda",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-981903565-S",
-          "remote": false,
-          "published": "2026-11-08",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10000-1206612593-S",
           "title": "Heilerziehungspfleger/-in (m/w/d)",
           "company": "Häusliche Pflege und Betreuung Friedrich GmbH",
@@ -1255,6 +1240,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208383305-S",
           "remote": true,
           "published": "2026-10-26",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-12122-981903565-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "persona service AG & Co. KG",
+          "location": "Bischofswerda",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-981903565-S",
+          "remote": false,
+          "published": "2026-11-08",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
@@ -1486,6 +1486,21 @@
           ]
         },
         {
+          "id": "ba-10001-1003980789-S",
+          "title": "Fachkraft (m/w/d) im Nachtdienst",
+          "company": "GESOP gGmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003980789-S",
+          "remote": false,
+          "published": "2026-11-08",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-10001-1003924568-S",
           "title": "Betreuungsfachkraft (m/w/d)",
           "company": "Lebenshilfe Sächsische Schweiz -Osterzgebirge e. V.",
@@ -1505,7 +1520,7 @@
     }
   },
   "meta": {
-    "totalJobs": 97,
+    "totalJobs": 98,
     "partial": false,
     "allFailed": false
   }
