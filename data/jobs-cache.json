@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-07T21:51:19.650Z",
+  "generatedAt": "2026-11-08T06:00:40.022Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -183,21 +183,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003963592-S",
-          "title": "IT-Systemadministrator / IT-Techniker (m/w/d)",
-          "company": "Compentis GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003963592-S",
-          "remote": false,
-          "published": "2026-11-04",
-          "matchQuery": "IT-Administrator Microsoft 365",
-          "profiles": [
-            "it_m365"
-          ]
-        },
-        {
           "id": "ba-10001-1003912489-S",
           "title": "Systemadministrator/ IT-Fachmann (m/w/d)",
           "company": "meiko Textil GmbH",
@@ -207,6 +192,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003912489-S",
           "remote": false,
           "published": "2026-10-26",
+          "matchQuery": "IT-Administrator Microsoft 365",
+          "profiles": [
+            "it_m365"
+          ]
+        },
+        {
+          "id": "ba-10001-1003963592-S",
+          "title": "IT-Systemadministrator / IT-Techniker (m/w/d)",
+          "company": "Compentis GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003963592-S",
+          "remote": false,
+          "published": "2026-11-04",
           "matchQuery": "IT-Administrator Microsoft 365",
           "profiles": [
             "it_m365"
@@ -557,21 +557,6 @@
           ]
         },
         {
-          "id": "ba-16852-44536153-1027-S",
-          "title": "Senior Marketing Manager (m/w/d)",
-          "company": "BASF Schwarzheide GmbH",
-          "location": "Schwarzheide",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
-          "remote": true,
-          "published": "2026-10-28",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003940768-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freital",
           "company": "Lipz Media GmbH",
@@ -581,6 +566,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940768-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -1216,21 +1216,6 @@
           ]
         },
         {
-          "id": "ba-10000-1208383305-S",
-          "title": "Heilerziehungspfleger (m/w/d)",
-          "company": "Implus Dresden gGmbH",
-          "location": "Radebeul",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208383305-S",
-          "remote": true,
-          "published": "2026-10-26",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10000-1206612593-S",
           "title": "Heilerziehungspfleger/-in (m/w/d)",
           "company": "Häusliche Pflege und Betreuung Friedrich GmbH",
@@ -1240,6 +1225,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1206612593-S",
           "remote": false,
           "published": "2026-10-21",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208383305-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "Implus Dresden gGmbH",
+          "location": "Radebeul",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208383305-S",
+          "remote": true,
+          "published": "2026-10-26",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
