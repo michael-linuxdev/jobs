@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T00:55:45.346Z",
+  "generatedAt": "2026-11-09T11:32:15.577Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -527,21 +527,6 @@
           ]
         },
         {
-          "id": "ba-16852-44536153-1027-S",
-          "title": "Senior Marketing Manager (m/w/d)",
-          "company": "BASF Schwarzheide GmbH",
-          "location": "Schwarzheide",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
-          "remote": true,
-          "published": "2026-10-28",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003940710-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
           "company": "Lipz Media GmbH",
@@ -551,6 +536,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -871,6 +871,21 @@
           ]
         },
         {
+          "id": "ba-10001-1003983575-S",
+          "title": "Pädagogische Fachkraft Kita (m/w/d)",
+          "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003983575-S",
+          "remote": false,
+          "published": "2026-11-09",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-15478-0058980978-S",
           "title": "Erzieher / Pädagogische Fachkraft (w/m/d) für educcare Kitas im Süden & Westen",
           "company": "educcare Bildungskindertagesstätten gGmbH",
@@ -999,7 +1014,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003118006-S",
           "remote": false,
-          "published": "2026-08-21",
+          "published": "2026-11-09",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1089,7 +1104,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002649008-S",
           "remote": false,
-          "published": "2026-09-07",
+          "published": "2026-11-09",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1105,21 +1120,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12964-JOBSOL43967-S",
           "remote": true,
           "published": "2026-11-05",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-12964-JOBSOL48771-S",
-          "title": "Berufseinstiegsbegleiter (m/w/d) an Schulen in der Region Hoyerswerda",
-          "company": "BBZ Bautzen e.V.",
-          "location": "Bautzen, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12964-JOBSOL48771-S",
-          "remote": true,
-          "published": "2026-11-04",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1456,13 +1456,13 @@
           ]
         },
         {
-          "id": "ba-10001-1003980789-S",
-          "title": "Fachkraft (m/w/d) im Nachtdienst",
-          "company": "GESOP gGmbH",
-          "location": "Dresden",
+          "id": "ba-12122-982001146-S",
+          "title": "Heilerziehungspflege (m/w/d)",
+          "company": "persona service AG & Co. KG",
+          "location": "Bannewitz",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003980789-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-982001146-S",
           "remote": false,
           "published": "2026-11-08",
           "matchQuery": "Heilerziehungspflegerin",
@@ -1471,13 +1471,13 @@
           ]
         },
         {
-          "id": "ba-12122-982001146-S",
-          "title": "Heilerziehungspflege (m/w/d)",
-          "company": "persona service AG & Co. KG",
-          "location": "Bannewitz",
+          "id": "ba-10001-1003980789-S",
+          "title": "Fachkraft (m/w/d) im Nachtdienst",
+          "company": "GESOP gGmbH",
+          "location": "Dresden",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-982001146-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003980789-S",
           "remote": false,
           "published": "2026-11-08",
           "matchQuery": "Heilerziehungspflegerin",
