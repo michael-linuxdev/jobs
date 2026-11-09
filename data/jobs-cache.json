@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T19:41:53.534Z",
+  "generatedAt": "2026-11-09T00:55:45.346Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -15,7 +15,7 @@
         "Systemadministrator Entra ID Intune",
         "IT Security Administrator"
       ],
-      "jobCount": 20,
+      "jobCount": 19,
       "jobs": [
         {
           "id": "ba-12633-5b1c9e8e_JB5270691-S",
@@ -222,21 +222,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1207560486-S",
           "remote": true,
           "published": "2026-08-17",
-          "matchQuery": "IT-Administrator Microsoft 365",
-          "profiles": [
-            "it_m365"
-          ]
-        },
-        {
-          "id": "ba-10001-1003667666-S",
-          "title": "IT-Support- / IT-Projektmitarbeiter: in (m/w/d)",
-          "company": "ITP GmbH",
-          "location": "Ottendorf-Okrilla",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003667666-S",
-          "remote": true,
-          "published": "2026-10-09",
           "matchQuery": "IT-Administrator Microsoft 365",
           "profiles": [
             "it_m365"
@@ -542,6 +527,21 @@
           ]
         },
         {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
           "id": "ba-10001-1003940710-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
           "company": "Lipz Media GmbH",
@@ -566,21 +566,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940768-S",
           "remote": true,
           "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
-          "id": "ba-16852-44536153-1027-S",
-          "title": "Senior Marketing Manager (m/w/d)",
-          "company": "BASF Schwarzheide GmbH",
-          "location": "Schwarzheide",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
-          "remote": true,
-          "published": "2026-10-28",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -632,21 +617,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003940732-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Meißen",
-          "company": "Lipz Media GmbH",
-          "location": "Meißen, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940732-S",
-          "remote": true,
-          "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003639526-S",
           "title": "Rezeptionist mit Affinität zu Vetrieb & Marketing m/w/d",
           "company": "Parkhotel Neustadt GmbH",
@@ -656,6 +626,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003639526-S",
           "remote": false,
           "published": "2026-09-02",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940732-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Meißen",
+          "company": "Lipz Media GmbH",
+          "location": "Meißen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940732-S",
+          "remote": true,
+          "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -1126,15 +1111,15 @@
           ]
         },
         {
-          "id": "ba-12122-982001146-S",
-          "title": "Heilerziehungspflege (m/w/d)",
-          "company": "persona service AG & Co. KG",
-          "location": "Bannewitz",
+          "id": "ba-12964-JOBSOL48771-S",
+          "title": "Berufseinstiegsbegleiter (m/w/d) an Schulen in der Region Hoyerswerda",
+          "company": "BBZ Bautzen e.V.",
+          "location": "Bautzen, Sachsen",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-982001146-S",
-          "remote": false,
-          "published": "2026-11-08",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12964-JOBSOL48771-S",
+          "remote": true,
+          "published": "2026-11-04",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1351,21 +1336,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003836032-S",
-          "title": "Ergotherapeut*in oder Heilerziehungspfleger*in (m/w/d)",
-          "company": "Heim \"Haus am Karswald\" Wohnstätte f. Menschen mit Assistenz- und Pflegebedarf",
-          "location": "Arnsdorf bei Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003836032-S",
-          "remote": false,
-          "published": "2026-10-09",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10001-1003147660-S",
           "title": "Heilerziehungspfleger*in (m/w/d) mit Reisetätigkeit",
           "company": "feltenbummler GmbH",
@@ -1501,6 +1471,21 @@
           ]
         },
         {
+          "id": "ba-12122-982001146-S",
+          "title": "Heilerziehungspflege (m/w/d)",
+          "company": "persona service AG & Co. KG",
+          "location": "Bannewitz",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-982001146-S",
+          "remote": false,
+          "published": "2026-11-08",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-10001-1003924568-S",
           "title": "Betreuungsfachkraft (m/w/d)",
           "company": "Lebenshilfe Sächsische Schweiz -Osterzgebirge e. V.",
@@ -1520,7 +1505,7 @@
     }
   },
   "meta": {
-    "totalJobs": 98,
+    "totalJobs": 97,
     "partial": false,
     "allFailed": false
   }
