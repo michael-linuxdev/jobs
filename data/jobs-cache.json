@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T11:32:15.577Z",
+  "generatedAt": "2026-11-09T22:22:09.947Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -497,21 +497,6 @@
           ]
         },
         {
-          "id": "ba-14271-1648034-1-S",
-          "title": "Referent Marketing und Kommunikation (m/w/d)",
-          "company": "Johanniter-Unfall-Hilfe e.V. Landesverband Sachsen",
-          "location": "Coswig bei Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14271-1648034-1-S",
-          "remote": true,
-          "published": "2026-10-28",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10000-1204965070-S",
           "title": "Marketing Automation & Data Specialist (m/w/d)",
           "company": "clicks digital GmbH",
@@ -750,6 +735,21 @@
           "profiles": [
             "social_media"
           ]
+        },
+        {
+          "id": "ba-10001-1003809062-S",
+          "title": "Performance Marketing Manager SEA (m/w/d)",
+          "company": "r2 Handels GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003809062-S",
+          "remote": true,
+          "published": "2026-10-14",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
         }
       ],
       "errors": []
@@ -826,21 +826,6 @@
           ]
         },
         {
-          "id": "ba-10000-1208576445-S",
-          "title": "1 Erzieher (w/m/d) für Familienorientiertes Wohnen in Gräfenhain",
-          "company": "Bürgerhilfe Sachsen e.V.",
-          "location": "Königsbrück",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208576445-S",
-          "remote": false,
-          "published": "2026-11-06",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10000-1207854897-S",
           "title": "Nr. 28/2026 - Erzieher (m/w/d)",
           "company": "Diakonisches Werk Meißen gGmbH",
@@ -850,6 +835,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1207854897-S",
           "remote": true,
           "published": "2026-09-10",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208576445-S",
+          "title": "1 Erzieher (w/m/d) für Familienorientiertes Wohnen in Gräfenhain",
+          "company": "Bürgerhilfe Sachsen e.V.",
+          "location": "Königsbrück",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208576445-S",
+          "remote": false,
+          "published": "2026-11-06",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
