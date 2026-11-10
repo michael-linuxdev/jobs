@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T17:02:57.515Z",
+  "generatedAt": "2026-11-10T23:22:12.781Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -763,7 +763,7 @@
         "Erzieher Kita",
         "Heilerziehungspflegerin"
       ],
-      "jobCount": 48,
+      "jobCount": 47,
       "jobs": [
         {
           "id": "ba-14089-01510807-S",
@@ -811,21 +811,6 @@
           ]
         },
         {
-          "id": "ba-10000-1208607171-S",
-          "title": "1 Erzieher (w/m/d) für Kinderwohngruppe in Gräfenhain",
-          "company": "Bürgerhilfe Sachsen e.V.",
-          "location": "Königsbrück",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208607171-S",
-          "remote": true,
-          "published": "2026-11-10",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-14225-9e65984168e52d2c-S",
           "title": "Sozialarbeiter - Erzieher (m/w/d)",
           "company": "Spurwechsel GmbH",
@@ -835,6 +820,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14225-9e65984168e52d2c-S",
           "remote": true,
           "published": "2026-10-23",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208607171-S",
+          "title": "1 Erzieher (w/m/d) für Kinderwohngruppe in Gräfenhain",
+          "company": "Bürgerhilfe Sachsen e.V.",
+          "location": "Königsbrück",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208607171-S",
+          "remote": true,
+          "published": "2026-11-10",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1135,21 +1135,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/19976-a4tqpaqp01-S",
           "remote": true,
           "published": "2026-10-29",
-          "matchQuery": "Erzieher Kita",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1003916562-S",
-          "title": "Pädagogische Fachkraft Kita (m/w/d) mit HPZQ",
-          "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
-          "location": "Meißen, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003916562-S",
-          "remote": false,
-          "published": "2026-10-27",
           "matchQuery": "Erzieher Kita",
           "profiles": [
             "erzieher_hep"
@@ -1490,7 +1475,7 @@
     }
   },
   "meta": {
-    "totalJobs": 96,
+    "totalJobs": 95,
     "partial": false,
     "allFailed": false
   }
