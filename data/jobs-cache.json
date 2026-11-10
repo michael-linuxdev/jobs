@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T07:18:38.340Z",
+  "generatedAt": "2026-11-10T17:02:57.515Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -101,7 +101,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1001508831-S",
           "remote": true,
-          "published": "2026-09-22",
+          "published": "2026-11-10",
           "matchQuery": "IT-Administrator Microsoft 365",
           "profiles": [
             "it_m365"
@@ -131,7 +131,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002813738-S",
           "remote": true,
-          "published": "2026-08-18",
+          "published": "2026-11-10",
           "matchQuery": "IT-Administrator Microsoft 365",
           "profiles": [
             "it_m365"
@@ -206,7 +206,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003963592-S",
           "remote": false,
-          "published": "2026-11-04",
+          "published": "2026-11-10",
           "matchQuery": "IT-Administrator Microsoft 365",
           "profiles": [
             "it_m365"
@@ -763,8 +763,23 @@
         "Erzieher Kita",
         "Heilerziehungspflegerin"
       ],
-      "jobCount": 49,
+      "jobCount": 48,
       "jobs": [
+        {
+          "id": "ba-14089-01510807-S",
+          "title": "Erzieher (m/w/d)",
+          "company": "Stadtverwaltung Roßwein",
+          "location": "Roßwein",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14089-01510807-S",
+          "remote": true,
+          "published": "2026-11-10",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
         {
           "id": "ba-10001-1003149518-S",
           "title": "Erzieher*in (m/w/d) mit Reisetätigkeit",
@@ -775,6 +790,36 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003149518-S",
           "remote": false,
           "published": "2026-10-12",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208611738-S",
+          "title": "Erzieher (m/w/d)",
+          "company": "Stadt Roßwein",
+          "location": "Roßwein",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208611738-S",
+          "remote": true,
+          "published": "2026-11-10",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208607171-S",
+          "title": "1 Erzieher (w/m/d) für Kinderwohngruppe in Gräfenhain",
+          "company": "Bürgerhilfe Sachsen e.V.",
+          "location": "Königsbrück",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208607171-S",
+          "remote": true,
+          "published": "2026-11-10",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -841,21 +886,6 @@
           ]
         },
         {
-          "id": "ba-10000-1208576445-S",
-          "title": "1 Erzieher (w/m/d) für Familienorientiertes Wohnen in Gräfenhain",
-          "company": "Bürgerhilfe Sachsen e.V.",
-          "location": "Königsbrück",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208576445-S",
-          "remote": false,
-          "published": "2026-11-06",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10000-1208359140-S",
           "title": "Erzieher/in (m/w/d), mindestens 3 Monate",
           "company": "ASB Kinderbetreuungsgesellschaft gGmbH",
@@ -865,6 +895,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208359140-S",
           "remote": true,
           "published": "2026-10-20",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208576445-S",
+          "title": "1 Erzieher (w/m/d) für Familienorientiertes Wohnen in Gräfenhain",
+          "company": "Bürgerhilfe Sachsen e.V.",
+          "location": "Königsbrück",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208576445-S",
+          "remote": false,
+          "published": "2026-11-06",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -916,21 +961,6 @@
           ]
         },
         {
-          "id": "ba-10000-1203888672-S",
-          "title": "Sozialpädagogen / Erzieher für unsere stationäre Kinder- und Jugendhilfeeinrichtung",
-          "company": "Deutsches Rotes Kreuz Kreisverband Sebnitz e.V. Sitz Sebnitz",
-          "location": "Sebnitz",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1203888672-S",
-          "remote": false,
-          "published": "2026-04-02",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10001-1003817195-S",
           "title": "Sozialpädagogen/ Staatlich anerkannte Erzieher (m/w/d) in der ambulanten Jugendarbeit Bautzen",
           "company": "BBZ Bautzen e.V.",
@@ -955,6 +985,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002834292-S",
           "remote": false,
           "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003980789-S",
+          "title": "Fachkraft (m/w/d) im Nachtdienst",
+          "company": "GESOP gGmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003980789-S",
+          "remote": false,
+          "published": "2026-11-08",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1051,21 +1096,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003799469-S",
-          "title": "Pädagogischer Mitarbeiter (m/w/d) für 20 Stunden pro Woche",
-          "company": "SZL Suchtzentrum gGmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003799469-S",
-          "remote": false,
-          "published": "2026-10-05",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10001-1003888580-S",
           "title": "Fachkraft in Kindertagesstätten (m/w/d) Kita Anne",
           "company": "Jugendsozialwerk Dresden gGmbH",
@@ -1089,36 +1119,6 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003899365-S",
           "remote": false,
-          "published": "2026-11-05",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1002649008-S",
-          "title": "mobile Betreuungskraft",
-          "company": "Seniorenhelfer Sachsen GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002649008-S",
-          "remote": false,
-          "published": "2026-11-09",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-12964-JOBSOL43967-S",
-          "title": "Berufseinstiegsbegleiter (m/w/d) an Schulen im LK Bautzen",
-          "company": "BBZ Bautzen e.V.",
-          "location": "Bautzen, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12964-JOBSOL43967-S",
-          "remote": true,
           "published": "2026-11-05",
           "matchQuery": "Erzieherin",
           "profiles": [
@@ -1449,7 +1449,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1001908923-S",
           "remote": false,
-          "published": "2026-10-16",
+          "published": "2026-11-10",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
@@ -1463,21 +1463,6 @@
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-982001146-S",
-          "remote": false,
-          "published": "2026-11-08",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1003980789-S",
-          "title": "Fachkraft (m/w/d) im Nachtdienst",
-          "company": "GESOP gGmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003980789-S",
           "remote": false,
           "published": "2026-11-08",
           "matchQuery": "Heilerziehungspflegerin",
@@ -1505,7 +1490,7 @@
     }
   },
   "meta": {
-    "totalJobs": 97,
+    "totalJobs": 96,
     "partial": false,
     "allFailed": false
   }
