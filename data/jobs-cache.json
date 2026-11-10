@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T22:22:09.947Z",
+  "generatedAt": "2026-11-10T07:18:38.340Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -422,21 +422,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003816213-S",
-          "title": "Content & Marketing Manager für Social Media & Newsletter",
-          "company": "Marie Bormann Wollblüte",
-          "location": "Klingenberg, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003816213-S",
-          "remote": false,
-          "published": "2026-10-07",
-          "matchQuery": "Social Media Manager",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003616504-S",
           "title": "Gestaltungstechnische/r Assistent/in Web und Soziale Medien",
           "company": "Graphixer GmbH",
@@ -512,21 +497,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003940710-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
-          "company": "Lipz Media GmbH",
-          "location": "Radeberg, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
-          "remote": true,
-          "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-16852-44536153-1027-S",
           "title": "Senior Marketing Manager (m/w/d)",
           "company": "BASF Schwarzheide GmbH",
@@ -536,6 +506,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
           "remote": true,
           "published": "2026-10-28",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940710-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
+          "company": "Lipz Media GmbH",
+          "location": "Radeberg, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
+          "remote": true,
+          "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -692,6 +677,21 @@
           ]
         },
         {
+          "id": "ba-10001-1003809062-S",
+          "title": "Performance Marketing Manager SEA (m/w/d)",
+          "company": "r2 Handels GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003809062-S",
+          "remote": true,
+          "published": "2026-10-14",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
           "id": "ba-10001-1003943072-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Nossen",
           "company": "Lipz Media GmbH",
@@ -737,15 +737,15 @@
           ]
         },
         {
-          "id": "ba-10001-1003809062-S",
-          "title": "Performance Marketing Manager SEA (m/w/d)",
-          "company": "r2 Handels GmbH",
-          "location": "Dresden",
+          "id": "ba-10001-1003940836-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Riesa",
+          "company": "Lipz Media GmbH",
+          "location": "Riesa",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003809062-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940836-S",
           "remote": true,
-          "published": "2026-10-14",
+          "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
