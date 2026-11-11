@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T23:22:12.781Z",
+  "generatedAt": "2026-11-11T06:21:17.748Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -497,21 +497,6 @@
           ]
         },
         {
-          "id": "ba-16852-44536153-1027-S",
-          "title": "Senior Marketing Manager (m/w/d)",
-          "company": "BASF Schwarzheide GmbH",
-          "location": "Schwarzheide",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
-          "remote": true,
-          "published": "2026-10-28",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003940710-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
           "company": "Lipz Media GmbH",
@@ -521,6 +506,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -916,21 +916,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003983575-S",
-          "title": "Pädagogische Fachkraft Kita (m/w/d)",
-          "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003983575-S",
-          "remote": false,
-          "published": "2026-11-09",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-15478-0058980978-S",
           "title": "Erzieher / Pädagogische Fachkraft (w/m/d) für educcare Kitas im Süden & Westen",
           "company": "educcare Bildungskindertagesstätten gGmbH",
@@ -940,6 +925,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/15478-0058980978-S",
           "remote": false,
           "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003983575-S",
+          "title": "Pädagogische Fachkraft Kita (m/w/d)",
+          "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003983575-S",
+          "remote": false,
+          "published": "2026-11-09",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -969,7 +969,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003817195-S",
           "remote": false,
-          "published": "2026-10-07",
+          "published": "2026-11-11",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
