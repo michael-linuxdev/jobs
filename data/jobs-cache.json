@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T06:21:17.748Z",
+  "generatedAt": "2026-11-11T17:08:15.278Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -512,21 +512,6 @@
           ]
         },
         {
-          "id": "ba-16852-44536153-1027-S",
-          "title": "Senior Marketing Manager (m/w/d)",
-          "company": "BASF Schwarzheide GmbH",
-          "location": "Schwarzheide",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
-          "remote": true,
-          "published": "2026-10-28",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003940768-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freital",
           "company": "Lipz Media GmbH",
@@ -536,6 +521,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940768-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -677,21 +677,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003809062-S",
-          "title": "Performance Marketing Manager SEA (m/w/d)",
-          "company": "r2 Handels GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003809062-S",
-          "remote": true,
-          "published": "2026-10-14",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003943072-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Nossen",
           "company": "Lipz Media GmbH",
@@ -731,6 +716,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943067-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003809062-S",
+          "title": "Performance Marketing Manager SEA (m/w/d)",
+          "company": "r2 Handels GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003809062-S",
+          "remote": true,
+          "published": "2026-10-14",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -811,15 +811,15 @@
           ]
         },
         {
-          "id": "ba-14225-9e65984168e52d2c-S",
-          "title": "Sozialarbeiter - Erzieher (m/w/d)",
-          "company": "Spurwechsel GmbH",
+          "id": "ba-10001-1003846526-S",
+          "title": "Sozialarbeiter*in/ Erzieher/in für stationäre Jugendhilfeeinrichtung",
+          "company": "Kühn & Kollegen GmbH Hilfen zur Erziehung Dresden",
           "location": "Dresden",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14225-9e65984168e52d2c-S",
-          "remote": true,
-          "published": "2026-10-23",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003846526-S",
+          "remote": false,
+          "published": "2026-10-13",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -834,22 +834,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208607171-S",
           "remote": true,
-          "published": "2026-11-10",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1003846526-S",
-          "title": "Sozialarbeiter*in/ Erzieher/in für stationäre Jugendhilfeeinrichtung",
-          "company": "Kühn & Kollegen GmbH Hilfen zur Erziehung Dresden",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003846526-S",
-          "remote": false,
-          "published": "2026-10-13",
+          "published": "2026-11-11",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -909,7 +894,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208576445-S",
           "remote": false,
-          "published": "2026-11-06",
+          "published": "2026-11-11",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -925,21 +910,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/15478-0058980978-S",
           "remote": false,
           "published": "2026-11-05",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1003983575-S",
-          "title": "Pädagogische Fachkraft Kita (m/w/d)",
-          "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003983575-S",
-          "remote": false,
-          "published": "2026-11-09",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -968,6 +938,21 @@
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003817195-S",
+          "remote": false,
+          "published": "2026-11-11",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003999296-S",
+          "title": "Fachkraft in der Eingliederungshilfe (m/w/d)",
+          "company": "AWO SONNENSTEIN gGmbH Beratung-Behindertenhilfe- Psychosoziale Dienste",
+          "location": "Pirna",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003999296-S",
           "remote": false,
           "published": "2026-11-11",
           "matchQuery": "Erzieherin",
@@ -1126,6 +1111,21 @@
           ]
         },
         {
+          "id": "ba-10001-1002649008-S",
+          "title": "mobile Betreuungskraft",
+          "company": "Seniorenhelfer Sachsen GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002649008-S",
+          "remote": false,
+          "published": "2026-11-09",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-19976-a4tqpaqp01-S",
           "title": "Pädagogische Fachkraft in unserer Kita (m/w/d)",
           "company": "DRK-Kreisverband Freiberg- Rochlitz e.V.",
@@ -1255,21 +1255,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14751-437A3117-S",
           "remote": true,
           "published": "2026-11-02",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1001623238-S",
-          "title": "Heilerziehungspfleger (m/w/d)",
-          "company": "Elbland Reha und Präventions GmbH",
-          "location": "Großenhain, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1001623238-S",
-          "remote": false,
-          "published": "2025-07-25",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
@@ -1465,6 +1450,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003924568-S",
           "remote": false,
           "published": "2026-10-28",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003990747-S",
+          "title": "Engagierte Mitarbeiter (m/w/d) für Betreuung von Menschen in der eigener Häuslichkeit",
+          "company": "Pflegeservice Knoblauch GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003990747-S",
+          "remote": false,
+          "published": "2026-11-10",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
