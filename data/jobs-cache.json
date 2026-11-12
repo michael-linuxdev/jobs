@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T11:10:26.613Z",
+  "generatedAt": "2026-11-12T19:54:54.784Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -512,21 +512,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003940768-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freital",
-          "company": "Lipz Media GmbH",
-          "location": "Freital",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940768-S",
-          "remote": true,
-          "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-16852-44536153-1027-S",
           "title": "Senior Marketing Manager (m/w/d)",
           "company": "BASF Schwarzheide GmbH",
@@ -536,6 +521,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
           "remote": true,
           "published": "2026-10-28",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940768-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freital",
+          "company": "Lipz Media GmbH",
+          "location": "Freital",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940768-S",
+          "remote": true,
+          "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -763,7 +763,7 @@
         "Erzieher Kita",
         "Heilerziehungspflegerin"
       ],
-      "jobCount": 47,
+      "jobCount": 48,
       "jobs": [
         {
           "id": "ba-14089-01510807-S",
@@ -790,6 +790,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003149518-S",
           "remote": false,
           "published": "2026-10-12",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-14225-9e65984168e52d2c-S",
+          "title": "Sozialarbeiter - Erzieher (m/w/d)",
+          "company": "Spurwechsel GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14225-9e65984168e52d2c-S",
+          "remote": true,
+          "published": "2026-11-12",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -946,6 +961,21 @@
           ]
         },
         {
+          "id": "ba-10001-1004005964-S",
+          "title": "pädagogische Fachkraft (m/w/d) - stationäre WG für junge Menschen mit einer Essstörung",
+          "company": "drefugio Kinder- und Jugendhilfe Dresden GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004005964-S",
+          "remote": false,
+          "published": "2026-11-12",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-10001-1004003235-S",
           "title": "Fachkraft Schulintegrationshilfe (m/w/d)",
           "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
@@ -1096,36 +1126,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003888580-S",
-          "title": "Fachkraft in Kindertagesstätten (m/w/d) Kita Anne",
-          "company": "Jugendsozialwerk Dresden gGmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003888580-S",
-          "remote": false,
-          "published": "2026-10-21",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1003899365-S",
-          "title": "Berufseinstiegsbegleiter/Sozialpädagoge/Pädagoge/Meister/Techniker/Fachwirt (m/w/d) - BerEb",
-          "company": "Transfer GmbH & Co.KG Hof",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003899365-S",
-          "remote": false,
-          "published": "2026-11-05",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-19976-a4tqpaqp01-S",
           "title": "Pädagogische Fachkraft in unserer Kita (m/w/d)",
           "company": "DRK-Kreisverband Freiberg- Rochlitz e.V.",
@@ -1135,6 +1135,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/19976-a4tqpaqp01-S",
           "remote": true,
           "published": "2026-10-29",
+          "matchQuery": "Erzieher Kita",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003888580-S",
+          "title": "Fachkraft in Kindertagesstätten (m/w/d) Kita Anne",
+          "company": "Jugendsozialwerk Dresden gGmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003888580-S",
+          "remote": false,
+          "published": "2026-10-21",
           "matchQuery": "Erzieher Kita",
           "profiles": [
             "erzieher_hep"
@@ -1475,7 +1490,7 @@
     }
   },
   "meta": {
-    "totalJobs": 95,
+    "totalJobs": 96,
     "partial": false,
     "allFailed": false
   }
