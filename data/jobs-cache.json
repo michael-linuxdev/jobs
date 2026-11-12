@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T00:44:32.604Z",
+  "generatedAt": "2026-11-12T11:10:26.613Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -26,7 +26,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12633-5b1c9e8e_JB5270691-S",
           "remote": true,
-          "published": "2026-10-21",
+          "published": "2026-11-12",
           "matchQuery": "IT-Administrator Microsoft 365",
           "profiles": [
             "it_m365"
@@ -161,7 +161,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12633-558554d3_JB5271781-S",
           "remote": true,
-          "published": "2026-10-21",
+          "published": "2026-11-12",
           "matchQuery": "IT-Administrator Microsoft 365",
           "profiles": [
             "it_m365"
@@ -647,21 +647,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003940498-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Bischofswerda",
-          "company": "Lipz Media GmbH",
-          "location": "Bischofswerda",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940498-S",
-          "remote": true,
-          "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003940682-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Kamenz",
           "company": "Lipz Media GmbH",
@@ -671,6 +656,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940682-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003809062-S",
+          "title": "Performance Marketing Manager SEA (m/w/d)",
+          "company": "r2 Handels GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003809062-S",
+          "remote": true,
+          "published": "2026-10-14",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -722,21 +722,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003809062-S",
-          "title": "Performance Marketing Manager SEA (m/w/d)",
-          "company": "r2 Handels GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003809062-S",
-          "remote": true,
-          "published": "2026-10-14",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003940836-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Riesa",
           "company": "Lipz Media GmbH",
@@ -744,6 +729,21 @@
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940836-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003942797-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Döbeln",
+          "company": "Lipz Media GmbH",
+          "location": "Döbeln",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003942797-S",
           "remote": true,
           "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
@@ -834,7 +834,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208607171-S",
           "remote": true,
-          "published": "2026-11-11",
+          "published": "2026-11-12",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -894,7 +894,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208576445-S",
           "remote": false,
-          "published": "2026-11-11",
+          "published": "2026-11-12",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -946,15 +946,15 @@
           ]
         },
         {
-          "id": "ba-10001-1003999296-S",
-          "title": "Fachkraft in der Eingliederungshilfe (m/w/d)",
-          "company": "AWO SONNENSTEIN gGmbH Beratung-Behindertenhilfe- Psychosoziale Dienste",
+          "id": "ba-10001-1004003235-S",
+          "title": "Fachkraft Schulintegrationshilfe (m/w/d)",
+          "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
           "location": "Pirna",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003999296-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004003235-S",
           "remote": false,
-          "published": "2026-11-11",
+          "published": "2026-11-12",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -970,6 +970,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002834292-S",
           "remote": false,
           "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003999296-S",
+          "title": "Fachkraft in der Eingliederungshilfe (m/w/d)",
+          "company": "AWO SONNENSTEIN gGmbH Beratung-Behindertenhilfe- Psychosoziale Dienste",
+          "location": "Pirna",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003999296-S",
+          "remote": false,
+          "published": "2026-11-11",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1105,21 +1120,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003899365-S",
           "remote": false,
           "published": "2026-11-05",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1002649008-S",
-          "title": "mobile Betreuungskraft",
-          "company": "Seniorenhelfer Sachsen GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002649008-S",
-          "remote": false,
-          "published": "2026-11-09",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
