@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T01:50:16.025Z",
+  "generatedAt": "2026-11-13T10:58:53.165Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -258,21 +258,6 @@
           ]
         },
         {
-          "id": "ba-12634-BB-645172-7878-7121-S",
-          "title": "IT Security Engineer (m/w/d)",
-          "company": "Akkodis Germany Tech Experts GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12634-BB-645172-7878-7121-S",
-          "remote": false,
-          "published": "2026-11-06",
-          "matchQuery": "Systemadministrator Entra ID Intune",
-          "profiles": [
-            "it_m365"
-          ]
-        },
-        {
           "id": "ba-10000-1206917885-S",
           "title": "IT-Security Specialist (m/w/d)",
           "company": "Ziegler Metallbearbeitung GmbH",
@@ -301,6 +286,21 @@
           "profiles": [
             "it_m365"
           ]
+        },
+        {
+          "id": "ba-10001-1004012214-S",
+          "title": "Consultant IT-Security (m/w/d)",
+          "company": "ANG GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004012214-S",
+          "remote": false,
+          "published": "2026-11-13",
+          "matchQuery": "IT Security Administrator",
+          "profiles": [
+            "it_m365"
+          ]
         }
       ],
       "errors": []
@@ -314,7 +314,7 @@
         "Social Media Managerin Einstieg",
         "Online Marketing Social Media"
       ],
-      "jobCount": 29,
+      "jobCount": 28,
       "jobs": [
         {
           "id": "ba-10000-1203909989-S",
@@ -416,21 +416,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003893772-S",
           "remote": false,
           "published": "2026-10-21",
-          "matchQuery": "Social Media Manager",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
-          "id": "ba-10001-1003616504-S",
-          "title": "Gestaltungstechnische/r Assistent/in Web und Soziale Medien",
-          "company": "Graphixer GmbH",
-          "location": "Kamenz",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003616504-S",
-          "remote": false,
-          "published": "2026-08-28",
           "matchQuery": "Social Media Manager",
           "profiles": [
             "social_media"
@@ -572,21 +557,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003943058-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Wilsdruff",
-          "company": "Lipz Media GmbH",
-          "location": "Wilsdruff",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943058-S",
-          "remote": true,
-          "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003639526-S",
           "title": "Rezeptionist mit Affinität zu Vetrieb & Marketing m/w/d",
           "company": "Parkhotel Neustadt GmbH",
@@ -602,13 +572,13 @@
           ]
         },
         {
-          "id": "ba-10001-1003940732-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Meißen",
+          "id": "ba-10001-1003943058-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Wilsdruff",
           "company": "Lipz Media GmbH",
-          "location": "Meißen, Sachsen",
+          "location": "Wilsdruff",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940732-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943058-S",
           "remote": true,
           "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
@@ -617,13 +587,13 @@
           ]
         },
         {
-          "id": "ba-10001-1003940787-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Dippoldiswalde",
+          "id": "ba-10001-1003940732-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Meißen",
           "company": "Lipz Media GmbH",
-          "location": "Dippoldiswalde",
+          "location": "Meißen, Sachsen",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940787-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940732-S",
           "remote": true,
           "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
@@ -744,6 +714,21 @@
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003942797-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940373-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Bautzen",
+          "company": "Lipz Media GmbH",
+          "location": "Bautzen, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940373-S",
           "remote": true,
           "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
@@ -976,21 +961,6 @@
           ]
         },
         {
-          "id": "ba-10001-1004003235-S",
-          "title": "Fachkraft Schulintegrationshilfe (m/w/d)",
-          "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
-          "location": "Pirna",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004003235-S",
-          "remote": false,
-          "published": "2026-11-12",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10001-1002834292-S",
           "title": "Erzieher/Sozialpädagoge/Heilerziehungspfleger (m/w/d)–Betreuung im eigenen Zuhause Mittelsachsen",
           "company": "Kurs- Wechsel e.V.",
@@ -1000,6 +970,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002834292-S",
           "remote": false,
           "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1004003235-S",
+          "title": "Fachkraft Schulintegrationshilfe (m/w/d)",
+          "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
+          "location": "Pirna",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004003235-S",
+          "remote": false,
+          "published": "2026-11-12",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1389,7 +1374,7 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14271-1640587-1-S",
           "remote": true,
-          "published": "2026-10-07",
+          "published": "2026-11-13",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
@@ -1490,7 +1475,7 @@
     }
   },
   "meta": {
-    "totalJobs": 96,
+    "totalJobs": 95,
     "partial": false,
     "allFailed": false
   }
