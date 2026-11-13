@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T10:58:53.165Z",
+  "generatedAt": "2026-11-13T19:42:29.817Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -437,15 +437,15 @@
           ]
         },
         {
-          "id": "ba-12122-980157109-S",
+          "id": "ba-12122-983108961-S",
           "title": "Sachbearbeiter Marketing (m/w/d)",
           "company": "persona Service AG & Co. KG Niederlassung Freiberg",
           "location": "Großschirma",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-980157109-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-983108961-S",
           "remote": false,
-          "published": "2026-10-30",
+          "published": "2026-11-13",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -482,21 +482,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003940710-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
-          "company": "Lipz Media GmbH",
-          "location": "Radeberg, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
-          "remote": true,
-          "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-16852-44536153-1027-S",
           "title": "Senior Marketing Manager (m/w/d)",
           "company": "BASF Schwarzheide GmbH",
@@ -506,6 +491,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
           "remote": true,
           "published": "2026-10-28",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940710-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
+          "company": "Lipz Media GmbH",
+          "location": "Radeberg, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
+          "remote": true,
+          "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -748,23 +748,8 @@
         "Erzieher Kita",
         "Heilerziehungspflegerin"
       ],
-      "jobCount": 48,
+      "jobCount": 45,
       "jobs": [
-        {
-          "id": "ba-14089-01510807-S",
-          "title": "Erzieher (m/w/d)",
-          "company": "Stadtverwaltung Roßwein",
-          "location": "Roßwein",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14089-01510807-S",
-          "remote": true,
-          "published": "2026-11-10",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
         {
           "id": "ba-10001-1003149518-S",
           "title": "Erzieher*in (m/w/d) mit Reisetätigkeit",
@@ -775,6 +760,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003149518-S",
           "remote": false,
           "published": "2026-10-12",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-14089-01510807-S",
+          "title": "Erzieher (m/w/d)",
+          "company": "Stadtverwaltung Roßwein",
+          "location": "Roßwein",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14089-01510807-S",
+          "remote": true,
+          "published": "2026-11-10",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -805,6 +805,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14225-9e65984168e52d2c-S",
           "remote": true,
           "published": "2026-11-12",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-14271-1654019-1-S",
+          "title": "Erzieher (m/w/d) für unsere Kitas in Ottendorf-Okrilla",
+          "company": "Johanniter-Unfall-Hilfe e.V. Landesverband Sachsen",
+          "location": "Ottendorf-Okrilla",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14271-1654019-1-S",
+          "remote": true,
+          "published": "2026-11-13",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -865,6 +880,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1207854897-S",
           "remote": true,
           "published": "2026-09-10",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-20263-2377553-S",
+          "title": "Erzieher / Pädagogische Fachkraft (m/w/d) im Bereich Ergotherapie der Familienklinik",
+          "company": "MEDIAN Gesundheitspark Bad Gottleuba GmbH & Co. KG",
+          "location": "Bad Gottleuba-Berggießhübel",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/20263-2377553-S",
+          "remote": true,
+          "published": "2026-11-13",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -946,21 +976,6 @@
           ]
         },
         {
-          "id": "ba-10001-1004005964-S",
-          "title": "pädagogische Fachkraft (m/w/d) - stationäre WG für junge Menschen mit einer Essstörung",
-          "company": "drefugio Kinder- und Jugendhilfe Dresden GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004005964-S",
-          "remote": false,
-          "published": "2026-11-12",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10001-1002834292-S",
           "title": "Erzieher/Sozialpädagoge/Heilerziehungspfleger (m/w/d)–Betreuung im eigenen Zuhause Mittelsachsen",
           "company": "Kurs- Wechsel e.V.",
@@ -976,6 +991,21 @@
           ]
         },
         {
+          "id": "ba-10001-1004005964-S",
+          "title": "pädagogische Fachkraft (m/w/d) - stationäre WG für junge Menschen mit einer Essstörung",
+          "company": "drefugio Kinder- und Jugendhilfe Dresden GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004005964-S",
+          "remote": false,
+          "published": "2026-11-12",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-10001-1004003235-S",
           "title": "Fachkraft Schulintegrationshilfe (m/w/d)",
           "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
@@ -985,21 +1015,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004003235-S",
           "remote": false,
           "published": "2026-11-12",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1003999296-S",
-          "title": "Fachkraft in der Eingliederungshilfe (m/w/d)",
-          "company": "AWO SONNENSTEIN gGmbH Beratung-Behindertenhilfe- Psychosoziale Dienste",
-          "location": "Pirna",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003999296-S",
-          "remote": false,
-          "published": "2026-11-11",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1081,30 +1096,15 @@
           ]
         },
         {
-          "id": "ba-10001-1003193572-S",
-          "title": "Pädagogische Fachkraft (m/w/d) mit Reisetätigkeit",
-          "company": "feltenbummler GmbH",
+          "id": "ba-12122-983048500-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "persona service AG & Co. KG",
           "location": "Dresden",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003193572-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-983048500-S",
           "remote": false,
-          "published": "2026-10-12",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10000-1205650474-S",
-          "title": "Assistenz für Menschen mit Behinderung (m/w/d)",
-          "company": "Stiftung EDDI (Stiftung)",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1205650474-S",
-          "remote": false,
-          "published": "2026-09-09",
+          "published": "2026-11-13",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1210,21 +1210,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208383305-S",
           "remote": true,
           "published": "2026-10-26",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-12122-981903565-S",
-          "title": "Heilerziehungspfleger (m/w/d)",
-          "company": "persona service AG & Co. KG",
-          "location": "Bischofswerda",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-981903565-S",
-          "remote": false,
-          "published": "2026-11-08",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
@@ -1439,43 +1424,13 @@
           "profiles": [
             "erzieher_hep"
           ]
-        },
-        {
-          "id": "ba-10001-1003924568-S",
-          "title": "Betreuungsfachkraft (m/w/d)",
-          "company": "Lebenshilfe Sächsische Schweiz -Osterzgebirge e. V.",
-          "location": "Pirna",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003924568-S",
-          "remote": false,
-          "published": "2026-10-28",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1003990747-S",
-          "title": "Engagierte Mitarbeiter (m/w/d) für Betreuung von Menschen in der eigener Häuslichkeit",
-          "company": "Pflegeservice Knoblauch GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003990747-S",
-          "remote": false,
-          "published": "2026-11-10",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
         }
       ],
       "errors": []
     }
   },
   "meta": {
-    "totalJobs": 95,
+    "totalJobs": 92,
     "partial": false,
     "allFailed": false
   }
