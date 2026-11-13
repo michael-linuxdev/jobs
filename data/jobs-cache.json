@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12T19:54:54.784Z",
+  "generatedAt": "2026-11-13T01:50:16.025Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -796,21 +796,6 @@
           ]
         },
         {
-          "id": "ba-14225-9e65984168e52d2c-S",
-          "title": "Sozialarbeiter - Erzieher (m/w/d)",
-          "company": "Spurwechsel GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14225-9e65984168e52d2c-S",
-          "remote": true,
-          "published": "2026-11-12",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10000-1208611738-S",
           "title": "Erzieher (m/w/d)",
           "company": "Stadt Roßwein",
@@ -820,6 +805,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208611738-S",
           "remote": true,
           "published": "2026-11-10",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-14225-9e65984168e52d2c-S",
+          "title": "Sozialarbeiter - Erzieher (m/w/d)",
+          "company": "Spurwechsel GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14225-9e65984168e52d2c-S",
+          "remote": true,
+          "published": "2026-11-12",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
