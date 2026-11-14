@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T01:27:13.122Z",
+  "generatedAt": "2026-11-14T10:26:19.020Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -422,21 +422,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003567639-S",
-          "title": "Leitung Online-Marketing (m/w/d)",
-          "company": "Apalis Home GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003567639-S",
-          "remote": true,
-          "published": "2026-08-20",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-12122-983108961-S",
           "title": "Sachbearbeiter Marketing (m/w/d)",
           "company": "persona Service AG & Co. KG Niederlassung Freiberg",
@@ -731,6 +716,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940373-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003915445-S",
+          "title": "Doctoral Fellowship  in the field of Educational Science/Media Education",
+          "company": "Technische Universität Dresden Arbeitsstätte Dresden",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003915445-S",
+          "remote": false,
+          "published": "2026-10-27",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -1051,6 +1051,21 @@
           ]
         },
         {
+          "id": "ba-10001-1003961533-S",
+          "title": "Dipl. Sozialpädagoge (m/w/d) für TANDEM - Projekt",
+          "company": "Transfer GmbH & Co.KG Hof",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003961533-S",
+          "remote": false,
+          "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-10000-1208498193-S",
           "title": "Mitarbeiter*in im Team der heilpädagogische Familienwohngruppe WG Elisabeth",
           "company": "LEOS-Dresden Jugend- und Familienhilfe GmbH",
@@ -1075,21 +1090,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943098-S",
           "remote": false,
           "published": "2026-10-30",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1003961533-S",
-          "title": "Dipl. Sozialpädagoge (m/w/d) für TANDEM - Projekt",
-          "company": "Transfer GmbH & Co.KG Hof",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003961533-S",
-          "remote": false,
-          "published": "2026-11-05",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
