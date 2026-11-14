@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13T19:42:29.817Z",
+  "generatedAt": "2026-11-14T01:27:13.122Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -482,21 +482,6 @@
           ]
         },
         {
-          "id": "ba-16852-44536153-1027-S",
-          "title": "Senior Marketing Manager (m/w/d)",
-          "company": "BASF Schwarzheide GmbH",
-          "location": "Schwarzheide",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
-          "remote": true,
-          "published": "2026-10-28",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003940710-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
           "company": "Lipz Media GmbH",
@@ -521,6 +506,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940768-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -748,7 +748,7 @@
         "Erzieher Kita",
         "Heilerziehungspflegerin"
       ],
-      "jobCount": 45,
+      "jobCount": 46,
       "jobs": [
         {
           "id": "ba-10001-1003149518-S",
@@ -1051,15 +1051,15 @@
           ]
         },
         {
-          "id": "ba-10001-1003961533-S",
-          "title": "Dipl. Sozialpädagoge (m/w/d) für TANDEM - Projekt",
-          "company": "Transfer GmbH & Co.KG Hof",
+          "id": "ba-10000-1208498193-S",
+          "title": "Mitarbeiter*in im Team der heilpädagogische Familienwohngruppe WG Elisabeth",
+          "company": "LEOS-Dresden Jugend- und Familienhilfe GmbH",
           "location": "Dresden",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003961533-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208498193-S",
           "remote": false,
-          "published": "2026-11-05",
+          "published": "2026-11-02",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1081,6 +1081,21 @@
           ]
         },
         {
+          "id": "ba-10001-1003961533-S",
+          "title": "Dipl. Sozialpädagoge (m/w/d) für TANDEM - Projekt",
+          "company": "Transfer GmbH & Co.KG Hof",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003961533-S",
+          "remote": false,
+          "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-10001-1003118006-S",
           "title": "\"Wir schaffen neue Ankerpunkte\" - Gründung einer Erziehungsstelle/ Sozialpädagogischen Pflegestelle",
           "company": "Familienanker Kinder-, Jugend-, Familienhilfe GmbH",
@@ -1090,21 +1105,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003118006-S",
           "remote": false,
           "published": "2026-11-09",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-12122-983048500-S",
-          "title": "Heilerziehungspfleger (m/w/d)",
-          "company": "persona service AG & Co. KG",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-983048500-S",
-          "remote": false,
-          "published": "2026-11-13",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1166,6 +1166,21 @@
           "remote": false,
           "published": "2026-10-20",
           "matchQuery": "Erzieher Kita",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-12122-983048500-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "persona service AG & Co. KG",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-983048500-S",
+          "remote": false,
+          "published": "2026-11-13",
+          "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
           ]
@@ -1430,7 +1445,7 @@
     }
   },
   "meta": {
-    "totalJobs": 92,
+    "totalJobs": 93,
     "partial": false,
     "allFailed": false
   }
