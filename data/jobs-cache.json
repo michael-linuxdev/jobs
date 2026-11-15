@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T16:22:25.261Z",
+  "generatedAt": "2026-11-15T22:49:33.161Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -497,6 +497,21 @@
           ]
         },
         {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
           "id": "ba-10001-1003940768-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freital",
           "company": "Lipz Media GmbH",
@@ -512,15 +527,15 @@
           ]
         },
         {
-          "id": "ba-16852-44536153-1027-S",
-          "title": "Senior Marketing Manager (m/w/d)",
-          "company": "BASF Schwarzheide GmbH",
-          "location": "Schwarzheide",
+          "id": "ba-10001-1004016223-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion und Anzeigenvertrieb | Lauchhammer",
+          "company": "Lipz Media GmbH",
+          "location": "Lauchhammer",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004016223-S",
           "remote": true,
-          "published": "2026-10-28",
+          "published": "2026-11-15",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -617,21 +632,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003940682-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Kamenz",
-          "company": "Lipz Media GmbH",
-          "location": "Kamenz",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940682-S",
-          "remote": true,
-          "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003809062-S",
           "title": "Performance Marketing Manager SEA (m/w/d)",
           "company": "r2 Handels GmbH",
@@ -641,6 +641,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003809062-S",
           "remote": true,
           "published": "2026-10-14",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003940682-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Kamenz",
+          "company": "Lipz Media GmbH",
+          "location": "Kamenz",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940682-S",
+          "remote": true,
+          "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -731,21 +746,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940373-S",
           "remote": true,
           "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
-          "id": "ba-10001-1003915445-S",
-          "title": "Doctoral Fellowship  in the field of Educational Science/Media Education",
-          "company": "Technische Universität Dresden Arbeitsstätte Dresden",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003915445-S",
-          "remote": false,
-          "published": "2026-10-27",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
