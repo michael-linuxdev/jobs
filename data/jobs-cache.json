@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14T22:24:18.923Z",
+  "generatedAt": "2026-11-15T06:32:35.230Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -314,7 +314,7 @@
         "Social Media Managerin Einstieg",
         "Online Marketing Social Media"
       ],
-      "jobCount": 28,
+      "jobCount": 29,
       "jobs": [
         {
           "id": "ba-10000-1203909989-S",
@@ -341,6 +341,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/17020-0068149236-S",
           "remote": false,
           "published": "2026-10-16",
+          "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-19146-100016052382-S",
+          "title": "Marketingmitarbeiter (m/w/d)",
+          "company": "Harley-Davidson Dresden",
+          "location": "Radebeul",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/19146-100016052382-S",
+          "remote": true,
+          "published": "2026-11-06",
           "matchQuery": "Social Media Manager",
           "profiles": [
             "social_media"
@@ -542,21 +557,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003943058-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Wilsdruff",
-          "company": "Lipz Media GmbH",
-          "location": "Wilsdruff",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943058-S",
-          "remote": true,
-          "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003639526-S",
           "title": "Rezeptionist mit Affinität zu Vetrieb & Marketing m/w/d",
           "company": "Parkhotel Neustadt GmbH",
@@ -566,6 +566,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003639526-S",
           "remote": false,
           "published": "2026-09-02",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003943058-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Wilsdruff",
+          "company": "Lipz Media GmbH",
+          "location": "Wilsdruff",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943058-S",
+          "remote": true,
+          "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -647,13 +662,13 @@
           ]
         },
         {
-          "id": "ba-10001-1003943067-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Neustadt/Sachsen",
+          "id": "ba-10001-1003941543-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freiberg",
           "company": "Lipz Media GmbH",
-          "location": "Neustadt in Sachsen",
+          "location": "Freiberg, Sachsen",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943067-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003941543-S",
           "remote": true,
           "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
@@ -662,13 +677,13 @@
           ]
         },
         {
-          "id": "ba-10001-1003941543-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freiberg",
+          "id": "ba-10001-1003943067-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Neustadt/Sachsen",
           "company": "Lipz Media GmbH",
-          "location": "Freiberg, Sachsen",
+          "location": "Neustadt in Sachsen",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003941543-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943067-S",
           "remote": true,
           "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
@@ -856,21 +871,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003931522-S",
-          "title": "staatlich anerkannter Erzieher (m/w/d)",
-          "company": "Studentenwerk Freiberg Anstalt öffentl. Rechts",
-          "location": "Freiberg, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003931522-S",
-          "remote": false,
-          "published": "2026-10-29",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10000-1207854897-S",
           "title": "Nr. 28/2026 - Erzieher (m/w/d)",
           "company": "Diakonisches Werk Meißen gGmbH",
@@ -1021,21 +1021,6 @@
           ]
         },
         {
-          "id": "ba-10000-1208497958-S",
-          "title": "Mitarbeiter*in im Team heilpädagogische Familienwohngruppe WG Blasewitz",
-          "company": "LEOS-Dresden Jugend- und Familienhilfe GmbH",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208497958-S",
-          "remote": false,
-          "published": "2026-11-02",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10001-1003980789-S",
           "title": "Fachkraft (m/w/d) im Nachtdienst",
           "company": "GESOP gGmbH",
@@ -1045,6 +1030,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003980789-S",
           "remote": false,
           "published": "2026-11-08",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208497958-S",
+          "title": "Mitarbeiter*in im Team heilpädagogische Familienwohngruppe WG Blasewitz",
+          "company": "LEOS-Dresden Jugend- und Familienhilfe GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208497958-S",
+          "remote": false,
+          "published": "2026-11-02",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1105,6 +1105,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003118006-S",
           "remote": false,
           "published": "2026-11-09",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1003193572-S",
+          "title": "Pädagogische Fachkraft (m/w/d) mit Reisetätigkeit",
+          "company": "feltenbummler GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003193572-S",
+          "remote": false,
+          "published": "2026-10-12",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1445,7 +1460,7 @@
     }
   },
   "meta": {
-    "totalJobs": 93,
+    "totalJobs": 94,
     "partial": false,
     "allFailed": false
   }
