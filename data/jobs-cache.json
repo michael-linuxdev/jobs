@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T06:29:43.776Z",
+  "generatedAt": "2026-11-16T19:37:20.811Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -482,21 +482,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003940710-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
-          "company": "Lipz Media GmbH",
-          "location": "Radeberg, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
-          "remote": true,
-          "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-16852-44536153-1027-S",
           "title": "Senior Marketing Manager (m/w/d)",
           "company": "BASF Schwarzheide GmbH",
@@ -512,6 +497,21 @@
           ]
         },
         {
+          "id": "ba-10001-1003940710-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
+          "company": "Lipz Media GmbH",
+          "location": "Radeberg, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
           "id": "ba-10001-1003940768-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freital",
           "company": "Lipz Media GmbH",
@@ -519,6 +519,21 @@
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940768-S",
+          "remote": true,
+          "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003943054-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Heidenau",
+          "company": "Lipz Media GmbH",
+          "location": "Heidenau, Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943054-S",
           "remote": true,
           "published": "2026-10-30",
           "matchQuery": "Online Marketing Social Media",
@@ -542,15 +557,15 @@
           ]
         },
         {
-          "id": "ba-10001-1003943054-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Heidenau",
-          "company": "Lipz Media GmbH",
-          "location": "Heidenau, Sachsen",
+          "id": "ba-10001-1003639526-S",
+          "title": "Rezeptionist mit Affinität zu Vetrieb & Marketing m/w/d",
+          "company": "Parkhotel Neustadt GmbH",
+          "location": "Neustadt in Sachsen",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943054-S",
-          "remote": true,
-          "published": "2026-10-30",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003639526-S",
+          "remote": false,
+          "published": "2026-09-02",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -566,21 +581,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003942921-S",
           "remote": true,
           "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
-          "id": "ba-10001-1003639526-S",
-          "title": "Rezeptionist mit Affinität zu Vetrieb & Marketing m/w/d",
-          "company": "Parkhotel Neustadt GmbH",
-          "location": "Neustadt in Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003639526-S",
-          "remote": false,
-          "published": "2026-09-02",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -826,21 +826,6 @@
           ]
         },
         {
-          "id": "ba-14271-1654019-1-S",
-          "title": "Erzieher (m/w/d) für unsere Kitas in Ottendorf-Okrilla",
-          "company": "Johanniter-Unfall-Hilfe e.V. Landesverband Sachsen",
-          "location": "Ottendorf-Okrilla",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14271-1654019-1-S",
-          "remote": true,
-          "published": "2026-11-13",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10001-1003846526-S",
           "title": "Sozialarbeiter*in/ Erzieher/in für stationäre Jugendhilfeeinrichtung",
           "company": "Kühn & Kollegen GmbH Hilfen zur Erziehung Dresden",
@@ -850,6 +835,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003846526-S",
           "remote": false,
           "published": "2026-10-13",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-14271-1654019-1-S",
+          "title": "Erzieher (m/w/d) für unsere Kitas in Ottendorf-Okrilla",
+          "company": "Johanniter-Unfall-Hilfe e.V. Landesverband Sachsen",
+          "location": "Ottendorf-Okrilla",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14271-1654019-1-S",
+          "remote": true,
+          "published": "2026-11-13",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1051,21 +1051,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003961533-S",
-          "title": "Dipl. Sozialpädagoge (m/w/d) für TANDEM - Projekt",
-          "company": "Transfer GmbH & Co.KG Hof",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003961533-S",
-          "remote": false,
-          "published": "2026-11-05",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10000-1208498193-S",
           "title": "Mitarbeiter*in im Team der heilpädagogische Familienwohngruppe WG Elisabeth",
           "company": "LEOS-Dresden Jugend- und Familienhilfe GmbH",
@@ -1111,6 +1096,21 @@
           ]
         },
         {
+          "id": "ba-10001-1004019946-S",
+          "title": "Fachkraft, gern mit sozialpsychiatrischer Zusatzqualifikation (m/w/d)",
+          "company": "Heim \"Haus am Karswald\" Wohnstätte f. Menschen mit Assistenz- und Pflegebedarf",
+          "location": "Arnsdorf bei Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004019946-S",
+          "remote": false,
+          "published": "2026-11-16",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-10001-1003888580-S",
           "title": "Fachkraft in Kindertagesstätten (m/w/d) Kita Anne",
           "company": "Jugendsozialwerk Dresden gGmbH",
@@ -1121,21 +1121,6 @@
           "remote": false,
           "published": "2026-10-21",
           "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-19976-a4tqpaqp01-S",
-          "title": "Pädagogische Fachkraft in unserer Kita (m/w/d)",
-          "company": "DRK-Kreisverband Freiberg- Rochlitz e.V.",
-          "location": "Brand-Erbisdorf",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/19976-a4tqpaqp01-S",
-          "remote": true,
-          "published": "2026-10-29",
-          "matchQuery": "Erzieher Kita",
           "profiles": [
             "erzieher_hep"
           ]
@@ -1210,6 +1195,36 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1206612593-S",
           "remote": false,
           "published": "2026-10-21",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10000-1208383305-S",
+          "title": "Heilerziehungspfleger (m/w/d)",
+          "company": "Implus Dresden gGmbH",
+          "location": "Radebeul",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208383305-S",
+          "remote": true,
+          "published": "2026-11-16",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1004019888-S",
+          "title": "Ergotherapeut*in oder Heilerziehungspfleger*in (m/w/d)",
+          "company": "Heim \"Haus am Karswald\" Wohnstätte f. Menschen mit Assistenz- und Pflegebedarf",
+          "location": "Arnsdorf bei Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004019888-S",
+          "remote": false,
+          "published": "2026-11-16",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
@@ -1321,6 +1336,21 @@
           ]
         },
         {
+          "id": "ba-10001-1002905862-S",
+          "title": "Pflegefachkraft, Gesundheits- und Krankenpfleger*in oder Heilerziehungspfleger*in (m/w/d)",
+          "company": "Heim \"Haus am Karswald\" Wohnstätte f. Menschen mit Assistenz- und Pflegebedarf",
+          "location": "Arnsdorf bei Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002905862-S",
+          "remote": false,
+          "published": "2026-11-16",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-10001-1003817473-S",
           "title": "Ergotherapeut/ Physiotherapeut/ Heilerziehungspfleger (m/w/d)  für den Grünen Bereich",
           "company": "Gut Leben gGmbH allgemein",
@@ -1405,36 +1435,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1001908923-S",
           "remote": false,
           "published": "2026-11-10",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-12122-982001146-S",
-          "title": "Heilerziehungspflege (m/w/d)",
-          "company": "persona service AG & Co. KG",
-          "location": "Bannewitz",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/12122-982001146-S",
-          "remote": false,
-          "published": "2026-11-08",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1003924568-S",
-          "title": "Betreuungsfachkraft (m/w/d)",
-          "company": "Lebenshilfe Sächsische Schweiz -Osterzgebirge e. V.",
-          "location": "Pirna",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003924568-S",
-          "remote": false,
-          "published": "2026-10-28",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
