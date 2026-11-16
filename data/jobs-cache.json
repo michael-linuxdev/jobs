@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T22:49:33.161Z",
+  "generatedAt": "2026-11-16T06:29:43.776Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -763,7 +763,7 @@
         "Erzieher Kita",
         "Heilerziehungspflegerin"
       ],
-      "jobCount": 46,
+      "jobCount": 45,
       "jobs": [
         {
           "id": "ba-10001-1003149518-S",
@@ -856,21 +856,6 @@
           ]
         },
         {
-          "id": "ba-10000-1208607171-S",
-          "title": "1 Erzieher (w/m/d) für Kinderwohngruppe in Gräfenhain",
-          "company": "Bürgerhilfe Sachsen e.V.",
-          "location": "Königsbrück",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208607171-S",
-          "remote": true,
-          "published": "2026-11-12",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10000-1207854897-S",
           "title": "Nr. 28/2026 - Erzieher (m/w/d)",
           "company": "Diakonisches Werk Meißen gGmbH",
@@ -886,15 +871,15 @@
           ]
         },
         {
-          "id": "ba-20263-2377553-S",
-          "title": "Erzieher / Pädagogische Fachkraft (m/w/d) im Bereich Ergotherapie der Familienklinik",
-          "company": "MEDIAN Gesundheitspark Bad Gottleuba GmbH & Co. KG",
-          "location": "Bad Gottleuba-Berggießhübel",
+          "id": "ba-10000-1208607171-S",
+          "title": "1 Erzieher (w/m/d) für Kinderwohngruppe in Gräfenhain",
+          "company": "Bürgerhilfe Sachsen e.V.",
+          "location": "Königsbrück",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/20263-2377553-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208607171-S",
           "remote": true,
-          "published": "2026-11-13",
+          "published": "2026-11-12",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -910,6 +895,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208359140-S",
           "remote": true,
           "published": "2026-10-20",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-20263-2377553-S",
+          "title": "Erzieher / Pädagogische Fachkraft (m/w/d) im Bereich Ergotherapie der Familienklinik",
+          "company": "MEDIAN Gesundheitspark Bad Gottleuba GmbH & Co. KG",
+          "location": "Bad Gottleuba-Berggießhübel",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/20263-2377553-S",
+          "remote": true,
+          "published": "2026-11-13",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -940,21 +940,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/15478-0058980978-S",
           "remote": false,
           "published": "2026-11-05",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1002203126-S",
-          "title": "Erzieher / Sozialpädagoge / Heilpädagoge in unserer Einrichtung in Glashütte (m/w/d)",
-          "company": "Panta Rhei gGmbH",
-          "location": "Glashütte, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1002203126-S",
-          "remote": false,
-          "published": "2026-11-02",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1051,21 +1036,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003961533-S",
-          "title": "Dipl. Sozialpädagoge (m/w/d) für TANDEM - Projekt",
-          "company": "Transfer GmbH & Co.KG Hof",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003961533-S",
-          "remote": false,
-          "published": "2026-11-05",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10001-1003118006-S",
           "title": "\"Wir schaffen neue Ankerpunkte\" - Gründung einer Erziehungsstelle/ Sozialpädagogischen Pflegestelle",
           "company": "Familienanker Kinder-, Jugend-, Familienhilfe GmbH",
@@ -1081,15 +1051,15 @@
           ]
         },
         {
-          "id": "ba-10001-1003943098-S",
-          "title": "Assistenz Wohnen (m/w/d) Wohnhof Gohlis",
-          "company": "Lebenshilfe Dresden e.V.",
+          "id": "ba-10001-1003961533-S",
+          "title": "Dipl. Sozialpädagoge (m/w/d) für TANDEM - Projekt",
+          "company": "Transfer GmbH & Co.KG Hof",
           "location": "Dresden",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003943098-S",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003961533-S",
           "remote": false,
-          "published": "2026-10-30",
+          "published": "2026-11-05",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -1126,16 +1096,16 @@
           ]
         },
         {
-          "id": "ba-19976-a4tqpaqp01-S",
-          "title": "Pädagogische Fachkraft in unserer Kita (m/w/d)",
-          "company": "DRK-Kreisverband Freiberg- Rochlitz e.V.",
-          "location": "Brand-Erbisdorf",
+          "id": "ba-10000-1205650474-S",
+          "title": "Assistenz für Menschen mit Behinderung (m/w/d)",
+          "company": "Stiftung EDDI (Stiftung)",
+          "location": "Dresden",
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/19976-a4tqpaqp01-S",
-          "remote": true,
-          "published": "2026-10-29",
-          "matchQuery": "Erzieher Kita",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1205650474-S",
+          "remote": false,
+          "published": "2026-09-09",
+          "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
           ]
@@ -1150,6 +1120,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003888580-S",
           "remote": false,
           "published": "2026-10-21",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-19976-a4tqpaqp01-S",
+          "title": "Pädagogische Fachkraft in unserer Kita (m/w/d)",
+          "company": "DRK-Kreisverband Freiberg- Rochlitz e.V.",
+          "location": "Brand-Erbisdorf",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/19976-a4tqpaqp01-S",
+          "remote": true,
+          "published": "2026-10-29",
           "matchQuery": "Erzieher Kita",
           "profiles": [
             "erzieher_hep"
@@ -1225,21 +1210,6 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1206612593-S",
           "remote": false,
           "published": "2026-10-21",
-          "matchQuery": "Heilerziehungspflegerin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10000-1208383305-S",
-          "title": "Heilerziehungspfleger (m/w/d)",
-          "company": "Implus Dresden gGmbH",
-          "location": "Radebeul",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1208383305-S",
-          "remote": true,
-          "published": "2026-10-26",
           "matchQuery": "Heilerziehungspflegerin",
           "profiles": [
             "erzieher_hep"
@@ -1454,13 +1424,28 @@
           "profiles": [
             "erzieher_hep"
           ]
+        },
+        {
+          "id": "ba-10001-1003924568-S",
+          "title": "Betreuungsfachkraft (m/w/d)",
+          "company": "Lebenshilfe Sächsische Schweiz -Osterzgebirge e. V.",
+          "location": "Pirna",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003924568-S",
+          "remote": false,
+          "published": "2026-10-28",
+          "matchQuery": "Heilerziehungspflegerin",
+          "profiles": [
+            "erzieher_hep"
+          ]
         }
       ],
       "errors": []
     }
   },
   "meta": {
-    "totalJobs": 94,
+    "totalJobs": 93,
     "partial": false,
     "allFailed": false
   }
