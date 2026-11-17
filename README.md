@@ -15,11 +15,20 @@ Gemerkte und verworfene Stellen liegen nur im Browser (`localStorage`).
 ## Dateien
 
 - `index.html` – die App
+- `sw.js`, `manifest.webmanifest`, `icons/` – Installation als App und Updates
 - `proxy/` – Cloudflare-Worker `jobs-ba-api.micana.workers.dev`, der die BA-API
   für den Browser erreichbar macht (CORS). Deploy per Workflow
   „Worker-Proxy deployen“ bei Änderungen in `proxy/`, braucht das Secret
   `CLOUDFLARE_API_TOKEN`.
 - `jobsuche.py` – lokaler Proxy und Kommandozeile, nur Python-Standardbibliothek
+
+## App-Installation und Updates
+
+- `manifest.webmanifest`, `icons/` und `sw.js` machen die Seite installierbar. Handys sehen beim
+  ersten Besuch einen Installationshinweis, danach einen Balken „App nicht installiert“.
+- `sw.js` hält die App-Dateien im Cache. **Bei jeder Änderung an `index.html`, Manifest oder
+  Icons die Konstante `CACHE` in `sw.js` hochzählen.** Geräte zeigen dann „Neue Version
+  verfügbar“ mit dem Knopf „Jetzt aktualisieren“.
 
 ## Lokal
 

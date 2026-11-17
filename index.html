@@ -6,6 +6,12 @@
 <meta name="theme-color" content="#f3f4f8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#11141b" media="(prefers-color-scheme: dark)">
 <title>Jobstapel</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jobstapel">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -191,6 +197,28 @@ legend { padding: 0; margin-bottom: 8px; }
 .pick:has(input:checked) { background: var(--c, var(--accent)); color: #fff; }
 .pick:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
 .small { font-size: .82rem; color: var(--muted); margin: 0; font-weight: 400; }
+/* Installationshinweis und Update-Meldung */
+.nag { flex: none; display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: 0; border-radius: 14px; padding: 9px 13px; font-size: .86rem; background: color-mix(in srgb, var(--accent) 13%, var(--surface)); color: var(--ink); }
+.nag b { flex: 1; font-weight: 700; }
+.nag span { color: var(--accent); font-weight: 700; white-space: nowrap; }
+.update .btn { white-space: nowrap; padding: 9px 15px; font-size: .9rem; }
+.update { position: fixed; z-index: 40; left: 50%; transform: translateX(-50%); top: calc(10px + env(safe-area-inset-top)); width: min(94vw, 500px); display: flex; gap: 12px; align-items: center; justify-content: space-between; background: var(--surface); border-radius: 18px; padding: 10px 10px 10px 16px; box-shadow: var(--shadow); border: 1px solid var(--line); font-weight: 700; font-size: .92rem; }
+.gate { position: fixed; inset: 0; z-index: 20; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  background: radial-gradient(130% 50% at 50% 0%, color-mix(in srgb, var(--accent) 18%, var(--bg)), var(--bg) 78%) var(--bg); }
+.gate-in { max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; padding: calc(16px + env(safe-area-inset-top)) 18px calc(24px + env(safe-area-inset-bottom)); }
+.gate h2 { font-size: 1.7rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.12; margin: 8px 0 0; text-wrap: balance; }
+.box { background: var(--surface); border-radius: 22px; padding: 18px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 14px; }
+.box h3 { margin: 0; font-size: 1.05rem; font-weight: 800; }
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+.steps li { position: relative; padding: 3px 0 3px 42px; min-height: 30px; }
+.steps li::before { counter-increment: s; content: counter(s); position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: color-mix(in srgb, var(--accent) 13%, var(--surface)); color: var(--accent); font-weight: 800; display: grid; place-items: center; }
+.steps svg.i { vertical-align: -4px; display: inline; }
+.why { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.why li { position: relative; padding-left: 30px; font-weight: 400; }
+.why li::before { content: "✓"; position: absolute; left: 0; top: 1px; width: 21px; height: 21px; border-radius: 50%; background: color-mix(in srgb, var(--yes) 18%, var(--surface)); color: var(--yes); display: grid; place-items: center; font-weight: 800; font-size: .78rem; }
+.why b { font-weight: 700; }
+.notice { background: color-mix(in srgb, var(--accent) 10%, var(--surface)); border-radius: 16px; padding: 12px 14px; font-size: .9rem; font-weight: 400; margin: 0; }
+.skip { align-self: center; border: 0; background: none; color: var(--muted); font-size: .88rem; text-decoration: underline; text-underline-offset: 3px; padding: 10px; }
 @media (prefers-reduced-motion: reduce) { .card.fly, .card.back, .panel.settle { transition: none; } .card.top { animation: none; } }
 </style>
 </head>
@@ -206,6 +234,8 @@ legend { padding: 0; margin-bottom: 8px; }
       <b id="filter-count" hidden>0</b>
     </button>
   </header>
+
+  <button type="button" class="nag" id="nag" hidden><b>App nicht installiert</b><span>Installieren ›</span></button>
 
   <section class="view" id="view-deck">
     <p class="meta" id="meta" role="status"></p>
@@ -873,6 +903,152 @@ legend { padding: 0; margin-bottom: 8px; }
     openSheet('Filter', form, reset, el('p', 'small', 'Daten: Jobsuche der Bundesagentur für Arbeit. Gemerkte und verworfene Stellen liegen nur in diesem Browser.'));
   }
 
+  // ---------- Als App installieren: Vollbild-Hinweis beim ersten Mal, danach ein Balken ----------
+  let deferredPrompt = null, appInstalled = false;
+  const GATE_KEY = 'jobstapel.gateSkip';
+  const flag = (k, v) => { try { if (v === undefined) return !!localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return false; };
+  function platform() {
+    const ua = navigator.userAgent;
+    const standalone = matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches || navigator.standalone === true;
+    const ios = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const android = /Android/.test(ua);
+    const inapp = /Instagram|FBAN|FBAV|Line\/|Telegram|WhatsApp|TikTok|; wv\)/i.test(ua);
+    let browser = 'other';
+    if (inapp) browser = 'inapp';
+    else if (ios) browser = /CriOS/.test(ua) ? 'chrome' : /FxiOS/.test(ua) ? 'firefox' : /EdgiOS/.test(ua) ? 'edge' : /Safari/.test(ua) ? 'safari' : 'other';
+    else if (android) browser = /SamsungBrowser/.test(ua) ? 'samsung' : /Firefox/.test(ua) ? 'firefox' : /EdgA/.test(ua) ? 'edge' : /OPR|Opera/.test(ua) ? 'opera' : /Chrome/.test(ua) ? 'chrome' : 'other';
+    else browser = /Edg\//.test(ua) ? 'edge' : /Chrome/.test(ua) ? 'chrome' : /Firefox/.test(ua) ? 'firefox' : /Safari/.test(ua) ? 'safari' : 'other';
+    return { os: ios ? 'ios' : android ? 'android' : 'desktop', browser, standalone };
+  }
+  const SHARE = '<path d="M12 3v12M8 7l4-4 4 4M5 12v8h14v-8"/>';
+  // Schritte je Gerät; {S} steht für das Teilen-Symbol
+  function installSteps(os, browser) {
+    const add = 'Auf „Hinzufügen“ tippen.', menu = 'Auf das Menü ⋮ tippen.', ok = 'Bestätigen.';
+    const I = {
+      'ios-safari': ['Unten (iPhone) bzw. oben (iPad) auf das Teilen-Symbol {S} tippen.', 'Nach unten scrollen und „Zum Home-Bildschirm“ wählen.', 'Oben rechts auf „Hinzufügen“ tippen.'],
+      'ios-chrome': ['Oben rechts in der Adresszeile auf das Teilen-Symbol {S} tippen.', '„Zum Home-Bildschirm“ wählen (eventuell erst „Mehr“ antippen).', add],
+      'ios-firefox': ['Unten rechts auf das Menü ☰ tippen.', '„Teilen“ wählen, dann „Zum Home-Bildschirm“.', add],
+      'ios-edge': ['Unten auf das Menü ⋯ tippen, dann auf „Teilen“ {S}.', '„Zum Home-Bildschirm“ wählen.', add],
+      'ios-other': ['Öffne diese Seite in Safari (Adresse kopieren und in Safari einfügen).', 'Dann Teilen {S} → „Zum Home-Bildschirm“ → „Hinzufügen“.'],
+      'android-chrome': ['Oben rechts auf das Menü ⋮ tippen.', '„App installieren“ oder „Zum Startbildschirm hinzufügen“ wählen.', 'Mit „Installieren“ bestätigen.'],
+      'android-samsung': ['Unten rechts auf das Menü ☰ tippen.', '„Seite hinzufügen zu“ wählen, dann „Startbildschirm“.', 'Mit „Hinzufügen“ bestätigen.'],
+      'android-firefox': [menu, '„Installieren“ bzw. „Zum Startbildschirm hinzufügen“ wählen.', 'Mit „Hinzufügen“ bestätigen.'],
+      'android-edge': ['Unten auf das Menü ⋯ tippen.', '„Zum Telefon hinzufügen“ bzw. „App installieren“ wählen.', ok],
+      'android-opera': [menu, '„Zum Startbildschirm hinzufügen“ wählen.', ok],
+      'android-other': ['Öffne diese Seite am besten in Chrome.', 'Menü ⋮ → „App installieren“.'],
+      'inapp': ['Du hast die Seite aus einer App (z. B. WhatsApp oder Telegram) geöffnet. Von dort kann man nichts installieren.', 'Tippe oben rechts auf ⋯ bzw. ⋮ und wähle „Im Browser öffnen“.', 'Dann erscheint die passende Anleitung.'],
+      'desktop-chrome': ['Rechts in der Adresszeile auf das Installieren-Symbol (Bildschirm mit Pfeil) klicken.', '„Installieren“ bestätigen.', 'Noch praktischer: diese Seite am Handy öffnen.'],
+      'desktop-edge': ['Rechts in der Adresszeile auf „App verfügbar“ klicken.', '„Installieren“ bestätigen.'],
+      'desktop-safari': ['Im Menü „Ablage“ → „Zum Dock hinzufügen“ wählen.'],
+      'desktop-other': ['Am besten öffnest du die Seite auf deinem Smartphone: jobs.micana.de'],
+    };
+    return I[browser === 'inapp' ? 'inapp' : `${os}-${browser}`] || I[`${os}-other`] || I['desktop-other'];
+  }
+  const OS_NAME = { ios: 'iPhone / iPad', android: 'Android', desktop: 'Computer' };
+  const BR_NAME = { safari: 'Safari', chrome: 'Chrome', firefox: 'Firefox', edge: 'Edge', samsung: 'Samsung Internet', opera: 'Opera', inapp: 'In-App-Browser', other: 'Browser' };
+  function installGuide(p) {
+    const nodes = [el('p', 'small', `Erkannt: ${OS_NAME[p.os]} · ${BR_NAME[p.browser]}`)];
+    const native = button('Jetzt installieren', nativeInstall, true);
+    native.dataset.native = '1'; native.hidden = !deferredPrompt;
+    const ol = el('ol', 'steps');
+    for (const step of installSteps(p.os, p.browser)) {
+      const li = el('li');
+      step.split('{S}').forEach((part, i) => { if (i) li.append(icon(SHARE)); li.append(document.createTextNode(part)); });
+      ol.append(li);
+    }
+    nodes.push(native, ol);
+    return nodes;
+  }
+  async function nativeInstall() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const r = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    if (r.outcome === 'accepted') { appInstalled = true; installHint(true); }
+  }
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPrompt = e; document.querySelectorAll('[data-native]').forEach(b => { b.hidden = false; }); });
+  window.addEventListener('appinstalled', () => { appInstalled = true; if (!$('sheet').hidden) closeSheet(); if (document.getElementById('gate')) installHint(true); });
+
+  function installHint(force) {
+    const p = platform();
+    document.getElementById('gate')?.remove();
+    $('nag').hidden = true;
+    if (p.standalone) return;
+    if (p.os === 'desktop') {                        // Computer: nur ein Hinweis, einmal
+      if (!force && flag('jobstapel.installSeen')) return;
+      flag('jobstapel.installSeen', '1');
+      const note = el('p', 'small', 'So hast du Jobstapel immer griffbereit. Am bequemsten wischt es sich am Handy.');
+      return openSheet('Als App speichern', note, ...installGuide(p));
+    }
+    if (!force && flag(GATE_KEY)) { $('nag').hidden = false; return; }
+    const gate = el('div', 'gate');
+    gate.id = 'gate'; gate.setAttribute('role', 'dialog'); gate.setAttribute('aria-modal', 'true'); gate.setAttribute('aria-labelledby', 'gate-h');
+    const inner = el('div', 'gate-in');
+    const brand = $('view-deck').parentNode.querySelector('.brand').cloneNode(true);
+    const h = el('h2', null, appInstalled ? 'Die App ist installiert' : 'Zuerst die App installieren');
+    h.id = 'gate-h';
+    inner.append(brand, h);
+    if (appInstalled) {
+      inner.append(el('p', 'notice', 'Öffne sie jetzt über das Symbol „Jobstapel“ auf deinem Startbildschirm. Dieses Browserfenster kannst du schließen.'));
+    } else {
+      const box = el('div', 'box');
+      box.append(el('h3', null, 'So geht’s'), ...installGuide(p));
+      if (p.browser === 'inapp' || p.browser === 'other') {
+        box.append(button('Adresse kopieren', async e => {
+          try { await navigator.clipboard.writeText('https://jobs.micana.de'); e.target.textContent = 'Kopiert – im Browser einfügen'; }
+          catch (err) { e.target.textContent = 'jobs.micana.de'; }
+        }));
+      }
+      const why = el('ul', 'why');
+      for (const [strong, rest] of [['Immer auf dem Startbildschirm', ' – wie eine richtige App.'], ['Startet sofort', ' – ohne Adresszeile und im Vollbild.'], ['Deine Merkliste ist sicherer', ' – der Browser löscht sie nicht so leicht.']]) {
+        const li = el('li'); li.append(el('b', null, strong), document.createTextNode(rest)); why.append(li);
+      }
+      inner.append(box, why);
+      if (p.os === 'ios' && p.browser !== 'inapp') {
+        const n = el('p', 'notice');
+        n.append('Wichtig auf iPhone und iPad: Was du hier im Browser merkst, wird ', el('b', null, 'nicht'), ' in die installierte App übernommen. Installiere deshalb zuerst.');
+        inner.append(n);
+      }
+    }
+    const skip = el('button', 'skip', appInstalled ? 'Trotzdem im Browser weiter' : 'Ohne Installation im Browser weiter');
+    skip.type = 'button';
+    skip.addEventListener('click', () => { flag(GATE_KEY, String(Date.now())); gate.remove(); $('nag').hidden = false; });
+    inner.append(skip);
+    gate.append(inner);
+    document.body.append(gate);
+    // Chrome/Android kann prüfen, ob die App schon installiert ist
+    if (!appInstalled && navigator.getInstalledRelatedApps) {
+      navigator.getInstalledRelatedApps().then(apps => { if (apps && apps.length) { appInstalled = true; if (document.getElementById('gate')) installHint(true); } }).catch(() => {});
+    }
+  }
+  $('nag').addEventListener('click', () => installHint(true));
+
+  // ---------- Updates: neue Version wartet, bis „Jetzt aktualisieren“ getippt wird ----------
+  function showUpdate(worker) {
+    if (document.getElementById('update')) return;
+    const bar = el('div', 'update');
+    bar.id = 'update'; bar.setAttribute('role', 'status');
+    const go = button('Jetzt aktualisieren', () => { go.textContent = 'Lädt …'; go.disabled = true; worker.postMessage({ type: 'SKIP_WAITING' }); }, true);
+    bar.append(el('span', null, 'Neue Version verfügbar'), go);
+    document.body.append(bar);
+  }
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))) {
+    let controlled = !!navigator.serviceWorker.controller, reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!controlled) { controlled = true; return; }          // erster Besuch: kein Neuladen nötig
+      if (reloading) return;
+      reloading = true; location.reload();
+    });
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      const offer = w => { if (w && navigator.serviceWorker.controller) showUpdate(w); };
+      if (reg.waiting) offer(reg.waiting);
+      reg.addEventListener('updatefound', () => { const w = reg.installing; if (w) w.addEventListener('statechange', () => { if (w.state === 'installed') offer(w); }); });
+      // beim Zurückkehren in die App nach Updates schauen
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => {}); });
+      setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+    }).catch(() => {});
+  }
+
   // ---------- Verdrahtung ----------
   $('yes').addEventListener('click', () => decide('yes'));
   $('no').addEventListener('click', () => decide('no'));
@@ -900,6 +1076,7 @@ legend { padding: 0; margin-bottom: 8px; }
   renderChrome();
   render();
   detectBase().then(resetDeck);
+  installHint();
 })();
 </script>
 </body>
