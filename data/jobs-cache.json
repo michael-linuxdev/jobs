@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T03:54:55.985Z",
+  "generatedAt": "2026-11-17T15:59:59.824Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -430,8 +430,23 @@
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003893772-S",
           "remote": false,
-          "published": "2026-10-21",
+          "published": "2026-11-17",
           "matchQuery": "Social Media Manager",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1004024961-S",
+          "title": "Referentin/Referent (m/w/d) im Referat Öffentlichkeitsarbeit / Social Media",
+          "company": "Staatsministerium für Soziales, Gesundheit und Gesellschaftl. Zusammenhalt",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004024961-S",
+          "remote": true,
+          "published": "2026-11-17",
+          "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
           ]
@@ -497,21 +512,6 @@
           ]
         },
         {
-          "id": "ba-16852-44536153-1027-S",
-          "title": "Senior Marketing Manager (m/w/d)",
-          "company": "BASF Schwarzheide GmbH",
-          "location": "Schwarzheide",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
-          "remote": true,
-          "published": "2026-10-28",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003940768-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Freital",
           "company": "Lipz Media GmbH",
@@ -521,6 +521,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940768-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -542,21 +557,6 @@
           ]
         },
         {
-          "id": "ba-10001-1004016223-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion und Anzeigenvertrieb | Lauchhammer",
-          "company": "Lipz Media GmbH",
-          "location": "Lauchhammer",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004016223-S",
-          "remote": true,
-          "published": "2026-11-15",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003942921-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Coswig",
           "company": "Lipz Media GmbH",
@@ -566,6 +566,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003942921-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1004016223-S",
+          "title": "Lokalreporter (m/w/d) – Redaktion und Anzeigenvertrieb | Lauchhammer",
+          "company": "Lipz Media GmbH",
+          "location": "Lauchhammer",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004016223-S",
+          "remote": true,
+          "published": "2026-11-15",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -735,21 +750,6 @@
           "profiles": [
             "social_media"
           ]
-        },
-        {
-          "id": "ba-10001-1003940373-S",
-          "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Bautzen",
-          "company": "Lipz Media GmbH",
-          "location": "Bautzen, Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940373-S",
-          "remote": true,
-          "published": "2026-10-30",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
         }
       ],
       "errors": []
@@ -763,7 +763,7 @@
         "Erzieher Kita",
         "Heilerziehungspflegerin"
       ],
-      "jobCount": 45,
+      "jobCount": 46,
       "jobs": [
         {
           "id": "ba-10001-1003149518-S",
@@ -790,6 +790,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/14089-01510807-S",
           "remote": true,
           "published": "2026-11-10",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1004028333-S",
+          "title": "Erzieher, Sozial-, Kindheitspädagoge (m/w/d)",
+          "company": "INDEPENDENT LIVING Stiftung",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004028333-S",
+          "remote": false,
+          "published": "2026-11-17",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -931,6 +946,36 @@
           ]
         },
         {
+          "id": "ba-10001-1004026621-S",
+          "title": "ErzieherIn / SozialpädagogIn (m/w/d) – Offene und Mobile Kinder- und Jugendarbeit in Riesa",
+          "company": "Sprungbrett e.V.",
+          "location": "Riesa",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004026621-S",
+          "remote": false,
+          "published": "2026-11-17",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1004026595-S",
+          "title": "Sozialarbeiter / Erzieher / Heilpädagoge (m/w/d) – Intensivpädagogisches Einzelsetting",
+          "company": "Sprungbrett e.V.",
+          "location": "Riesa",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004026595-S",
+          "remote": false,
+          "published": "2026-11-17",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
           "id": "ba-15478-0058980978-S",
           "title": "Erzieher / Pädagogische Fachkraft (w/m/d) für educcare Kitas im Süden & Westen",
           "company": "educcare Bildungskindertagesstätten gGmbH",
@@ -940,6 +985,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/15478-0058980978-S",
           "remote": false,
           "published": "2026-11-05",
+          "matchQuery": "Erzieherin",
+          "profiles": [
+            "erzieher_hep"
+          ]
+        },
+        {
+          "id": "ba-10001-1004024513-S",
+          "title": "empathische*r Mitarbeiter*in (m/w/d) für Jungenwohngruppe gesucht",
+          "company": "empatis - Jugendhilfe GmbH",
+          "location": "Dresden",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004024513-S",
+          "remote": false,
+          "published": "2026-11-17",
           "matchQuery": "Erzieherin",
           "profiles": [
             "erzieher_hep"
@@ -983,21 +1043,6 @@
           "source": "arbeitsagentur",
           "sourceLabel": "Arbeitsagentur",
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004005964-S",
-          "remote": false,
-          "published": "2026-11-12",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1004003235-S",
-          "title": "Fachkraft Schulintegrationshilfe (m/w/d)",
-          "company": "AWO Kinder- und Jugendhilfe ge meinnützige GmbH",
-          "location": "Pirna",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004003235-S",
           "remote": false,
           "published": "2026-11-12",
           "matchQuery": "Erzieherin",
@@ -1081,36 +1126,6 @@
           ]
         },
         {
-          "id": "ba-10000-1205650474-S",
-          "title": "Assistenz für Menschen mit Behinderung (m/w/d)",
-          "company": "Stiftung EDDI (Stiftung)",
-          "location": "Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10000-1205650474-S",
-          "remote": false,
-          "published": "2026-09-09",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
-          "id": "ba-10001-1004019946-S",
-          "title": "Fachkraft, gern mit sozialpsychiatrischer Zusatzqualifikation (m/w/d)",
-          "company": "Heim \"Haus am Karswald\" Wohnstätte f. Menschen mit Assistenz- und Pflegebedarf",
-          "location": "Arnsdorf bei Dresden",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1004019946-S",
-          "remote": false,
-          "published": "2026-11-16",
-          "matchQuery": "Erzieherin",
-          "profiles": [
-            "erzieher_hep"
-          ]
-        },
-        {
           "id": "ba-10001-1003888580-S",
           "title": "Fachkraft in Kindertagesstätten (m/w/d) Kita Anne",
           "company": "Jugendsozialwerk Dresden gGmbH",
@@ -1120,7 +1135,7 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003888580-S",
           "remote": false,
           "published": "2026-10-21",
-          "matchQuery": "Erzieherin",
+          "matchQuery": "Erzieher Kita",
           "profiles": [
             "erzieher_hep"
           ]
@@ -1445,7 +1460,7 @@
     }
   },
   "meta": {
-    "totalJobs": 93,
+    "totalJobs": 94,
     "partial": false,
     "allFailed": false
   }
