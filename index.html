@@ -682,6 +682,7 @@ legend { padding: 0; margin-bottom: 8px; }
     decoder.innerHTML = String(raw || '');                 // löst &#160; und ähnliche Zeichencodes auf, führt nichts aus
     // Maskierte Zeichen wie \* (z. B. in "Pfleger\*in") werden geschützt, damit sie nicht als Formatierung gelten.
     return decoder.value.replace(/\\([\\()\[\]*_#.!+\-])/g, (_, c) => String.fromCharCode(0xE000 + c.charCodeAt(0)))
+      .replace(/\uE02A{2,}/g, ' ')                         // Ketten wie \*\*\*\* sind Füllzeichen
       .replace(/\r/g, '').replace(/[\u00a0\t ]+/g, ' ').replace(/\*{2,3} *\*{2,3}/g, '')
       .split('\n').map(l => l.trim()).join('\n');
   }
@@ -692,15 +693,21 @@ legend { padding: 0; margin-bottom: 8px; }
   }
   function inline(text, into) {
     // Reihenfolge: [Text](Link), **fett**, nackte Links
-    const re = /\[([^\]]+)\]\(((?:\\.|[^)\s])+)\)|\*{2,3}([^*]+?)\*{2,3}|(https?:\/\/[^\s)<>]+[^\s)<>.,;:!?])/g;
+    const re = /\[([^\]]+)\]\(([^)\s]+)\)|\*{2,3}((?:[^*]|\*(?!\*))+?)\*{2,3}|(https?:\/\/[^\s)<>]+[^\s)<>.,;:!?])|([\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g;
     let last = 0, m;
-    const plain = t => { t = unesc(t.replace(/\*{2,3}/g, '')); if (t) into.append(document.createTextNode(t)); };
+    // Übrig gebliebene Formatierungs-Sternchen entfernen; ein Stern zwischen Buchstaben (Pfleger*in) bleibt.
+    const plain = t => {
+      t = unesc(t.replace(/\*{2,3}/g, '').replace(/(?<![A-Za-zÄÖÜäöüß])\*|\*(?![A-Za-zÄÖÜäöüß])/g, ''));
+      if (t) into.append(document.createTextNode(t));
+    };
     while ((m = re.exec(text))) {
       plain(text.slice(last, m.index));
       last = re.lastIndex;
-      if (m[1] != null || m[4] != null) {
-        const url = safeUrl(m[2] || m[4]);
-        const label = m[1] != null ? unesc(m[1].replace(/\*/g, '')).trim() : m[4].replace(/^https?:\/\/(www\.)?/, '').replace(/[/?#].*$/, '');
+      if (m[1] != null || m[4] != null || m[5] != null) {
+        const url = safeUrl(m[5] != null ? 'mailto:' + m[5] : (m[2] || m[4]));
+        const short = u => u.replace(/^https?:\/\/(www\.)?/, '').replace(/[/?#].*$/, '');
+        let label = m[5] != null ? m[5] : m[1] != null ? unesc(m[1].replace(/\*/g, '')).trim() : short(m[4]);
+        if (/^https?:\/\//i.test(label)) label = short(label);
         if (!url) { plain(label); continue; }
         const a = el('a', null, label || url);
         a.href = url; if (!/^mailto:/i.test(url)) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
@@ -714,26 +721,36 @@ legend { padding: 0; margin-bottom: 8px; }
   const norm = t => unesc(t).toLowerCase().replace(/\([^)]*\)|[^a-zäöüß0-9]/g, '');
   function markdown(raw, title) {
     const box = el('div', 'md');
-    let para = null, list = null;
+    let para = null, list = null, single = null;      // single: letzter einzeiliger Absatz samt Rohtext
     const flush = () => { para = null; list = null; };
-    for (const line of clean(raw).split('\n')) {
+    const heading = text => { const h = el('h3'); inline(text, h); box.append(h); single = null; };
+    // "• a • b • c" in einer Zeile wird zu einzelnen Listenpunkten
+    const lines = clean(raw).split('\n').flatMap(l => (l.match(/•/g) || []).length < 2 ? [l]
+      : l.split('•').map((part, i) => i === 0 ? part.trim() : '• ' + part.trim()).filter(Boolean));
+    for (const line of lines) {
       if (!line || /^[#*_\-=·•\s]+$/.test(line)) { para = null; continue; }   // Leerzeile trennt Absätze, aber keine Listen
       let m;
       if ((m = line.match(/^#{1,6}\s*(.+)$/))) {
         flush();
         const text = m[1].replace(/^[*_\s]+|[*_\s:]+$/g, '');
         if (!text || (title && norm(text) === norm(title))) continue;   // Überschrift, die nur den Stellentitel wiederholt
-        const h = el('h3'); inline(text, h); box.append(h);
-      } else if ((m = line.match(/^\*{2,3}([^*]{2,70}):\*{2,3}:?$/))) {
-        flush();                                                          // ganz fett gesetzte Zeile mit Doppelpunkt = Zwischenüberschrift
-        const h = el('h3'); inline(m[1], h); box.append(h);
+        heading(text);
+      } else if ((m = line.match(/^\*{2,3}([^*:.!?]{2,60}):?\*{2,3}:?$/))) {
+        flush();                                          // kurze, ganz fett gesetzte Zeile ohne Satzzeichen = Zwischenüberschrift
+        heading(m[1].trim());
       } else if ((m = line.match(/^(?:[-•·▪◦–]|\*(?!\*))\s+(.+)$/))) {
         para = null;
+        if (!list && single && box.lastChild === single.node && /^[^.!?;,]{2,60}:?$/.test(single.text)) {
+          single.node.remove();                           // kurze Zeile direkt vor einer Liste = deren Überschrift
+          heading(single.text.replace(/:$/, ''));
+        }
+        single = null;
         if (!list) { list = el('ul'); box.append(list); }
         const li = el('li'); inline(m[1], li); list.append(li);
       } else {
         list = null;
-        if (!para) { para = el('p'); box.append(para); } else para.append(el('br'));
+        if (!para) { para = el('p'); box.append(para); single = { node: para, text: line.replace(/\*{2,3}/g, '') }; }
+        else { para.append(el('br')); single = null; }
         inline(line, para);
       }
     }
@@ -741,7 +758,7 @@ legend { padding: 0; margin-bottom: 8px; }
   }
   // Für den Kartenauszug: reiner Text ohne Markdown-Zeichen
   function plainText(raw, title) {
-    return clean(raw).split('\n').map(l => unesc(l.replace(/^#{1,6}\s*/, '').replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1').replace(/\*{2,3}/g, '')).trim())
+    return clean(raw).split('\n').map(l => unesc(l.replace(/^#{1,6}\s*/, '').replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1').replace(/\*{2,3}/g, '').replace(/(?<![A-Za-zÄÖÜäöüß])\*|\*(?![A-Za-zÄÖÜäöüß])/g, '').replace(/^[-•·▪◦–]\s+/, '· ')).trim())
       .filter(l => l && !/^[#_\-=·•\s]+$/.test(l) && !(title && norm(l) === norm(title))).join('\n');
   }
 
