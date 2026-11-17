@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T19:37:20.811Z",
+  "generatedAt": "2026-11-17T03:54:55.985Z",
   "source": "arbeitsagentur",
   "api": "html-ssr/jobsuche/suche",
   "defaults": {
@@ -482,21 +482,6 @@
           ]
         },
         {
-          "id": "ba-16852-44536153-1027-S",
-          "title": "Senior Marketing Manager (m/w/d)",
-          "company": "BASF Schwarzheide GmbH",
-          "location": "Schwarzheide",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
-          "remote": true,
-          "published": "2026-10-28",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003940710-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Radeberg",
           "company": "Lipz Media GmbH",
@@ -506,6 +491,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003940710-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-16852-44536153-1027-S",
+          "title": "Senior Marketing Manager (m/w/d)",
+          "company": "BASF Schwarzheide GmbH",
+          "location": "Schwarzheide",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/16852-44536153-1027-S",
+          "remote": true,
+          "published": "2026-10-28",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
@@ -557,21 +557,6 @@
           ]
         },
         {
-          "id": "ba-10001-1003639526-S",
-          "title": "Rezeptionist mit Affinität zu Vetrieb & Marketing m/w/d",
-          "company": "Parkhotel Neustadt GmbH",
-          "location": "Neustadt in Sachsen",
-          "source": "arbeitsagentur",
-          "sourceLabel": "Arbeitsagentur",
-          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003639526-S",
-          "remote": false,
-          "published": "2026-09-02",
-          "matchQuery": "Online Marketing Social Media",
-          "profiles": [
-            "social_media"
-          ]
-        },
-        {
           "id": "ba-10001-1003942921-S",
           "title": "Lokalreporter (m/w/d) – Redaktion & Anzeigenvertrieb | Ostdeutsche Zeitung Coswig",
           "company": "Lipz Media GmbH",
@@ -581,6 +566,21 @@
           "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003942921-S",
           "remote": true,
           "published": "2026-10-30",
+          "matchQuery": "Online Marketing Social Media",
+          "profiles": [
+            "social_media"
+          ]
+        },
+        {
+          "id": "ba-10001-1003639526-S",
+          "title": "Rezeptionist mit Affinität zu Vetrieb & Marketing m/w/d",
+          "company": "Parkhotel Neustadt GmbH",
+          "location": "Neustadt in Sachsen",
+          "source": "arbeitsagentur",
+          "sourceLabel": "Arbeitsagentur",
+          "url": "https://www.arbeitsagentur.de/jobsuche/jobdetail/10001-1003639526-S",
+          "remote": false,
+          "published": "2026-09-02",
           "matchQuery": "Online Marketing Social Media",
           "profiles": [
             "social_media"
