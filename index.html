@@ -147,10 +147,30 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .saved { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .saved li { background: var(--surface); border-radius: 18px; display: flex; overflow: hidden; box-shadow: 0 4px 14px rgba(21, 24, 33, .06); }
 .saved .bar { flex: none; width: 46px; background: var(--c); color: #fff; display: grid; place-items: center; }
-.saved .main { flex: 1; min-width: 0; padding: 12px 6px 12px 14px; border: 0; background: none; text-align: left; display: flex; flex-direction: column; gap: 3px; }
+.saved .main { flex: 1; min-width: 0; color: inherit; font: inherit; padding: 12px 6px 12px 14px; border: 0; background: none; text-align: left; display: flex; flex-direction: column; gap: 3px; }
 .saved h3 { margin: 0; font-size: 1rem; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; letter-spacing: -.01em; }
 .saved .sub { font-size: .86rem; }
 .saved .del { flex: none; border: 0; background: none; color: var(--muted); padding: 0 14px; display: grid; place-items: center; }
+
+.fbar { display: flex; gap: 6px; overflow-x: auto; flex: none; margin: 0 -16px; padding: 0 16px 2px; scrollbar-width: none; }
+.fbar::-webkit-scrollbar { display: none; }
+.fchip { flex: none; border: 0; background: var(--surface); border-radius: 999px; padding: 7px 13px; font-weight: 600; font-size: .86rem; color: var(--muted); white-space: nowrap; }
+.fchip[aria-pressed="true"] { background: var(--s, var(--accent)); color: #fff; }
+.stline { display: flex; align-items: center; gap: 8px; margin-top: 4px; min-width: 0; }
+.st { flex: none; font-size: .74rem; font-weight: 700; color: var(--s); background: color-mix(in srgb, var(--s) 13%, var(--surface)); border-radius: 999px; padding: 2px 9px; }
+.note { font-size: .82rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 400; }
+.track { display: flex; flex-direction: column; gap: 10px; background: var(--bg); border-radius: 18px; padding: 14px; }
+.track .fchip { background: var(--surface); }
+.track .fchip[aria-pressed="true"] { background: var(--s); }
+textarea { font: 500 1rem/1.4 var(--font); letter-spacing: 0; text-transform: none; color: var(--ink); background: var(--bg); border: 1.5px solid transparent; border-radius: 14px; padding: 11px 13px; width: 100%; resize: vertical; }
+.track textarea { background: var(--surface); }
+textarea:focus { border-color: var(--accent); outline: none; }
+.btn.quiet { border-color: transparent; background: var(--bg); align-self: flex-start; font-size: .9rem; padding: 9px 15px; }
+.btn.danger { color: var(--no); }
+.pick.sw { padding: 5px; } .pick.sw .dot { width: 28px; height: 28px; border-radius: 50%; display: block; }
+.pick.sw:has(input:checked) { background: none; box-shadow: 0 0 0 3px var(--c); }
+.pick.ic { padding: 9px; } .pick.ic span { display: grid; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* Tab-Leiste */
 .tabs { flex: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--surface); border-top: 1px solid var(--line); margin: 0 -16px; padding: 6px 12px calc(6px + env(safe-area-inset-bottom)); }
@@ -258,6 +278,7 @@ legend { padding: 0; margin-bottom: 8px; }
 
   <section class="view" id="view-saved" hidden>
     <div class="saved-head"><h2>Gemerkt</h2><span class="count" id="saved-info"></span></div>
+    <div class="fbar" id="saved-filter" hidden></div>
     <div class="saved-scroll" id="saved-scroll"></div>
   </section>
 
@@ -286,24 +307,38 @@ legend { padding: 0; margin-bottom: 8px; }
 (() => {
   'use strict';
 
-  // Berufsgruppen: Hinter jeder stecken mehrere Suchbegriffe, die einzeln abgefragt und zusammengeführt werden.
-  const PROFILES = [
-    { id: 'sozial', name: 'Erzieher & HEP', color: '#d4482b',
-      icon: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.2c2.6.500 4.5 2.9 4.5 5.8"/>',
+  // Symbole für Berufe. Gespeichert wird nur der Name, nie die Zeichnung selbst.
+  const ICONSET = {
+    people: '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.2c2.6.5 4.5 2.9 4.5 5.8"/>',
+    chat: '<path d="M4 5h16v11H10l-6 4z"/><path d="M8 9h8M8 12h5"/>',
+    doc: '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    screen: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M7 9l3 2-3 2M12 13h4M8 21h8M12 17v4"/>',
+    wrench: '<path d="M14.5 6.5a4 4 0 0 0 5 5L11 20a2.1 2.1 0 0 1-3-3z"/><path d="M14.5 6.5 17 4"/>',
+    cart: '<path d="M3 4h2l2.5 11h10L20 7H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>',
+    truck: '<path d="M2 6h11v10H2zM13 10h4l4 3v3h-8z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>',
+    book: '<path d="M4 5c3-1 5-1 8 1 3-2 5-2 8-1v13c-3-1-5-1-8 1-3-2-5-2-8-1z"/><path d="M12 6v13"/>',
+    leaf: '<path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15"/><path d="M5 19c3-5 6-8 10-10"/>',
+    heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+    star: '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.900-.8z"/>',
+  };
+  const COLORS = ['#d4482b', '#b22f82', '#a26400', '#17905b', '#2563c9', '#6b4bd6', '#0e8a9a', '#59616f'];
+  // Vorgaben für Berufe: Hinter jedem stecken mehrere Suchbegriffe, die einzeln abgefragt und zusammengeführt werden.
+  // Nutzer können sie in der App ändern und eigene Berufe anlegen; das liegt dann im Browser-Speicher.
+  const DEFAULT_PROFILES = [
+    { id: 'sozial', name: 'Erzieher & HEP', color: '#d4482b', icon: 'people', exclude: [],
       terms: ['Heilerziehungspfleger', 'Erzieher', 'Pädagogische Fachkraft', 'Heilpädagoge', 'Kindheitspädagoge', 'Betreuungsfachkraft Eingliederungshilfe'] },
-    { id: 'social', name: 'Social Media', color: '#b22f82',
-      icon: '<path d="M4 5h16v11H10l-6 4z"/><path d="M8 9h8M8 12h5"/>',
+    { id: 'social', name: 'Social Media', color: '#b22f82', icon: 'chat', exclude: [],
       terms: ['Social Media Manager', 'Online Marketing Manager', 'Content Manager', 'Community Manager', 'Content Creator', 'Marketing Manager Kommunikation', 'Referent Öffentlichkeitsarbeit'] },
-    { id: 'buero', name: 'Sachbearbeitung', color: '#a26400',
-      icon: '<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/>',
+    { id: 'buero', name: 'Sachbearbeitung', color: '#a26400', icon: 'doc', exclude: [],
       terms: ['Sachbearbeiter Vertriebsinnendienst', 'Vertriebsassistent', 'Kaufmännischer Mitarbeiter Vertrieb', 'Sachbearbeiter Auftragsabwicklung', 'Medienkaufmann', 'Verlag', 'Redakteur', 'Journalist', 'Lektor', 'Redaktionsassistent'] },
-    { id: 'neben', name: 'Nebenjobs', color: '#17905b',
-      icon: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
-      terms: [''], extra: { arbeitszeit: 'mj' } },
-    { id: 'it', name: 'IT', color: '#2563c9',
-      icon: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M7 9l3 2-3 2M12 13h4M8 21h8M12 17v4"/>',
+    { id: 'neben', name: 'Nebenjobs', color: '#17905b', icon: 'clock', exclude: [], terms: [], minijob: true },
+    { id: 'it', name: 'IT', color: '#2563c9', icon: 'screen', exclude: [],
       terms: ['Systemadministrator', 'IT-Administrator', 'IT-Leiter', 'System Engineer', 'Security Engineer', 'IT-Sicherheit', 'Microsoft 365', 'Cloud Engineer', 'Netzwerkadministrator', 'IT-Koordinator'] },
   ];
+  // Bewerbungsstufen in der Merkliste
+  const STATUS = [['gemerkt', 'Gemerkt', '#59616f'], ['beworben', 'Beworben', '#2563c9'], ['gespraech', 'Gespräch', '#a26400'], ['zusage', 'Zusage', '#17905b'], ['absage', 'Absage', '#d0453f']];
+  const statusOf = job => STATUS.find(x => x[0] === job.status) || STATUS[0];
   const AZ = [['vz', 'Vollzeit'], ['tz', 'Teilzeit'], ['ho', 'Homeoffice'], ['snw', 'Schicht, Nacht, Wochenende'], ['mj', 'Minijob']];
   const WORKER = 'https://jobs-ba-api.micana.workers.dev/';
   const SIZE = 25;
@@ -326,9 +361,22 @@ legend { padding: 0; margin-bottom: 8px; }
   };
 
   // ---------- Speicher (nur in diesem Browser) ----------
-  const store = { ort: 'Dresden', umkreis: '25', profil: 'sozial', liked: {}, seen: {}, az: [], befristung: '', seit: '', ohneZeitarbeit: true, ohnePav: true, hinted: false };
+  const store = { ort: 'Dresden', umkreis: '25', profil: 'sozial', profiles: null, visit: 0, prevVisit: 0, liked: {}, seen: {}, az: [], befristung: '', seit: '', ohneZeitarbeit: true, ohnePav: true, hinted: false };
   try { Object.assign(store, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
+  const cleanList = v => (Array.isArray(v) ? v : []).map(x => String(x).trim()).filter(Boolean).slice(0, 30);
+  const cleanProfile = p => ({
+    id: String(p.id || 'p' + Date.now().toString(36)), name: String(p.name || 'Beruf').slice(0, 40),
+    color: COLORS.includes(p.color) ? p.color : COLORS[0], icon: ICONSET[p.icon] ? p.icon : 'star',
+    terms: cleanList(p.terms), exclude: cleanList(p.exclude), minijob: !!p.minijob,
+  });
+  if (!Array.isArray(store.profiles) || !store.profiles.length) store.profiles = DEFAULT_PROFILES;
+  store.profiles = store.profiles.map(cleanProfile);
+  const PROFILES = store.profiles;                    // dieselbe Liste; Änderungen werden mit save() gespeichert
+  const pic = p => ICONSET[p.icon] || ICONSET.star;
   if (!PROFILES.some(p => p.id === store.profil)) store.profil = PROFILES[0].id;
+  // Besuche: Was nach dem vorigen Besuch veröffentlicht wurde, gilt als neu
+  if (!store.visit || Date.now() - store.visit > 30 * 60 * 1000) { store.prevVisit = store.visit || 0; store.visit = Date.now(); }
+  const sinceDay = store.prevVisit ? new Date(store.prevVisit).toISOString().slice(0, 10) : '';
   if (!Array.isArray(store.az)) store.az = [];
   function save() {
     const keys = Object.keys(store.seen);
@@ -382,6 +430,7 @@ legend { padding: 0; margin-bottom: 8px; }
       aktuelleVeroeffentlichungsdatum: job.aktuelleVeroeffentlichungsdatum || '', eintrittsdatum: job.eintrittsdatum || '',
       kundennummerHash: job.kundennummerHash || '', externeUrl: /^https?:\/\//i.test(job.externeUrl || '') ? job.externeUrl : '',
       term, profil: profile.id,
+      fresh: !!sinceDay && String(job.aktuelleVeroeffentlichungsdatum || '').slice(0, 10) >= sinceDay,
     };
   }
 
@@ -393,7 +442,7 @@ legend { padding: 0; margin-bottom: 8px; }
     let tries = 0;
     while (my === run && !exhausted && deck.length < 6 && tries++ < 4) {
       pageNo++;
-      const results = await Promise.allSettled(profile.terms.map(async term => {
+      const results = await Promise.allSettled((profile.terms.length ? profile.terms : ['']).map(async term => {
         const p = new URLSearchParams({ angebotsart: '1', page: String(pageNo), size: String(SIZE) });
         if (store.ohneZeitarbeit) p.set('zeitarbeit', 'false');
         if (store.ohnePav) p.set('pav', 'false');
@@ -402,7 +451,7 @@ legend { padding: 0; margin-bottom: 8px; }
         if (store.seit) p.set('veroeffentlichtseit', store.seit);
         if (term) p.set('was', term);
         if (store.ort.trim()) { p.set('wo', store.ort.trim()); p.set('umkreis', store.umkreis); }
-        for (const [k, v] of Object.entries(profile.extra || {})) p.set(k, v);
+        if (profile.minijob) p.set('arbeitszeit', 'mj');
         const data = await (await api('api/jobs?' + p)).json();
         return { term, data };
       }));
@@ -417,6 +466,8 @@ legend { padding: 0; margin-bottom: 8px; }
         for (const raw of list) {
           const job = slim(raw, term);
           if (!job.refnr || inDeck.has(job.refnr) || store.seen[job.refnr] || store.liked[job.refnr]) continue;
+          const title = job.titel.toLowerCase();
+          if (profile.exclude.some(w => title.includes(w.toLowerCase()))) continue;   // Ausschlusswörter im Titel
           inDeck.add(job.refnr);
           batch.push(job);
         }
@@ -456,6 +507,8 @@ legend { padding: 0; margin-bottom: 8px; }
     const ort = store.ort.trim();
     const parts = ort ? [ort, store.umkreis === '0' ? 'nur dort' : store.umkreis + ' km'] : ['Deutschlandweit'];
     if (deck.length) parts.push(`${deck.length}${exhausted ? '' : '+'} offene Stellen`);
+    const fresh = deck.filter(j => j.fresh).length;
+    if (fresh) parts.push(`${fresh} neu seit letztem Besuch`);
     $('meta').textContent = parts.join(' · ');
   }
   function show(v) {
@@ -471,11 +524,12 @@ legend { padding: 0; margin-bottom: 8px; }
     c.dataset.ref = job.refnr;
     const hero = el('div', 'hero');
     const eyebrow = el('div', 'eyebrow');
-    if (isNew(job.aktuelleVeroeffentlichungsdatum)) eyebrow.append(el('span', 'new', 'Neu'));
+    if (job.fresh) eyebrow.append(el('span', 'new', 'Neu seit letztem Besuch'));
+    else if (isNew(job.aktuelleVeroeffentlichungsdatum)) eyebrow.append(el('span', 'new', 'Neu'));
     const term = el('span');
-    term.append(icon(profile.icon), document.createTextNode(job.term || profile.name));
+    term.append(icon(pic(profile)), document.createTextNode(job.term || profile.name));
     eyebrow.append(term);
-    hero.append(eyebrow, el('h2', null, job.titel), icon(profile.icon, 'art'));
+    hero.append(eyebrow, el('h2', null, job.titel), icon(pic(profile), 'art'));
     const body = el('div', 'body');
     const org = el('div', 'org');
     const badge = el('span', 'badge', (job.arbeitgeber.trim()[0] || '?').toUpperCase());
@@ -607,24 +661,44 @@ legend { padding: 0; margin-bottom: 8px; }
   }
 
   // ---------- Merkliste (eigener Tab) ----------
+  let savedFilter = '';
   function renderSaved() {
-    const jobs = Object.values(store.liked).sort((a, b) => (b.gemerkt || 0) - (a.gemerkt || 0));
-    $('saved-info').textContent = jobs.length === 1 ? '1 Stelle' : `${jobs.length} Stellen`;
+    const all = Object.values(store.liked).sort((a, b) => (b.gemerkt || 0) - (a.gemerkt || 0));
+    $('saved-info').textContent = all.length === 1 ? '1 Stelle' : `${all.length} Stellen`;
     const box = $('saved-scroll');
-    if (!jobs.length) {
+    if (!all.length) {
+      $('saved-filter').hidden = true;
       box.replaceChildren(state('Noch nichts gemerkt', 'Wische im Stapel eine Stelle nach rechts oder tippe auf das Herz.', button('Zum Stapel', () => show('deck'), true)));
       return;
     }
+    // Filterleiste nach Bewerbungsstufe
+    if (savedFilter && !all.some(j => statusOf(j)[0] === savedFilter)) savedFilter = '';
+    const chips = [['', 'Alle', all.length], ...STATUS.map(([id, name]) => [id, name, all.filter(j => statusOf(j)[0] === id).length]).filter(c => c[2])];
+    $('saved-filter').hidden = chips.length < 3;
+    $('saved-filter').replaceChildren(...chips.map(([id, name, n]) => {
+      const b = el('button', 'fchip', `${name} ${n}`);
+      b.type = 'button'; b.setAttribute('aria-pressed', String(savedFilter === id));
+      b.addEventListener('click', () => { savedFilter = id; renderSaved(); });
+      return b;
+    }));
+    const jobs = savedFilter ? all.filter(j => statusOf(j)[0] === savedFilter) : all;
     const ul = el('ul', 'saved');
     for (const job of jobs) {
-      const p = PROFILES.find(x => x.id === job.profil) || profile;
+      const p = PROFILES.find(x => x.id === job.profil) || { color: '#59616f', icon: 'star' };
+      const st = statusOf(job);
       const li = el('li');
       li.style.setProperty('--c', p.color);
       const bar = el('span', 'bar');
-      bar.append(icon(p.icon));
+      bar.append(icon(pic(p)));
       const main = el('button', 'main');
       main.type = 'button';
       main.append(el('h3', null, job.titel), el('span', 'sub', [job.arbeitgeber, [job.plz, job.ort].filter(Boolean).join(' ')].filter(Boolean).join(' · ')));
+      const line = el('span', 'stline');
+      const pill = el('span', 'st', st[1] + (job.statusAt && st[0] !== 'gemerkt' ? ' · ' + fmtDate(job.statusAt) : ''));
+      pill.style.setProperty('--s', st[2]);
+      line.append(pill);
+      if (job.note) line.append(el('span', 'note', job.note));
+      main.append(line);
       main.addEventListener('click', () => openDetails(job));
       const del = el('button', 'del');
       del.type = 'button'; del.setAttribute('aria-label', 'Aus der Merkliste entfernen');
@@ -634,6 +708,28 @@ legend { padding: 0; margin-bottom: 8px; }
       ul.append(li);
     }
     box.replaceChildren(ul);
+  }
+
+  // Bewerbungsstufe und Notiz für eine gemerkte Stelle (im Detailblatt)
+  function trackNodes(saved) {
+    const box = el('div', 'track');
+    const row = el('div', 'chips');
+    const paint = () => row.replaceChildren(...STATUS.map(([id, name, color]) => {
+      const b = el('button', 'fchip', name);
+      b.type = 'button'; b.style.setProperty('--s', color);
+      b.setAttribute('aria-pressed', String(statusOf(saved)[0] === id));
+      b.addEventListener('click', () => { saved.status = id; saved.statusAt = Date.now(); save(); paint(); if (view === 'saved') renderSaved(); });
+      return b;
+    }));
+    paint();
+    const note = el('textarea');
+    note.id = 'track-note'; note.rows = 2; note.maxLength = 500; note.value = saved.note || '';
+    note.placeholder = 'Notiz, z. B. Ansprechpartner oder Termin';
+    note.addEventListener('input', () => { saved.note = note.value.trim(); save(); });
+    note.addEventListener('change', () => { if (view === 'saved') renderSaved(); });
+    const l = el('label', null, 'Notiz'); l.htmlFor = note.id; l.append(note);
+    box.append(el('span', 'group-label', 'Bewerbung'), row, l);
+    return box;
   }
 
   // ---------- Blatt (Details, Filter) ----------
@@ -845,7 +941,8 @@ legend { padding: 0; margin-bottom: 8px; }
     desc.append(el('p', 'sub', 'Beschreibung wird geladen …'));
     const facts = el('div', 'facts');
     facts.hidden = true;
-    openSheet(job.titel, sub, facts, links, desc);
+    const saved = store.liked[job.refnr];
+    openSheet(job.titel, sub, ...(saved ? [trackNodes(saved)] : []), facts, links, desc);
     loadDetails(job.refnr).then(d => {
       const text = d.stellenangebotsBeschreibung || d.stellenbeschreibung;
       if (text) desc.replaceWith(markdown(text, job.titel));
@@ -873,7 +970,9 @@ legend { padding: 0; margin-bottom: 8px; }
       });
       return [fs, inputs];
     };
-    const [jobSet, jobBoxes] = picks('Berufsgruppe', 'radio', 'profil', PROFILES.map(p => ({ value: p.id, text: p.name, on: p.id === profile.id, color: p.color, icon: p.icon })));
+    const [jobSet, jobBoxes] = picks('Berufsgruppe', 'radio', 'profil', PROFILES.map(p => ({ value: p.id, text: p.name, on: p.id === profile.id, color: p.color, icon: pic(p) })));
+    const editJobs = button('Berufe bearbeiten oder neu anlegen', openProfiles);
+    editJobs.classList.add('quiet');
     const ort = el('input'); ort.type = 'text'; ort.value = store.ort; ort.autocomplete = 'off'; ort.placeholder = 'deutschlandweit';
     const um = select(store.umkreis, [['0', 'nur dort'], ['10', '10 km'], ['25', '25 km'], ['50', '50 km'], ['100', '100 km'], ['200', '200 km']]);
     const where = el('div', 'two'); where.append(field('Ort oder PLZ', ort), field('Umkreis', um));
@@ -885,7 +984,7 @@ legend { padding: 0; margin-bottom: 8px; }
     const ok = button('Stellen anzeigen', () => {}, true); ok.type = 'submit';
     const clear = button('Zurücksetzen', () => { azBoxes.forEach(c => { c.checked = false; }); befr.value = ''; seit.value = ''; hideBoxes.forEach(c => { c.checked = true; }); });
     const row = el('div', 'links'); row.append(ok, clear);
-    form.append(jobSet, where, azSet, when, hideSet, row);
+    form.append(jobSet, editJobs, where, azSet, when, hideSet, row);
     form.addEventListener('submit', e => {
       e.preventDefault();
       const chosen = jobBoxes.find(c => c.checked);
@@ -901,6 +1000,80 @@ legend { padding: 0; margin-bottom: 8px; }
     const reset = button(`Verworfene wieder zeigen (${seen})`, () => { store.seen = {}; save(); closeSheet(); resetDeck(); });
     reset.disabled = seen === 0;
     openSheet('Filter', form, reset, el('p', 'small', 'Daten: Jobsuche der Bundesagentur für Arbeit. Gemerkte und verworfene Stellen liegen nur in diesem Browser.'));
+  }
+
+  // ---------- Berufe verwalten: Suchbegriffe, Ausschlusswörter, eigene Berufe ----------
+  function openProfiles() {
+    const ul = el('ul', 'saved');
+    for (const p of PROFILES) {
+      const li = el('li');
+      li.style.setProperty('--c', p.color);
+      const bar = el('span', 'bar'); bar.append(icon(pic(p)));
+      const main = el('button', 'main'); main.type = 'button';
+      const info = p.terms.length ? `${p.terms.length} Suchbegriffe` : (p.minijob ? 'alle Minijobs' : 'alle Stellen');
+      main.append(el('h3', null, p.name), el('span', 'sub', info + (p.exclude.length ? ` · ${p.exclude.length} Ausschlusswörter` : '')));
+      main.addEventListener('click', () => openProfileEdit(p));
+      li.append(bar, main);
+      ul.append(li);
+    }
+    const back = button('Zurück zum Filter', openFilter); back.classList.add('quiet');
+    openSheet('Berufe', ul, button('Neuen Beruf anlegen', () => openProfileEdit(null), true), back);
+  }
+
+  function openProfileEdit(p) {
+    const isNew = !p;
+    const d = p || { name: '', color: COLORS[PROFILES.length % COLORS.length], icon: 'star', terms: [], exclude: [], minijob: false };
+    const form = el('form');
+    let n = 0;
+    const field = (text, node, id) => { const l = el('label', null, text); node.id = id; l.htmlFor = id; l.append(node); return l; };
+    const name = el('input'); name.type = 'text'; name.value = d.name; name.maxLength = 40; name.required = true; name.placeholder = 'z. B. Buchhaltung'; name.autocomplete = 'off';
+    const terms = el('textarea'); terms.rows = 5; terms.value = d.terms.join('\n'); terms.placeholder = 'Ein Suchbegriff pro Zeile, z. B.\nBuchhalter\nFinanzbuchhalter\nLohnbuchhalter';
+    const excl = el('textarea'); excl.rows = 3; excl.value = d.exclude.join('\n'); excl.placeholder = 'Ein Wort pro Zeile, z. B.\nAusbildung\nPraktikum';
+    const swatches = (legend, items, current, cls) => {
+      const fs = el('fieldset'); fs.append(el('legend', null, legend));
+      const inputs = items.map(([value, node, color]) => {
+        const l = el('label', 'pick ' + cls); const c = el('input');
+        c.type = 'radio'; c.name = cls; c.value = value; c.checked = value === current; c.id = 'pe-' + (++n); l.htmlFor = c.id;
+        if (color) l.style.setProperty('--c', color);
+        l.append(c, node); fs.append(l); return c;
+      });
+      return [fs, inputs];
+    };
+    const [colorSet, colorBoxes] = swatches('Farbe', COLORS.map(c => { const dot = el('span', 'dot'); dot.style.background = c; const t = el('span', 'sr', 'Farbe ' + c); dot.append(t); return [c, dot, c]; }), d.color, 'sw');
+    const [iconSet, iconBoxes] = swatches('Symbol', Object.keys(ICONSET).map(k => { const g = icon(ICONSET[k]); const w = el('span'); w.append(g, el('span', 'sr', k)); return [k, w]; }), d.icon, 'ic');
+    const mjL = el('label', 'pick'); const mj = el('input'); mj.type = 'checkbox'; mj.checked = d.minijob; mj.id = 'pe-' + (++n); mjL.htmlFor = mj.id; mjL.append(mj, document.createTextNode('Nur Minijobs'));
+    const mjSet = el('fieldset'); mjSet.append(mjL);
+    const ok = button(isNew ? 'Beruf anlegen' : 'Speichern', () => {}, true); ok.type = 'submit';
+    const row = el('div', 'links'); row.append(ok, button('Abbrechen', openProfiles));
+    form.append(field('Name', name, 'pe-name'), field('Suchbegriffe', terms, 'pe-terms'),
+      el('p', 'small', 'Jeder Begriff wird einzeln gesucht, die Treffer werden zusammengeführt. Ohne Begriffe erscheinen alle Stellen im Umkreis.'),
+      field('Titel mit diesen Wörtern ausblenden', excl, 'pe-excl'), colorSet, iconSet, mjSet, row);
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const lines = t => t.value.split(/[\n,;]+/);
+      const next = cleanProfile({ id: p ? p.id : '', name: name.value.trim(), color: (colorBoxes.find(c => c.checked) || {}).value, icon: (iconBoxes.find(c => c.checked) || {}).value, terms: lines(terms), exclude: lines(excl), minijob: mj.checked });
+      if (p) Object.assign(p, next); else PROFILES.push(next);
+      profile = p || next; store.profil = profile.id;
+      save(); closeSheet(); renderChrome(); resetDeck();
+    });
+    const nodes = [form];
+    if (p && PROFILES.length > 1) {
+      const del = button('Diesen Beruf löschen', () => {
+        if (del.dataset.sure !== '1') { del.dataset.sure = '1'; del.textContent = 'Wirklich löschen? Noch einmal tippen'; return; }
+        PROFILES.splice(PROFILES.indexOf(p), 1);
+        if (profile === p) { profile = PROFILES[0]; store.profil = profile.id; renderChrome(); resetDeck(); }
+        save(); openProfiles();
+      });
+      del.classList.add('quiet', 'danger');
+      nodes.push(del);
+    }
+    const std = DEFAULT_PROFILES.find(x => p && x.id === p.id);
+    if (std) {
+      const res = button('Auf Vorgabe zurücksetzen', () => { Object.assign(p, cleanProfile(std)); save(); if (profile === p) { renderChrome(); resetDeck(); } openProfileEdit(p); });
+      res.classList.add('quiet');
+      nodes.push(res);
+    }
+    openSheet(isNew ? 'Neuer Beruf' : p.name, ...nodes);
   }
 
   // ---------- Als App installieren: Vollbild-Hinweis beim ersten Mal, danach ein Balken ----------
