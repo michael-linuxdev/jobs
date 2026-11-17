@@ -19,6 +19,7 @@
   --line: #d9dde6;
   --accent: #2563c9;            /* wird je Profil per Script gesetzt */
   --yes: #1f8a5b;
+  --on-yes: #ffffff;
   --no: #c23b3b;
   --shadow: 0 10px 30px rgba(23, 26, 34, .12);
   --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
@@ -28,13 +29,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #12151c; --surface: #1c212b; --ink: #eef0f5; --muted: #9aa3b3; --line: #2e3542;
-    --yes: #4cc48f; --no: #f07a7a; --shadow: 0 10px 30px rgba(0, 0, 0, .45);
+    --yes: #4cc48f; --on-yes: #06281a; --no: #f07a7a; --shadow: 0 10px 30px rgba(0, 0, 0, .45);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #12151c; --surface: #1c212b; --ink: #eef0f5; --muted: #9aa3b3; --line: #2e3542;
-  --yes: #4cc48f; --no: #f07a7a; --shadow: 0 10px 30px rgba(0, 0, 0, .45);
+  --yes: #4cc48f; --on-yes: #06281a; --no: #f07a7a; --shadow: 0 10px 30px rgba(0, 0, 0, .45);
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -42,7 +43,8 @@
 html, body { height: 100%; }
 html { -webkit-text-size-adjust: 100%; touch-action: pan-x pan-y; }
 body {
-  margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 var(--font-body);
+  margin: 0; color: var(--ink); font: 16px/1.45 var(--font-body);
+  background: radial-gradient(130% 55% at 50% 0%, color-mix(in srgb, var(--accent) 20%, var(--bg)), var(--bg) 75%) fixed var(--bg);
   overflow: hidden; overscroll-behavior: none;
 }
 button { font: inherit; color: inherit; cursor: pointer; }
@@ -75,7 +77,8 @@ h1 span { color: var(--accent); }
 .chip[aria-pressed="true"] i { background: #fff; }
 
 .where { font-size: .86rem; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
-.where button { border: 0; background: none; padding: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+#left { white-space: nowrap; }
+.where button { border: 0; background: none; padding: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; text-align: left; }
 
 .deck { position: relative; flex: 1; min-height: 0; }
 .card {
@@ -88,27 +91,34 @@ h1 span { color: var(--accent); }
 .card.back { transition: transform .2s ease-out; }
 .card:nth-last-child(2) { transform: translateY(10px) scale(.96); }
 .card:nth-last-child(3) { transform: translateY(20px) scale(.92); }
-.band {
-  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
-  padding: 16px 18px; display: flex; gap: 12px; align-items: center;
+.card.top { animation: rise .24s ease-out; }
+@keyframes rise { from { transform: translateY(10px) scale(.96); } to { transform: none; } }
+.hero {
+  position: relative; overflow: hidden; flex: none; padding: 16px 18px 20px; color: #fff;
+  background: linear-gradient(150deg, var(--accent), color-mix(in srgb, var(--accent) 68%, #000));
+  display: flex; flex-direction: column; gap: 10px;
 }
-.badge {
-  flex: none; width: 48px; height: 48px; border-radius: 14px; background: var(--accent); color: #fff;
-  display: grid; place-items: center; font: 800 1.3rem var(--font-display); overflow: hidden;
-}
-.badge img { width: 100%; height: 100%; object-fit: contain; background: #fff; padding: 4px; }
-.band .who { font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.band .ort { font-size: .88rem; color: var(--muted); }
-.body { padding: 16px 18px 0; flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+.eyebrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: .74rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; position: relative; z-index: 1; }
+.eyebrow .new { background: #fff; color: var(--accent); border-radius: 999px; padding: 2px 9px; letter-spacing: .05em; }
+.mark { position: absolute; right: -4px; bottom: -42px; font: 800 9.5rem/1 var(--font-display); opacity: .14; pointer-events: none; }
 .card h2 {
-  font: 800 clamp(1.25rem, 5.4vw, 1.7rem)/1.12 var(--font-display); margin: 0; letter-spacing: -.01em;
+  position: relative; z-index: 1; color: #fff; margin: 0; letter-spacing: -.015em;
+  font: 800 clamp(1.35rem, 6.2vw, 1.95rem)/1.08 var(--font-display);
   text-wrap: balance; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
 }
+.body { padding: 14px 18px 0; flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+.org { display: flex; gap: 12px; align-items: center; flex: none; }
+.badge {
+  flex: none; width: 44px; height: 44px; border-radius: 13px; overflow: hidden; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface)); color: var(--accent); font: 800 1.2rem var(--font-display);
+}
+.badge img { width: 100%; height: 100%; object-fit: contain; background: #fff; padding: 4px; }
+.org .who { font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.org .ort { font-size: .88rem; color: var(--muted); }
 .excerpt { margin: 0; color: var(--muted); font-size: .95rem; flex: 1; min-height: 0; overflow: hidden;
-  -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent); white-space: pre-line; }
-.foot { padding: 12px 18px 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+  -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); white-space: pre-line; }
+.foot { padding: 10px 18px 16px; display: flex; flex-wrap: wrap; gap: 6px; }
 .tag { font-size: .8rem; font-weight: 500; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--muted); }
-.tag.new { color: #fff; background: var(--accent); border-color: var(--accent); font-weight: 600; }
 .stamp {
   position: absolute; top: 22px; font: 800 1.5rem var(--font-display); text-transform: uppercase; letter-spacing: .04em;
   border: 3px solid; border-radius: 10px; padding: 2px 12px; opacity: 0; background: var(--surface); pointer-events: none;
@@ -128,8 +138,9 @@ h1 span { color: var(--accent); }
   display: grid; place-items: center; box-shadow: var(--shadow);
 }
 .round svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-.round.no { color: var(--no); }
-.round.yes { color: var(--yes); }
+.round.no { color: var(--no); border-color: color-mix(in srgb, var(--no) 45%, var(--line)); }
+.round.yes { width: 72px; height: 72px; background: var(--yes); border-color: var(--yes); color: var(--on-yes); }
+.round.yes svg { width: 32px; height: 32px; }
 .round.small { width: 46px; height: 46px; color: var(--muted); border-color: var(--line); box-shadow: none; }
 .round.small svg { width: 20px; height: 20px; }
 .round:disabled { opacity: .35; cursor: default; }
@@ -169,6 +180,11 @@ summary { cursor: pointer; color: var(--muted); font-size: .88rem; font-weight: 
 .saved .row .del { color: var(--no); }
 label { display: flex; flex-direction: column; gap: 4px; font-size: .84rem; color: var(--muted); font-weight: 500; }
 input[type="text"], select { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; }
+.checks { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.checks legend { font-size: .84rem; color: var(--muted); font-weight: 500; padding: 0; margin-bottom: 6px; }
+.check { flex-direction: row; align-items: center; gap: 7px; font-size: .92rem; color: var(--ink); font-weight: 500; border: 1.5px solid var(--line); border-radius: 999px; padding: 7px 13px; cursor: pointer; }
+.check:has(input:checked) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--surface)); }
+.check input { accent-color: var(--accent); margin: 0; width: 16px; height: 16px; }
 .terms { font-size: .86rem; color: var(--muted); margin: 0; }
 @media (prefers-reduced-motion: reduce) { .card.fly, .card.back, .panel.settle { transition: none; } }
 </style>
@@ -179,7 +195,7 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
     <h1>Job<span>stapel</span></h1>
     <div class="tools">
       <button type="button" class="tool" id="open-saved">Gemerkt <b id="saved-count">0</b></button>
-      <button type="button" class="tool" id="open-settings" aria-label="Ort und Einstellungen">Ort</button>
+      <button type="button" class="tool" id="open-settings">Filter <b id="filter-count" hidden>0</b></button>
     </div>
   </header>
 
@@ -245,9 +261,12 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 
   // ---------- Speicher (nur in diesem Browser) ----------
-  const store = { ort: 'Dresden', umkreis: '25', profil: 'sozial', liked: {}, seen: {} };
+  const store = { ort: 'Dresden', umkreis: '25', profil: 'sozial', liked: {}, seen: {}, az: [], befristung: '', seit: '', ohneZeitarbeit: true, ohnePav: true };
   try { Object.assign(store, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
   if (!PROFILES.some(p => p.id === store.profil)) store.profil = PROFILES[0].id;
+  if (!Array.isArray(store.az)) store.az = [];
+  const AZ = [['vz', 'Vollzeit'], ['tz', 'Teilzeit'], ['ho', 'Homeoffice'], ['snw', 'Schicht, Nacht, Wochenende'], ['mj', 'Minijob']];
+  const activeFilters = () => store.az.length + (store.befristung ? 1 : 0) + (store.seit ? 1 : 0);
   function save() {
     const keys = Object.keys(store.seen);
     if (keys.length > 4000) for (const k of keys.slice(0, keys.length - 3000)) delete store.seen[k];
@@ -311,7 +330,12 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
     while (my === run && !exhausted && deck.length < 6 && tries++ < 4) {
       pageNo++;
       const results = await Promise.allSettled(profile.terms.map(async term => {
-        const p = new URLSearchParams({ angebotsart: '1', zeitarbeit: 'false', pav: 'false', page: String(pageNo), size: String(SIZE) });
+        const p = new URLSearchParams({ angebotsart: '1', page: String(pageNo), size: String(SIZE) });
+        if (store.ohneZeitarbeit) p.set('zeitarbeit', 'false');
+        if (store.ohnePav) p.set('pav', 'false');
+        if (store.az.length) p.set('arbeitszeit', store.az.join(';'));
+        if (store.befristung) p.set('befristung', store.befristung);
+        if (store.seit) p.set('veroeffentlichtseit', store.seit);
         if (term) p.set('was', term);
         if (store.ort.trim()) { p.set('wo', store.ort.trim()); p.set('umkreis', store.umkreis); }
         for (const [k, v] of Object.entries(profile.extra || {})) p.set(k, v);
@@ -363,7 +387,9 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
     }));
     const ort = store.ort.trim();
     $('where-text').replaceChildren(document.createTextNode(ort ? `${ort}, ${store.umkreis === '0' ? 'nur dieser Ort' : store.umkreis + ' km Umkreis'} ` : 'Deutschlandweit '));
-    const terms = el('button', null, 'Suchbegriffe');
+    const n = activeFilters();
+    $('filter-count').textContent = String(n); $('filter-count').hidden = n === 0;
+    const terms = el('button', null, n ? `${n} Filter aktiv` : 'Filter und Suchbegriffe');
     terms.type = 'button';
     terms.addEventListener('click', openSettings);
     $('where-text').append(terms);
@@ -373,30 +399,33 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
   function card(job, top) {
     const c = el('article', 'card' + (top ? ' top' : ''));
     c.dataset.ref = job.refnr;
-    const band = el('div', 'band');
-    const badge = el('span', 'badge', (job.arbeitgeber.trim()[0] || '?').toUpperCase());
+    const initial = (job.arbeitgeber.trim()[0] || '?').toUpperCase();
+    const hero = el('div', 'hero');
+    const eyebrow = el('div', 'eyebrow');
+    if (isNew(job.aktuelleVeroeffentlichungsdatum)) eyebrow.append(el('span', 'new', 'Neu'));
+    eyebrow.append(el('span', null, job.term || profile.name));
+    hero.append(eyebrow, el('h2', null, job.titel), el('span', 'mark', initial));
+    const body = el('div', 'body');
+    const org = el('div', 'org');
+    const badge = el('span', 'badge', initial);
     const who = el('div');
     who.append(el('div', 'who', job.arbeitgeber || 'Arbeitgeber nicht genannt'));
     const place = [job.plz, job.ort].filter(Boolean).join(' ');
     who.append(el('div', 'ort', (place || 'Ort nicht genannt') + (job.entfernung ? ` · ${job.entfernung} km` : '')));
-    band.append(badge, who);
-    const body = el('div', 'body');
-    body.append(el('h2', null, job.titel));
+    org.append(badge, who);
     const ex = el('p', 'excerpt');
-    body.append(ex);
+    body.append(org, ex);
     const foot = el('div', 'foot');
-    if (isNew(job.aktuelleVeroeffentlichungsdatum)) foot.append(el('span', 'tag new', 'Neu'));
     if (job.aktuelleVeroeffentlichungsdatum) foot.append(el('span', 'tag', 'online seit ' + fmtDate(job.aktuelleVeroeffentlichungsdatum)));
     if (job.eintrittsdatum) foot.append(el('span', 'tag', 'Start ' + fmtDate(job.eintrittsdatum)));
-    if (job.term) foot.append(el('span', 'tag', job.term));
-    c.append(band, body, foot, el('span', 'stamp yes', 'Merken'), el('span', 'stamp no', 'Weg'));
+    c.append(hero, body, foot, el('span', 'stamp yes', 'Merken'), el('span', 'stamp no', 'Weg'));
 
     if (top) {
       loadDetails(job.refnr).then(d => {
         const text = String(d.stellenangebotsBeschreibung || d.stellenbeschreibung || '').replace(/\n{3,}/g, '\n\n').trim();
         ex.textContent = text.slice(0, 700);
-        if (d.homeofficemoeglich === true) foot.append(el('span', 'tag', 'Homeoffice'));
-        if (d.quereinstiegGeeignet === true) foot.append(el('span', 'tag', 'Quereinstieg'));
+        if (d.homeofficemoeglich === true) foot.append(el('span', 'tag on', 'Homeoffice'));
+        if (d.quereinstiegGeeignet === true) foot.append(el('span', 'tag on', 'Quereinstieg'));
         const hash = d.arbeitgeberKundennummerHash || job.kundennummerHash;
         if (hash) loadLogo(hash).then(src => { if (!src) return; const img = el('img'); img.alt = ''; img.src = src; badge.replaceChildren(img); });
       }).catch(() => { ex.textContent = ''; });
@@ -433,7 +462,7 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
     if (loading) { d.replaceChildren(state('Stellen werden geladen', `${profile.terms.length > 1 ? profile.terms.length + ' Suchbegriffe' : 'Die Suche'} für ${profile.name} ${profile.terms.length > 1 ? 'werden' : 'wird'} abgefragt.`)); return; }
     if (failed) { d.replaceChildren(state('Keine Verbindung zur Jobsuche', 'Der Proxy oder die Arbeitsagentur antwortet nicht (' + failed + ').', button('Erneut versuchen', () => loadMore(), true))); return; }
     d.replaceChildren(state('Stapel durchgesehen', 'Für ' + profile.name + ' gibt es hier gerade keine weiteren Stellen. Neue Anzeigen erscheinen automatisch beim nächsten Öffnen.',
-      button('Ort oder Umkreis ändern', openSettings, true),
+      button('Filter ändern', openSettings, true),
       button('Verworfene noch einmal zeigen', () => { store.seen = {}; save(); resetDeck(); })));
   }
 
@@ -651,20 +680,42 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
 
   function openSettings() {
     const form = el('form');
-    form.style.cssText = 'display:flex;flex-direction:column;gap:14px';
-    const lo = el('label', null, 'Ort oder PLZ (leer = deutschlandweit)');
-    const ort = el('input'); ort.type = 'text'; ort.id = 'set-ort'; ort.value = store.ort; ort.autocomplete = 'off'; lo.htmlFor = 'set-ort'; lo.append(ort);
-    const lu = el('label', null, 'Umkreis');
-    const um = el('select'); um.id = 'set-umkreis'; lu.htmlFor = 'set-umkreis';
-    for (const [v, t] of [['0', 'nur dieser Ort'], ['10', '10 km'], ['25', '25 km'], ['50', '50 km'], ['100', '100 km'], ['200', '200 km']]) { const o = el('option', null, t); o.value = v; um.append(o); }
-    um.value = store.umkreis; lu.append(um);
-    const ok = button('Übernehmen und neu laden', () => {}, true); ok.type = 'submit';
-    form.append(lo, lu, ok);
-    form.addEventListener('submit', e => { e.preventDefault(); store.ort = ort.value.trim(); store.umkreis = um.value; save(); closeSheet(); renderChrome(); resetDeck(); });
-    const terms = el('p', 'terms', `Suchbegriffe für ${profile.name}: ` + (profile.hint || profile.terms.join(', ')) + '. Zeitarbeit und private Arbeitsvermittler sind ausgeblendet.');
+    form.style.cssText = 'display:flex;flex-direction:column;gap:16px';
+    const field = (id, text, node) => { const l = el('label', null, text); l.htmlFor = id; node.id = id; l.append(node); return l; };
+    const select = (value, options) => { const n = el('select'); for (const [v, t] of options) { const o = el('option', null, t); o.value = v; n.append(o); } n.value = value; return n; };
+    const checks = (legend, items) => {
+      const fs = el('fieldset', 'checks'); fs.append(el('legend', null, legend));
+      const boxes = items.map(([v, t, on], i) => {
+        const l = el('label', 'check'); const c = el('input'); c.type = 'checkbox'; c.value = v; c.checked = on; c.id = `f-${legend.replace(/\W/g, '')}-${i}`; l.htmlFor = c.id;
+        l.append(c, document.createTextNode(t)); fs.append(l); return c;
+      });
+      return [fs, boxes];
+    };
+    const ort = el('input'); ort.type = 'text'; ort.value = store.ort; ort.autocomplete = 'off';
+    const um = select(store.umkreis, [['0', 'nur dieser Ort'], ['10', '10 km'], ['25', '25 km'], ['50', '50 km'], ['100', '100 km'], ['200', '200 km']]);
+    const [azSet, azBoxes] = checks('Arbeitszeit (leer = egal)', AZ.map(([v, t]) => [v, t, store.az.includes(v)]));
+    const befr = select(store.befristung, [['', 'egal'], ['2', 'nur unbefristet'], ['1', 'nur befristet']]);
+    const seit = select(store.seit, [['', 'jederzeit'], ['1', 'seit gestern'], ['7', 'letzte 7 Tage'], ['14', 'letzte 14 Tage'], ['28', 'letzte 4 Wochen']]);
+    const [hideSet, hideBoxes] = checks('Ausblenden', [['za', 'Zeitarbeit', store.ohneZeitarbeit], ['pav', 'Private Arbeitsvermittler', store.ohnePav]]);
+    const ok = button('Anwenden', () => {}, true); ok.type = 'submit';
+    const clear = button('Filter zurücksetzen', () => {
+      azBoxes.forEach(c => { c.checked = false; }); befr.value = ''; seit.value = ''; hideBoxes.forEach(c => { c.checked = true; });
+    });
+    const row = el('div', 'links'); row.append(ok, clear);
+    form.append(field('f-ort', 'Ort oder PLZ (leer = deutschlandweit)', ort), field('f-umkreis', 'Umkreis', um), azSet,
+      field('f-befristung', 'Befristung', befr), field('f-seit', 'Veröffentlicht', seit), hideSet, row);
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      store.ort = ort.value.trim(); store.umkreis = um.value;
+      store.az = azBoxes.filter(c => c.checked).map(c => c.value);
+      store.befristung = befr.value; store.seit = seit.value;
+      store.ohneZeitarbeit = hideBoxes[0].checked; store.ohnePav = hideBoxes[1].checked;
+      save(); closeSheet(); renderChrome(); resetDeck();
+    });
+    const terms = el('p', 'terms', `Suchbegriffe für ${profile.name}: ` + (profile.hint || profile.terms.join(', ')) + '. Die Filter gelten für alle Berufsgruppen.');
     const reset = button(`Verworfene Stellen wieder zeigen (${Object.keys(store.seen).length})`, () => { store.seen = {}; save(); closeSheet(); resetDeck(); });
     const src = el('p', 'terms', 'Daten: Jobsuche der Bundesagentur für Arbeit. Gemerkte und verworfene Stellen liegen nur in diesem Browser.');
-    openSheet('Ort und Suche', form, terms, reset, src);
+    openSheet('Filter', form, terms, reset, src);
   }
 
   // ---------- Verdrahtung ----------
