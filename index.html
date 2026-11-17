@@ -2,493 +2,586 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jobsuche-API Prototyp</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eef0f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12151c" media="(prefers-color-scheme: dark)">
+<title>Jobstapel</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* Layout: Suchformular oben, darunter die gesendete Abfrage, dann Trefferliste mit aufklappbaren Details. */
+/* Layout: eine Bildschirmhöhe. Kopf, Profil-Leiste, Kartenstapel (füllt den Rest), Aktionsknöpfe. */
 :root {
-  --bg: #eaefee;
-  --surface: #fbfcfc;
-  --ink: #14272c;
-  --muted: #56696e;
-  --line: #cdd7d6;
-  --accent: #0a6b6b;
-  --accent-ink: #ffffff;
-  --mark: #b96a12;
-  --bad: #a8322a;
-  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", sans-serif;
-  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --bg: #eef0f5;
+  --surface: #ffffff;
+  --ink: #171a22;
+  --muted: #5e6675;
+  --line: #d9dde6;
+  --accent: #2563c9;            /* wird je Profil per Script gesetzt */
+  --yes: #1f8a5b;
+  --no: #c23b3b;
+  --shadow: 0 10px 30px rgba(23, 26, 34, .12);
+  --font-display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0f191b; --surface: #17252a; --ink: #e3ecea; --muted: #93a6a9;
-    --line: #2a3d42; --accent: #55c4bd; --accent-ink: #06201f; --mark: #e6a650; --bad: #f08a7e;
+    --bg: #12151c; --surface: #1c212b; --ink: #eef0f5; --muted: #9aa3b3; --line: #2e3542;
+    --yes: #4cc48f; --no: #f07a7a; --shadow: 0 10px 30px rgba(0, 0, 0, .45);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0f191b; --surface: #17252a; --ink: #e3ecea; --muted: #93a6a9;
-  --line: #2a3d42; --accent: #55c4bd; --accent-ink: #06201f; --mark: #e6a650; --bad: #f08a7e;
+  --bg: #12151c; --surface: #1c212b; --ink: #eef0f5; --muted: #9aa3b3; --line: #2e3542;
+  --yes: #4cc48f; --no: #f07a7a; --shadow: 0 10px 30px rgba(0, 0, 0, .45);
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+html, body { height: 100%; }
 html { -webkit-text-size-adjust: 100%; }
 body {
-  margin: 0; background: var(--bg); color: var(--ink);
-  font: 16px/1.5 var(--font-body);
+  margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.45 var(--font-body);
+  overflow: hidden; overscroll-behavior: none;
 }
-main { max-width: 820px; margin: 0 auto; padding: 20px 16px 48px; display: flex; flex-direction: column; gap: 16px; }
-header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
-h1 { font: 600 1.6rem/1.15 var(--font-display); margin: 0; letter-spacing: .01em; text-wrap: balance; }
-.mode { font: 500 .78rem var(--font-mono); color: var(--muted); }
-.mode b { color: var(--accent); font-weight: 500; }
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px; }
-form { display: flex; flex-direction: column; gap: 12px; }
-.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
-label { display: flex; flex-direction: column; gap: 4px; font-size: .8rem; color: var(--muted); font-weight: 500; }
-input[type="text"], select {
-  font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line);
-  border-radius: 4px; padding: 9px 10px; width: 100%; min-width: 0;
-}
-fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
-legend { font-size: .8rem; color: var(--muted); font-weight: 500; padding: 0; margin-bottom: 4px; }
-.chip { flex-direction: row; align-items: center; gap: 6px; font-size: .88rem; color: var(--ink);
-  border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; cursor: pointer; font-weight: 400; }
-.chip:has(input:checked) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
-.chip input { accent-color: var(--accent); margin: 0; }
-button { font: 500 1rem var(--font-body); cursor: pointer; border-radius: 4px; }
-.primary { background: var(--accent); color: var(--accent-ink); border: 0; padding: 11px 20px; align-self: flex-start; }
-.ghost { background: transparent; color: var(--accent); border: 1px solid var(--line); padding: 6px 12px; font-size: .88rem; }
-button:disabled { opacity: .45; cursor: default; }
+button { font: inherit; color: inherit; cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-details.req summary { cursor: pointer; font-size: .85rem; color: var(--muted); font-weight: 500; }
-pre { font: .78rem/1.5 var(--font-mono); margin: 10px 0 0; padding: 10px; background: var(--bg);
-  border: 1px solid var(--line); border-radius: 4px; overflow-x: auto; white-space: pre; }
-.reqbar { display: flex; gap: 8px; margin-top: 8px; align-items: center; }
-.status { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; font-size: .9rem; color: var(--muted); }
-.status strong { color: var(--ink); font-variant-numeric: tabular-nums; }
-.pager { display: flex; gap: 8px; align-items: center; font-variant-numeric: tabular-nums; }
-.error { border-left: 4px solid var(--bad); }
-.error h2 { margin: 0 0 6px; font: 600 1.05rem var(--font-display); color: var(--bad); }
-.error p { margin: 0 0 8px; max-width: 65ch; }
-.error code, .hint code { font: .82rem var(--font-mono); background: var(--bg); padding: 2px 6px; border-radius: 3px; }
-#proxyform { margin-top: 10px; }
-#results { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.job { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
-.job > button { all: unset; box-sizing: border-box; display: block; width: 100%; padding: 12px 14px; cursor: pointer; }
-.job > button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-.job h3 { margin: 0 0 2px; font: 600 1.05rem/1.3 var(--font-body); overflow-wrap: anywhere; }
-.job .who { color: var(--muted); font-size: .92rem; overflow-wrap: anywhere; }
-.meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 8px; font-size: .82rem; color: var(--muted); align-items: center; }
-.meta .ref { font-family: var(--font-mono); font-size: .76rem; }
-.pill { font: 600 .7rem var(--font-body); letter-spacing: .05em; text-transform: uppercase;
-  color: var(--mark); border: 1px solid var(--mark); border-radius: 3px; padding: 1px 6px; }
-.detail { border-top: 1px solid var(--line); padding: 14px; display: flex; flex-direction: column; gap: 12px; }
-.detail .head { display: flex; gap: 12px; align-items: center; }
-.detail img { max-width: 96px; max-height: 56px; background: #fff; border-radius: 4px; padding: 4px; }
-.desc { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 65ch; margin: 0; }
-dl { display: grid; grid-template-columns: minmax(110px, max-content) 1fr; gap: 4px 14px; margin: 0; font-size: .88rem; }
-dt { color: var(--muted); overflow-wrap: anywhere; }
-dd { margin: 0; overflow-wrap: anywhere; }
-.links { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: .92rem; }
 a { color: var(--accent); }
-.hint { font-size: .82rem; color: var(--muted); max-width: 65ch; margin: 0; }
-@media (max-width: 420px) { dl { grid-template-columns: 1fr; } dt { margin-top: 6px; } }
+
+.app {
+  height: 100%; max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px;
+  padding: calc(12px + env(safe-area-inset-top)) 16px calc(14px + env(safe-area-inset-bottom));
+}
+header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+h1 { font: 800 1.55rem/1 var(--font-display); margin: 0; letter-spacing: -.01em; }
+h1 span { color: var(--accent); }
+.tools { display: flex; gap: 8px; }
+.tool {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 999px;
+  padding: 8px 14px; font-weight: 600; font-size: .9rem; display: inline-flex; align-items: center; gap: 6px;
+}
+.tool b { background: var(--accent); color: #fff; border-radius: 999px; min-width: 1.5em; padding: 0 6px; text-align: center; font-size: .8rem; font-variant-numeric: tabular-nums; }
+
+.profiles { display: flex; gap: 8px; overflow-x: auto; margin: 0 -16px; padding: 2px 16px 4px; scrollbar-width: none; }
+.profiles::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none; border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px;
+  padding: 8px 14px; font-weight: 600; font-size: .92rem; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.chip i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.chip[aria-pressed="true"] { background: var(--c); border-color: var(--c); color: #fff; }
+.chip[aria-pressed="true"] i { background: #fff; }
+
+.where { font-size: .86rem; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.where button { border: 0; background: none; padding: 0; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+
+.deck { position: relative; flex: 1; min-height: 0; }
+.card {
+  position: absolute; inset: 0; background: var(--surface); border-radius: 22px; box-shadow: var(--shadow);
+  border: 1px solid var(--line); display: flex; flex-direction: column; overflow: hidden;
+  transform-origin: 50% 100%; will-change: transform; user-select: none; -webkit-user-select: none;
+}
+.card.top { touch-action: none; cursor: grab; }
+.card.fly { transition: transform .28s ease-in, opacity .28s ease-in; }
+.card.back { transition: transform .2s ease-out; }
+.card:nth-last-child(2) { transform: translateY(10px) scale(.96); }
+.card:nth-last-child(3) { transform: translateY(20px) scale(.92); }
+.band {
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+  padding: 16px 18px; display: flex; gap: 12px; align-items: center;
+}
+.badge {
+  flex: none; width: 48px; height: 48px; border-radius: 14px; background: var(--accent); color: #fff;
+  display: grid; place-items: center; font: 800 1.3rem var(--font-display); overflow: hidden;
+}
+.badge img { width: 100%; height: 100%; object-fit: contain; background: #fff; padding: 4px; }
+.band .who { font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.band .ort { font-size: .88rem; color: var(--muted); }
+.body { padding: 16px 18px 0; flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
+.card h2 {
+  font: 800 clamp(1.25rem, 5.4vw, 1.7rem)/1.12 var(--font-display); margin: 0; letter-spacing: -.01em;
+  text-wrap: balance; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+}
+.excerpt { margin: 0; color: var(--muted); font-size: .95rem; flex: 1; min-height: 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(#000 60%, transparent); mask-image: linear-gradient(#000 60%, transparent); white-space: pre-line; }
+.foot { padding: 12px 18px 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .8rem; font-weight: 500; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--muted); }
+.tag.new { color: #fff; background: var(--accent); border-color: var(--accent); font-weight: 600; }
+.stamp {
+  position: absolute; top: 22px; font: 800 1.5rem var(--font-display); text-transform: uppercase; letter-spacing: .04em;
+  border: 3px solid; border-radius: 10px; padding: 2px 12px; opacity: 0; background: var(--surface); pointer-events: none;
+}
+.stamp.yes { left: 18px; color: var(--yes); transform: rotate(-12deg); }
+.stamp.no { right: 18px; color: var(--no); transform: rotate(12deg); }
+
+.state { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; padding: 24px; color: var(--muted); }
+.state strong { font: 800 1.3rem var(--font-display); color: var(--ink); }
+.state p { margin: 0; max-width: 34ch; }
+.btn { border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 10px 18px; font-weight: 600; }
+.btn.fill { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.actions { display: flex; justify-content: center; align-items: center; gap: 18px; padding-top: 12px; }
+.round {
+  width: 62px; height: 62px; border-radius: 50%; border: 2px solid; background: var(--surface);
+  display: grid; place-items: center; box-shadow: var(--shadow);
+}
+.round svg { width: 28px; height: 28px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.round.no { color: var(--no); }
+.round.yes { color: var(--yes); }
+.round.small { width: 46px; height: 46px; color: var(--muted); border-color: var(--line); box-shadow: none; }
+.round.small svg { width: 20px; height: 20px; }
+.round:disabled { opacity: .35; cursor: default; }
+.round:active:not(:disabled) { transform: scale(.94); }
+.note { font-size: .78rem; color: var(--muted); text-align: center; margin: 0; }
+
+.sheet { position: fixed; inset: 0; z-index: 10; display: flex; align-items: flex-end; justify-content: center; background: rgba(10, 12, 18, .5); }
+.sheet[hidden] { display: none; }
+.panel {
+  background: var(--surface); width: 100%; max-width: 560px; max-height: 92%; border-radius: 22px 22px 0 0;
+  display: flex; flex-direction: column; box-shadow: var(--shadow);
+}
+.panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 18px 18px 10px; }
+.panel-head h2 { font: 800 1.3rem/1.15 var(--font-display); margin: 0; overflow-wrap: anywhere; text-wrap: balance; }
+.close { flex: none; border: 1px solid var(--line); background: var(--bg); border-radius: 50%; width: 38px; height: 38px; font-size: 1.1rem; line-height: 1; }
+.panel-body { overflow-y: auto; padding: 0 18px calc(22px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 14px; overscroll-behavior: contain; }
+.sub { color: var(--muted); margin: 0; }
+.desc { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; max-width: 65ch; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; }
+dl { display: grid; grid-template-columns: minmax(100px, max-content) 1fr; gap: 4px 14px; margin: 8px 0 0; font-size: .86rem; }
+dt { color: var(--muted); overflow-wrap: anywhere; } dd { margin: 0; overflow-wrap: anywhere; }
+summary { cursor: pointer; color: var(--muted); font-size: .88rem; font-weight: 500; }
+.saved { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.saved li { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; border-left: 5px solid var(--c, var(--accent)); }
+.saved h3 { margin: 0; font: 600 1rem/1.3 var(--font-body); overflow-wrap: anywhere; }
+.saved .row { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; align-items: center; }
+.saved .row button { border: 0; background: none; padding: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.saved .row .del { color: var(--no); }
+label { display: flex; flex-direction: column; gap: 4px; font-size: .84rem; color: var(--muted); font-weight: 500; }
+input[type="text"], select { font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; }
+.terms { font-size: .86rem; color: var(--muted); margin: 0; }
+@media (prefers-reduced-motion: reduce) { .card.fly, .card.back { transition: none; } }
 </style>
 </head>
 <body>
-<main>
+<div class="app">
   <header>
-    <h1>Jobsuche-API Prototyp</h1>
-    <span class="mode">Verbindung: <b id="mode">wird geprüft</b></span>
+    <h1>Job<span>stapel</span></h1>
+    <div class="tools">
+      <button type="button" class="tool" id="open-saved">Gemerkt <b id="saved-count">0</b></button>
+      <button type="button" class="tool" id="open-settings" aria-label="Ort und Einstellungen">Ort</button>
+    </div>
   </header>
 
-  <form id="form" class="panel" autocomplete="off">
-    <div class="row">
-      <label for="was">Was (Beruf, Stichwort)
-        <input type="text" id="was" name="was" value="Fachinformatiker">
-      </label>
-      <label for="wo">Wo (Ort oder PLZ)
-        <input type="text" id="wo" name="wo" value="Dresden">
-      </label>
-      <label for="umkreis">Umkreis
-        <select id="umkreis" name="umkreis">
-          <option value="0">nur dieser Ort</option><option value="10">10 km</option>
-          <option value="25" selected>25 km</option><option value="50">50 km</option>
-          <option value="100">100 km</option><option value="200">200 km</option>
-        </select>
-      </label>
-    </div>
-    <div class="row">
-      <label for="angebotsart">Angebotsart
-        <select id="angebotsart" name="angebotsart">
-          <option value="1" selected>Arbeit</option><option value="4">Ausbildung / Duales Studium</option>
-          <option value="34">Praktikum / Trainee</option><option value="2">Selbständigkeit</option>
-        </select>
-      </label>
-      <label for="befristung">Befristung
-        <select id="befristung" name="befristung">
-          <option value="" selected>egal</option><option value="2">unbefristet</option><option value="1">befristet</option>
-        </select>
-      </label>
-      <label for="seit">Veröffentlicht
-        <select id="seit" name="veroeffentlichtseit">
-          <option value="" selected>jederzeit</option><option value="1">seit gestern</option>
-          <option value="7">letzte 7 Tage</option><option value="14">letzte 14 Tage</option><option value="28">letzte 4 Wochen</option>
-        </select>
-      </label>
-    </div>
-    <fieldset>
-      <legend>Arbeitszeit</legend>
-      <label class="chip" for="az-vz"><input type="checkbox" id="az-vz" name="arbeitszeit" value="vz">Vollzeit</label>
-      <label class="chip" for="az-tz"><input type="checkbox" id="az-tz" name="arbeitszeit" value="tz">Teilzeit</label>
-      <label class="chip" for="az-ho"><input type="checkbox" id="az-ho" name="arbeitszeit" value="ho">Homeoffice</label>
-      <label class="chip" for="az-snw"><input type="checkbox" id="az-snw" name="arbeitszeit" value="snw">Schicht / Nacht / Wochenende</label>
-      <label class="chip" for="az-mj"><input type="checkbox" id="az-mj" name="arbeitszeit" value="mj">Minijob</label>
-    </fieldset>
-    <fieldset>
-      <legend>Ausblenden</legend>
-      <label class="chip" for="ohne-za"><input type="checkbox" id="ohne-za" checked>Zeitarbeit</label>
-      <label class="chip" for="ohne-pav"><input type="checkbox" id="ohne-pav" checked>Private Arbeitsvermittler</label>
-    </fieldset>
-    <button type="submit" class="primary" id="submit">Stellen suchen</button>
-  </form>
+  <nav class="profiles" id="profiles" aria-label="Berufsgruppen"></nav>
 
-  <details class="panel req" id="req">
-    <summary>Gesendete API-Abfrage anzeigen</summary>
-    <pre id="curl">Noch keine Abfrage gesendet.</pre>
-    <div class="reqbar">
-      <button type="button" class="ghost" id="copy">curl-Befehl kopieren</button>
-      <span class="hint" id="copied" role="status"></span>
-    </div>
-  </details>
-
-  <div class="status" id="status" role="status">
-    <span id="count">Suche läuft …</span>
-    <span class="pager">
-      <button type="button" class="ghost" id="prev" disabled>Zurück</button>
-      <span id="pageinfo">Seite 1</span>
-      <button type="button" class="ghost" id="next" disabled>Weiter</button>
-    </span>
+  <div class="where">
+    <span id="where-text"></span>
+    <span id="left" role="status"></span>
   </div>
 
-  <section class="panel error" id="error" hidden>
-    <h2 id="err-title"></h2>
-    <p id="err-text"></p>
-    <p id="err-help"></p>
-  </section>
+  <main class="deck" id="deck" aria-live="polite"></main>
 
-  <p class="hint" id="fallback" hidden>Eingeschränkter Modus: Die BA lehnt die Schnittstellen-Abfrage des Proxys ab, die Treffer stammen aus der normalen Webseiten-Suche. Filter und Details können fehlen.</p>
+  <div class="actions">
+    <button type="button" class="round small" id="undo" aria-label="Letzte Entscheidung zurücknehmen" disabled>
+      <svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg>
+    </button>
+    <button type="button" class="round no" id="no" aria-label="Verwerfen">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <button type="button" class="round yes" id="yes" aria-label="Merken">
+      <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+    </button>
+    <button type="button" class="round small" id="info" aria-label="Details anzeigen">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg>
+    </button>
+  </div>
+  <p class="note" id="note">Nach rechts wischen merkt die Stelle, nach links verwirft sie. Antippen zeigt Details.</p>
+</div>
 
-  <ol id="results"></ol>
-
-  <details class="panel req" id="proxybox">
-    <summary>Proxy-Adresse</summary>
-    <form id="proxyform" autocomplete="off">
-      <label for="proxy">Adresse des Worker-Proxys (leer lassen für direkte Abfrage)
-        <input type="text" id="proxy" inputmode="url" placeholder="https://jobs-ba-api.NAME.workers.dev">
-      </label>
-      <div class="reqbar">
-        <button type="submit" class="ghost">Speichern und neu suchen</button>
-        <span class="hint" id="proxymsg" role="status"></span>
-      </div>
-    </form>
-  </details>
-
-  <p class="hint">Daten: Jobsuche der Bundesagentur für Arbeit über <code>rest.arbeitsagentur.de</code>. Die Schnittstelle ist öffentlich erreichbar, aber von der BA nicht offiziell dokumentiert und kann sich ohne Ankündigung ändern.</p>
-</main>
+<div class="sheet" id="sheet" hidden>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+    <div class="panel-head">
+      <h2 id="sheet-title"></h2>
+      <button type="button" class="close" id="sheet-close" aria-label="Schließen">✕</button>
+    </div>
+    <div class="panel-body" id="sheet-body"></div>
+  </div>
+</div>
 
 <script>
 (() => {
   'use strict';
-  const API_KEY = 'jobboerse-jobsuche';
-  const HOST = 'https://rest.arbeitsagentur.de';
-  const SEARCH = HOST + '/jobboerse/jobsuche-service/pc/v4/jobs';
-  const DETAILS = HOST + '/jobboerse/jobsuche-service/pc/v4/jobdetails/';
-  const LOGO = HOST + '/vermittlung/ag-darstellung-service/ct/v1/arbeitgeberlogo/';
+
+  // Berufsgruppen: Hinter jedem Profil stecken mehrere Suchbegriffe, die einzeln abgefragt und zusammengeführt werden.
+  const PROFILES = [
+    { id: 'sozial', name: 'Erzieher & HEP', color: '#d4482b',
+      terms: ['Heilerziehungspfleger', 'Erzieher', 'Pädagogische Fachkraft', 'Heilpädagoge', 'Kindheitspädagoge', 'Betreuungsfachkraft Eingliederungshilfe'] },
+    { id: 'social', name: 'Social Media', color: '#b22f82',
+      terms: ['Social Media Manager', 'Online Marketing Manager', 'Content Manager', 'Community Manager', 'Content Creator', 'Marketing Manager Kommunikation', 'Referent Öffentlichkeitsarbeit'] },
+    { id: 'buero', name: 'Sachbearbeitung', color: '#a26400',
+      terms: ['Sachbearbeiter Vertriebsinnendienst', 'Vertriebsassistent', 'Kaufmännischer Mitarbeiter Vertrieb', 'Sachbearbeiter Auftragsabwicklung', 'Medienkaufmann', 'Verlag', 'Redakteur', 'Journalist', 'Lektor', 'Redaktionsassistent'] },
+    { id: 'neben', name: 'Nebenjobs', color: '#1f8a5b',
+      terms: [''], extra: { arbeitszeit: 'mj' }, hint: 'alle Minijobs im Umkreis' },
+    { id: 'it', name: 'IT', color: '#2563c9',
+      terms: ['Systemadministrator', 'IT-Administrator', 'IT-Leiter', 'System Engineer', 'Security Engineer', 'IT-Sicherheit', 'Microsoft 365', 'Cloud Engineer', 'Netzwerkadministrator', 'IT-Koordinator'] },
+  ];
+  const WORKER = 'https://jobs-ba-api.micana.workers.dev/';
   const SIZE = 25;
-  // Adresse des Cloudflare-Workers (proxy/worker.js), z. B. https://jobs-ba-api.NAME.workers.dev
-  const DEFAULT_PROXY = 'https://jobs-ba-api.micana.workers.dev';
+  const KEY = 'jobstapel-v1';
 
   const $ = id => document.getElementById(id);
-  const el = (tag, cls, text) => {
-    const n = document.createElement(tag);
-    if (cls) n.className = cls;
-    if (text != null) n.textContent = text;
-    return n;
-  };
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
 
-  let mode = 'direct';          // 'proxy' = jobsuche.py, 'worker' = Cloudflare-Worker, 'direct' = Browser ruft die BA selbst
-  let base = '';                // Präfix für Proxy-Pfade
-  const validProxy = v => /^https:\/\/[a-z0-9.-]+(:\d+)?$/i.test(v);
-  function storedProxy() {
-    let v = '';
-    try { v = localStorage.getItem('jobsuche-proxy') || ''; } catch (e) {}
-    v = (v || DEFAULT_PROXY).replace(/\/+$/, '');
-    return validProxy(v) ? v : '';
+  // ---------- Speicher (nur in diesem Browser) ----------
+  const store = { ort: 'Dresden', umkreis: '25', profil: 'sozial', liked: {}, seen: {} };
+  try { Object.assign(store, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
+  if (!PROFILES.some(p => p.id === store.profil)) store.profil = PROFILES[0].id;
+  function save() {
+    const keys = Object.keys(store.seen);
+    if (keys.length > 4000) for (const k of keys.slice(0, keys.length - 3000)) delete store.seen[k];
+    try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {}
   }
-  let page = 1, total = 0, lastCurl = '';
-  const cache = new Map();      // refnr -> Detailantwort
 
-  async function detectMode() {
-    if (/^https?:$/.test(location.protocol)) {
-      try {
-        const r = await fetch('api/ping', { cache: 'no-store' });
-        if (r.ok && (await r.json()).ok) mode = 'proxy';
-      } catch (e) { /* kein Proxy vorhanden */ }
+  // ---------- API ----------
+  let base = WORKER;
+  async function detectBase() {
+    // Läuft die Seite über "python3 jobsuche.py serve", wird dessen lokaler Proxy genutzt.
+    if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return;
+    try { const r = await fetch('api/ping', { cache: 'no-store' }); if (r.ok && (await r.json()).ok) base = ''; } catch (e) {}
+  }
+  async function api(path) {
+    const r = await fetch(base + path);
+    if (!r.ok) throw Object.assign(new Error('Fehler ' + r.status), { status: r.status });
+    return r;
+  }
+  const details = new Map();
+  function loadDetails(refnr) {
+    if (!details.has(refnr)) {
+      details.set(refnr, api('api/jobdetails/' + encodeURIComponent(refnr)).then(r => r.json()).catch(e => { details.delete(refnr); throw e; }));
     }
-    if (mode !== 'proxy') {
-      const w = storedProxy();
-      if (w) { mode = 'worker'; base = w + '/'; } else { mode = 'direct'; base = ''; }
+    return details.get(refnr);
+  }
+  const logos = new Map();
+  function loadLogo(hash) {
+    if (!logos.has(hash)) {
+      logos.set(hash, api('api/logo/' + encodeURIComponent(hash)).then(r => r.blob()).then(b => URL.createObjectURL(b)).catch(() => null));
     }
-    $('mode').textContent = { proxy: 'über lokalen Proxy', worker: 'über Worker-Proxy', direct: 'direkt zur BA-API' }[mode];
-    $('proxy').value = storedProxy();
+    return logos.get(hash);
   }
 
-  function b64(refnr) { return btoa(unescape(encodeURIComponent(refnr))); }
+  // ---------- Stapel ----------
+  let profile = PROFILES.find(p => p.id === store.profil);
+  let deck = [], inDeck = new Set(), pageNo = 0, exhausted = false, loading = false, failed = '', fallback = false, run = 0;
+  const history = [];
 
-  function get(directUrl, proxyUrl) {
-    return mode === 'direct'
-      ? fetch(directUrl, { headers: { 'X-API-Key': API_KEY } })
-      : fetch(base + proxyUrl);
+  const fmtDate = s => { const d = new Date(s); return !s || isNaN(d) ? '' : d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }); };
+  const isNew = s => { const d = new Date(s); return !isNaN(d) && Date.now() - d.getTime() < 3 * 864e5; };
+  const time = j => { const d = new Date(j.aktuelleVeroeffentlichungsdatum); return isNaN(d) ? 0 : d.getTime(); };
+
+  function slim(job, term) {
+    const o = job.arbeitsort || {};
+    return {
+      refnr: job.refnr || job.referenznummer || '', titel: job.titel || job.beruf || '(ohne Titel)',
+      arbeitgeber: job.arbeitgeber || '', plz: o.plz || '', ort: o.ort || '',
+      entfernung: Number(o.entfernung) > 0 ? Math.round(Number(o.entfernung)) : 0,
+      aktuelleVeroeffentlichungsdatum: job.aktuelleVeroeffentlichungsdatum || '', eintrittsdatum: job.eintrittsdatum || '',
+      kundennummerHash: job.kundennummerHash || '', externeUrl: /^https?:\/\//i.test(job.externeUrl || '') ? job.externeUrl : '',
+      term, profil: profile.id,
+    };
   }
 
-  function params() {
-    const f = $('form');
-    const p = new URLSearchParams();
-    const was = f.was.value.trim(), wo = f.wo.value.trim();
-    if (was) p.set('was', was);
-    if (wo) { p.set('wo', wo); p.set('umkreis', f.umkreis.value); }
-    p.set('angebotsart', f.angebotsart.value);
-    if (f.befristung.value) p.set('befristung', f.befristung.value);
-    if (f.veroeffentlichtseit.value) p.set('veroeffentlichtseit', f.veroeffentlichtseit.value);
-    const az = [...f.querySelectorAll('input[name="arbeitszeit"]:checked')].map(c => c.value);
-    if (az.length) p.set('arbeitszeit', az.join(';'));
-    if ($('ohne-za').checked) p.set('zeitarbeit', 'false');
-    if ($('ohne-pav').checked) p.set('pav', 'false');
-    p.set('page', String(page));
-    p.set('size', String(SIZE));
-    return p;
-  }
-
-  function showError(title, text, help) {
-    $('err-title').textContent = title;
-    $('err-text').textContent = text;
-    $('err-help').textContent = help || '';
-    $('error').hidden = false;
-  }
-
-  const fmtDate = s => {
-    if (!s) return '';
-    const d = new Date(s);
-    return isNaN(d) ? String(s) : d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  };
-  const isNew = s => { const d = new Date(s); return !isNaN(d) && (Date.now() - d.getTime()) < 3 * 864e5; };
-
-  async function search() {
-    const qs = params().toString();
-    lastCurl = `curl -H "X-API-Key: ${API_KEY}" \\\n  '${SEARCH}?${qs}'`;
-    $('curl').textContent = lastCurl;
-    $('error').hidden = true;
-    $('count').textContent = 'Suche läuft …';
-    $('submit').disabled = true;
-    $('prev').disabled = $('next').disabled = true;
-    try {
-      const r = await get(`${SEARCH}?${qs}`, `api/jobs?${qs}`);
-      if (!r.ok) {
-        const body = (await r.text()).slice(0, 300);
-        throw Object.assign(new Error(body), { status: r.status });
+  async function loadMore() {
+    if (loading || exhausted) return;
+    loading = true; failed = '';
+    const my = run;
+    render();
+    let tries = 0;
+    while (my === run && !exhausted && deck.length < 6 && tries++ < 4) {
+      pageNo++;
+      const results = await Promise.allSettled(profile.terms.map(async term => {
+        const p = new URLSearchParams({ angebotsart: '1', zeitarbeit: 'false', pav: 'false', page: String(pageNo), size: String(SIZE) });
+        if (term) p.set('was', term);
+        if (store.ort.trim()) { p.set('wo', store.ort.trim()); p.set('umkreis', store.umkreis); }
+        for (const [k, v] of Object.entries(profile.extra || {})) p.set(k, v);
+        const data = await (await api('api/jobs?' + p)).json();
+        return { term, data };
+      }));
+      if (my !== run) return;
+      const ok = results.filter(r => r.status === 'fulfilled').map(r => r.value);
+      if (!ok.length) { failed = String(results[0].reason?.message || results[0].reason || 'unbekannt'); pageNo--; break; }
+      let full = false;
+      const batch = [];
+      for (const { term, data } of ok) {
+        const list = data.stellenangebote || [];
+        if (data.quelle === 'html') fallback = true;
+        if (list.length >= SIZE && (Number(data.maxErgebnisse) || 0) > pageNo * SIZE) full = true;
+        for (const raw of list) {
+          const job = slim(raw, term);
+          if (!job.refnr || inDeck.has(job.refnr) || store.seen[job.refnr] || store.liked[job.refnr]) continue;
+          inDeck.add(job.refnr);
+          batch.push(job);
+        }
       }
-      const data = await r.json();
-      render(data);
-      try { localStorage.setItem('jobsuche-letzte', qs); } catch (e) {}
-    } catch (e) {
-      $('results').replaceChildren();
-      $('count').textContent = 'Keine Antwort erhalten';
-      if (e.status) {
-        showError(`Die API antwortet mit Fehler ${e.status}`, e.message || 'Keine weitere Angabe.',
-          'Prüfe die Suchangaben. Bei 401 oder 403 wurde vermutlich der API-Key oder die Version der Schnittstelle geändert.');
-      } else if (mode === 'direct') {
-        showError('Der Browser konnte die BA-API nicht direkt abfragen',
-          'Wahrscheinlich blockiert der Browser die Anfrage, weil die API fremden Webseiten keinen Zugriff erlaubt (CORS), oder es besteht keine Internetverbindung.',
-          'Abhilfe: unten unter „Proxy-Adresse“ die Adresse des Worker-Proxys eintragen. Lokal geht es auch mit „python3 jobsuche.py serve“ und http://localhost:8080.');
-        $('proxybox').open = true;
-      } else if (mode === 'worker') {
-        showError('Der Worker-Proxy ist nicht erreichbar', String(e.message || e),
-          'Prüfe unten die Proxy-Adresse und ob der Worker bei Cloudflare läuft.');
-        $('proxybox').open = true;
-      } else {
-        showError('Der lokale Proxy ist nicht erreichbar', String(e.message || e), 'Läuft „python3 jobsuche.py serve“ noch?');
-      }
-    } finally {
-      $('submit').disabled = false;
+      batch.sort((a, b) => time(b) - time(a));
+      deck.push(...batch);
+      if (!full) exhausted = true;
     }
+    if (my !== run) return;
+    loading = false;
+    render();
   }
 
-  function render(data) {
-    const jobs = data.stellenangebote || [];
-    total = Number(data.maxErgebnisse) || jobs.length;
-    const pages = Math.max(1, Math.ceil(total / SIZE));
-    $('count').replaceChildren(el('strong', null, total.toLocaleString('de-DE')), document.createTextNode(' Treffer'));
-    $('fallback').hidden = data.quelle !== 'html';
-    $('pageinfo').textContent = `Seite ${page} von ${pages.toLocaleString('de-DE')}`;
-    $('prev').disabled = page <= 1;
-    $('next').disabled = page >= pages || jobs.length === 0;
+  function resetDeck() {
+    run++;
+    deck = []; inDeck = new Set(); pageNo = 0; exhausted = false; loading = false; failed = ''; fallback = false; history.length = 0;
+    loadMore();
+  }
 
-    const list = $('results');
-    list.replaceChildren();
-    if (!jobs.length) {
-      list.append(el('li', 'panel', 'Keine Stellen gefunden. Vergrößere den Umkreis oder entferne Filter.'));
+  // ---------- Darstellung ----------
+  function renderChrome() {
+    document.documentElement.style.setProperty('--accent', profile.color);
+    $('profiles').replaceChildren(...PROFILES.map(p => {
+      const b = el('button', 'chip');
+      b.type = 'button';
+      b.style.setProperty('--c', p.color);
+      b.setAttribute('aria-pressed', String(p.id === profile.id));
+      b.append(el('i'), document.createTextNode(p.name));
+      b.addEventListener('click', () => { if (p.id === profile.id) return; profile = p; store.profil = p.id; save(); renderChrome(); resetDeck(); });
+      return b;
+    }));
+    const ort = store.ort.trim();
+    $('where-text').replaceChildren(document.createTextNode(ort ? `${ort}, ${store.umkreis === '0' ? 'nur dieser Ort' : store.umkreis + ' km Umkreis'} ` : 'Deutschlandweit '));
+    const terms = el('button', null, 'Suchbegriffe');
+    terms.type = 'button';
+    terms.addEventListener('click', openSettings);
+    $('where-text').append(terms);
+    $('saved-count').textContent = String(Object.keys(store.liked).length);
+  }
+
+  function card(job, top) {
+    const c = el('article', 'card' + (top ? ' top' : ''));
+    c.dataset.ref = job.refnr;
+    const band = el('div', 'band');
+    const badge = el('span', 'badge', (job.arbeitgeber.trim()[0] || '?').toUpperCase());
+    const who = el('div');
+    who.append(el('div', 'who', job.arbeitgeber || 'Arbeitgeber nicht genannt'));
+    const place = [job.plz, job.ort].filter(Boolean).join(' ');
+    who.append(el('div', 'ort', (place || 'Ort nicht genannt') + (job.entfernung ? ` · ${job.entfernung} km` : '')));
+    band.append(badge, who);
+    const body = el('div', 'body');
+    body.append(el('h2', null, job.titel));
+    const ex = el('p', 'excerpt');
+    body.append(ex);
+    const foot = el('div', 'foot');
+    if (isNew(job.aktuelleVeroeffentlichungsdatum)) foot.append(el('span', 'tag new', 'Neu'));
+    if (job.aktuelleVeroeffentlichungsdatum) foot.append(el('span', 'tag', 'online seit ' + fmtDate(job.aktuelleVeroeffentlichungsdatum)));
+    if (job.eintrittsdatum) foot.append(el('span', 'tag', 'Start ' + fmtDate(job.eintrittsdatum)));
+    if (job.term) foot.append(el('span', 'tag', job.term));
+    c.append(band, body, foot, el('span', 'stamp yes', 'Merken'), el('span', 'stamp no', 'Weg'));
+
+    if (top) {
+      loadDetails(job.refnr).then(d => {
+        const text = String(d.stellenangebotsBeschreibung || d.stellenbeschreibung || '').replace(/\n{3,}/g, '\n\n').trim();
+        ex.textContent = text.slice(0, 700);
+        const hash = d.arbeitgeberKundennummerHash || job.kundennummerHash;
+        if (hash) loadLogo(hash).then(src => { if (!src) return; const img = el('img'); img.alt = ''; img.src = src; badge.replaceChildren(img); });
+      }).catch(() => { ex.textContent = ''; });
+      drag(c);
+    }
+    return c;
+  }
+
+  function state(title, text, ...buttons) {
+    const s = el('div', 'state');
+    s.append(el('strong', null, title), el('p', null, text), ...buttons);
+    return s;
+  }
+  function button(label, fn, fill) { const b = el('button', 'btn' + (fill ? ' fill' : ''), label); b.type = 'button'; b.addEventListener('click', fn); return b; }
+
+  function render() {
+    const d = $('deck');
+    const has = deck.length > 0;
+    $('yes').disabled = $('no').disabled = $('info').disabled = !has;
+    $('undo').disabled = history.length === 0;
+    $('left').textContent = has ? `${deck.length}${exhausted ? '' : '+'} im Stapel` : '';
+    $('saved-count').textContent = String(Object.keys(store.liked).length);
+    $('note').textContent = fallback
+      ? 'Eingeschränkter Modus: Die Treffer stammen aus der Webseiten-Suche der Arbeitsagentur, Details können fehlen.'
+      : 'Nach rechts wischen merkt die Stelle, nach links verwirft sie. Antippen zeigt Details.';
+    const key = has ? deck.slice(0, 3).map(j => j.refnr).join('|') : '';
+    if (has && d.dataset.key === key) return;      // Karten unverändert: laufendes Wischen nicht stören
+    d.dataset.key = key;
+    if (has) {
+      // unterste Karte zuerst, damit die oberste zuletzt im DOM liegt
+      d.replaceChildren(...deck.slice(0, 3).map((j, i) => card(j, i === 0)).reverse());
       return;
     }
-    for (const job of jobs) list.append(card(job));
+    if (loading) { d.replaceChildren(state('Stellen werden geladen', `${profile.terms.length > 1 ? profile.terms.length + ' Suchbegriffe' : 'Die Suche'} für ${profile.name} ${profile.terms.length > 1 ? 'werden' : 'wird'} abgefragt.`)); return; }
+    if (failed) { d.replaceChildren(state('Keine Verbindung zur Jobsuche', 'Der Proxy oder die Arbeitsagentur antwortet nicht (' + failed + ').', button('Erneut versuchen', () => loadMore(), true))); return; }
+    d.replaceChildren(state('Stapel durchgesehen', 'Für ' + profile.name + ' gibt es hier gerade keine weiteren Stellen. Neue Anzeigen erscheinen automatisch beim nächsten Öffnen.',
+      button('Ort oder Umkreis ändern', openSettings, true),
+      button('Verworfene noch einmal zeigen', () => { store.seen = {}; save(); resetDeck(); })));
   }
 
-  function card(job) {
-    const refnr = job.refnr || job.referenznummer || '';
-    const ort = job.arbeitsort || {};
-    const li = el('li', 'job');
-    const btn = el('button');
-    btn.type = 'button';
-    btn.setAttribute('aria-expanded', 'false');
-    btn.append(el('h3', null, job.titel || job.beruf || '(ohne Titel)'));
-    btn.append(el('div', 'who', job.arbeitgeber || 'Arbeitgeber nicht genannt'));
-    const meta = el('div', 'meta');
-    if (isNew(job.aktuelleVeroeffentlichungsdatum)) meta.append(el('span', 'pill', 'Neu'));
-    const place = [ort.plz, ort.ort].filter(Boolean).join(' ');
-    if (place) meta.append(el('span', null, place + (ort.entfernung != null && Number(ort.entfernung) > 0 ? ` (${ort.entfernung} km)` : '')));
-    if (job.aktuelleVeroeffentlichungsdatum) meta.append(el('span', null, 'online seit ' + fmtDate(job.aktuelleVeroeffentlichungsdatum)));
-    if (job.eintrittsdatum) meta.append(el('span', null, 'Start ' + fmtDate(job.eintrittsdatum)));
-    if (refnr) meta.append(el('span', 'ref', refnr));
-    btn.append(meta);
-    li.append(btn);
-
-    let box = null;
-    btn.addEventListener('click', async () => {
-      if (box) { box.hidden = !box.hidden; btn.setAttribute('aria-expanded', String(!box.hidden)); return; }
-      box = el('div', 'detail');
-      box.append(el('span', 'hint', 'Details werden geladen …'));
-      li.append(box);
-      btn.setAttribute('aria-expanded', 'true');
-      await fillDetail(box, job, refnr);
+  // ---------- Wischen ----------
+  function drag(c) {
+    let sx = 0, sy = 0, dx = 0, dy = 0, active = false, moved = false;
+    const yes = c.querySelector('.stamp.yes'), no = c.querySelector('.stamp.no');
+    c.addEventListener('pointerdown', e => {
+      if (e.button) return;
+      active = true; moved = false; sx = e.clientX; sy = e.clientY; dx = dy = 0;
+      c.classList.remove('back');
+      c.setPointerCapture(e.pointerId);
     });
-    return li;
+    c.addEventListener('pointermove', e => {
+      if (!active) return;
+      dx = e.clientX - sx; dy = e.clientY - sy;
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) moved = true;
+      c.style.transform = `translate(${dx}px, ${dy * .25}px) rotate(${dx / 22}deg)`;
+      yes.style.opacity = String(Math.max(0, Math.min(1, dx / 90)));
+      no.style.opacity = String(Math.max(0, Math.min(1, -dx / 90)));
+    });
+    const end = () => {
+      if (!active) return;
+      active = false;
+      if (!moved) { c.style.transform = ''; openDetails(deck[0]); return; }
+      if (Math.abs(dx) > Math.min(110, innerWidth * .28)) { decide(dx > 0 ? 'yes' : 'no'); return; }
+      c.classList.add('back');
+      c.style.transform = ''; yes.style.opacity = no.style.opacity = '0';
+    };
+    c.addEventListener('pointerup', end);
+    c.addEventListener('pointercancel', () => { moved = true; dx = 0; end(); });
   }
 
-  async function fillDetail(box, job, refnr) {
+  let busy = false;
+  function decide(action) {
+    const job = deck[0];
+    if (!job || busy) return;
+    busy = true;
+    const c = $('deck').querySelector('.card.top');
+    const done = () => {
+      busy = false;
+      deck.shift();
+      if (action === 'yes') store.liked[job.refnr] = { ...job, gemerkt: Date.now() }; else store.seen[job.refnr] = 1;
+      history.push({ job, action });
+      if (history.length > 30) history.shift();
+      save();
+      render();
+      if (deck.length < 6) loadMore();
+    };
+    if (!c || matchMedia('(prefers-reduced-motion: reduce)').matches) return done();
+    c.classList.add('fly');
+    c.querySelector(action === 'yes' ? '.stamp.yes' : '.stamp.no').style.opacity = '1';
+    c.style.transform = `translate(${action === 'yes' ? 140 : -140}%, 8%) rotate(${action === 'yes' ? 24 : -24}deg)`;
+    c.style.opacity = '0';
+    setTimeout(done, 260);
+  }
+  function undo() {
+    const last = history.pop();
+    if (!last) return;
+    delete store.liked[last.job.refnr]; delete store.seen[last.job.refnr];
+    deck.unshift(last.job);
+    save(); render();
+  }
+
+  // ---------- Blätter (Details, Merkliste, Einstellungen) ----------
+  let lastFocus = null;
+  function openSheet(title, ...nodes) {
+    lastFocus = document.activeElement;
+    $('sheet-title').textContent = title;
+    $('sheet-body').replaceChildren(...nodes);
+    $('sheet-body').scrollTop = 0;
+    $('sheet').hidden = false;
+    $('sheet-close').focus();
+  }
+  function closeSheet() { $('sheet').hidden = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  function link(label, href, fill) { const a = el('a', 'btn' + (fill ? ' fill' : ''), label); a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.style.textDecoration = 'none'; if (fill) a.style.color = '#fff'; return a; }
+
+  function openDetails(job) {
+    if (!job) return;
+    const place = [job.plz, job.ort].filter(Boolean).join(' ');
+    const sub = el('p', 'sub', [job.arbeitgeber, place, job.entfernung ? job.entfernung + ' km entfernt' : ''].filter(Boolean).join(' · '));
     const links = el('div', 'links');
-    if (refnr) {
-      const a = el('a', null, 'Bei der Arbeitsagentur öffnen');
-      a.href = 'https://www.arbeitsagentur.de/jobsuche/jobdetail/' + encodeURIComponent(refnr);
-      a.target = '_blank'; a.rel = 'noopener';
-      links.append(a);
-    }
-    if (job.externeUrl && /^https?:\/\//i.test(job.externeUrl)) {
-      const a = el('a', null, 'Originalanzeige beim Arbeitgeber');
-      a.href = job.externeUrl; a.target = '_blank'; a.rel = 'noopener noreferrer';
-      links.append(a);
-    }
-
-    let d = cache.get(refnr);
-    let problem = '';
-    if (!d && refnr) {
-      try {
-        const code = encodeURIComponent(b64(refnr));
-        const r = await get(DETAILS + code, 'api/jobdetails/' + encodeURIComponent(refnr));
-        if (!r.ok) throw new Error('Fehler ' + r.status);
-        d = await r.json();
-        cache.set(refnr, d);
-      } catch (e) {
-        problem = 'Details konnten nicht geladen werden (' + (e.message || e) + '). Externe Anzeigen liefern oft keine Details über die API.';
+    links.append(link('Anzeige bei der Arbeitsagentur', 'https://www.arbeitsagentur.de/jobsuche/jobdetail/' + encodeURIComponent(job.refnr), true));
+    if (job.externeUrl) links.append(link('Originalanzeige', job.externeUrl));
+    const desc = el('p', 'desc', 'Beschreibung wird geladen …');
+    const more = el('details');
+    more.hidden = true;
+    openSheet(job.titel, sub, links, desc, more);
+    loadDetails(job.refnr).then(d => {
+      const text = d.stellenangebotsBeschreibung || d.stellenbeschreibung;
+      desc.textContent = text || 'Für diese Stelle liefert die Arbeitsagentur keinen Beschreibungstext. Öffne die Anzeige über den Knopf oben.';
+      const dl = el('dl');
+      for (const [k, v] of Object.entries(d)) {
+        if (/Beschreibung|KundennummerHash/i.test(k) || v == null || v === '' || typeof v === 'object') continue;
+        dl.append(el('dt', null, k), el('dd', null, typeof v === 'boolean' ? (v ? 'ja' : 'nein') : String(v)));
       }
-    }
-
-    box.replaceChildren();
-    if (problem || !d) {
-      box.append(el('p', 'hint', problem || 'Keine Referenznummer vorhanden.'), links);
-      return;
-    }
-
-    const head = el('div', 'head');
-    const hash = d.arbeitgeberKundennummerHash || job.kundennummerHash;
-    if (hash) loadLogo(head, hash);
-    head.append(el('strong', null, d.firma || d.arbeitgeber || job.arbeitgeber || ''));
-    box.append(head);
-
-    const desc = d.stellenangebotsBeschreibung || d.stellenbeschreibung;
-    box.append(desc ? el('p', 'desc', desc) : el('p', 'hint', 'Die API liefert für diese Stelle keinen Beschreibungstext.'));
-
-    // Alle einfachen Felder der Antwort zeigen, damit sichtbar wird, was die Schnittstelle hergibt.
-    const skip = new Set(['stellenangebotsBeschreibung', 'stellenbeschreibung', 'arbeitgeberKundennummerHash']);
-    const dl = el('dl');
-    for (const [k, v] of Object.entries(d)) {
-      if (skip.has(k) || v == null || v === '' || typeof v === 'object') continue;
-      dl.append(el('dt', null, k), el('dd', null, typeof v === 'boolean' ? (v ? 'ja' : 'nein') : String(v)));
-    }
-    if (dl.children.length) box.append(dl);
-    box.append(links);
-
-    const raw = el('details', 'req');
-    raw.append(el('summary', null, 'Rohantwort der API (JSON)'), el('pre', null, JSON.stringify(d, null, 2)));
-    box.append(raw);
+      if (dl.children.length) { more.append(el('summary', null, 'Alle Angaben der Schnittstelle'), dl); more.hidden = false; }
+    }).catch(() => { desc.textContent = 'Die Details konnten nicht geladen werden. Öffne die Anzeige über den Knopf oben.'; });
   }
 
-  async function loadLogo(head, hash) {
-    try {
-      const h = encodeURIComponent(hash);
-      const r = await get(LOGO + h, 'api/logo/' + h);
-      if (!r.ok) return;                       // 404 heißt nur: kein Logo hinterlegt
-      const img = el('img');
-      img.alt = 'Logo des Arbeitgebers';
-      img.src = URL.createObjectURL(await r.blob());
-      head.prepend(img);
-    } catch (e) { /* Logo ist optional */ }
+  function openSaved() {
+    const jobs = Object.values(store.liked).sort((a, b) => (b.gemerkt || 0) - (a.gemerkt || 0));
+    if (!jobs.length) return openSheet('Gemerkte Stellen', el('p', 'sub', 'Noch nichts gemerkt. Wische eine Stelle nach rechts oder tippe auf das Herz.'));
+    const ul = el('ul', 'saved');
+    for (const job of jobs) {
+      const li = el('li');
+      const p = PROFILES.find(x => x.id === job.profil);
+      if (p) li.style.setProperty('--c', p.color);
+      li.append(el('h3', null, job.titel));
+      li.append(el('div', 'sub', [job.arbeitgeber, [job.plz, job.ort].filter(Boolean).join(' '), p ? p.name : ''].filter(Boolean).join(' · ')));
+      const row = el('div', 'row');
+      const a = el('a', null, 'Anzeige öffnen');
+      a.href = 'https://www.arbeitsagentur.de/jobsuche/jobdetail/' + encodeURIComponent(job.refnr); a.target = '_blank'; a.rel = 'noopener';
+      const det = el('button', null, 'Details'); det.type = 'button'; det.addEventListener('click', () => openDetails(job));
+      const del = el('button', 'del', 'Entfernen'); del.type = 'button';
+      del.addEventListener('click', () => { delete store.liked[job.refnr]; store.seen[job.refnr] = 1; save(); render(); openSaved(); });
+      row.append(a, det, del);
+      li.append(row);
+      ul.append(li);
+    }
+    openSheet(`Gemerkte Stellen (${jobs.length})`, ul);
   }
 
-  $('form').addEventListener('submit', e => { e.preventDefault(); page = 1; search(); });
-  $('prev').addEventListener('click', () => { if (page > 1) { page--; search(); scrollTo({ top: $('status').offsetTop - 8 }); } });
-  $('next').addEventListener('click', () => { page++; search(); scrollTo({ top: $('status').offsetTop - 8 }); });
-  $('copy').addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(lastCurl); $('copied').textContent = 'Kopiert.'; }
-    catch (e) { $('copied').textContent = 'Kopieren nicht möglich, bitte Text markieren.'; }
-    setTimeout(() => { $('copied').textContent = ''; }, 2500);
+  function openSettings() {
+    const form = el('form');
+    form.style.cssText = 'display:flex;flex-direction:column;gap:14px';
+    const lo = el('label', null, 'Ort oder PLZ (leer = deutschlandweit)');
+    const ort = el('input'); ort.type = 'text'; ort.id = 'set-ort'; ort.value = store.ort; ort.autocomplete = 'off'; lo.htmlFor = 'set-ort'; lo.append(ort);
+    const lu = el('label', null, 'Umkreis');
+    const um = el('select'); um.id = 'set-umkreis'; lu.htmlFor = 'set-umkreis';
+    for (const [v, t] of [['0', 'nur dieser Ort'], ['10', '10 km'], ['25', '25 km'], ['50', '50 km'], ['100', '100 km'], ['200', '200 km']]) { const o = el('option', null, t); o.value = v; um.append(o); }
+    um.value = store.umkreis; lu.append(um);
+    const ok = button('Übernehmen und neu laden', () => {}, true); ok.type = 'submit';
+    form.append(lo, lu, ok);
+    form.addEventListener('submit', e => { e.preventDefault(); store.ort = ort.value.trim(); store.umkreis = um.value; save(); closeSheet(); renderChrome(); resetDeck(); });
+    const terms = el('p', 'terms', `Suchbegriffe für ${profile.name}: ` + (profile.hint || profile.terms.join(', ')) + '. Zeitarbeit und private Arbeitsvermittler sind ausgeblendet.');
+    const reset = button(`Verworfene Stellen wieder zeigen (${Object.keys(store.seen).length})`, () => { store.seen = {}; save(); closeSheet(); resetDeck(); });
+    const src = el('p', 'terms', 'Daten: Jobsuche der Bundesagentur für Arbeit. Gemerkte und verworfene Stellen liegen nur in diesem Browser.');
+    openSheet('Ort und Suche', form, terms, reset, src);
+  }
+
+  // ---------- Verdrahtung ----------
+  $('yes').addEventListener('click', () => decide('yes'));
+  $('no').addEventListener('click', () => decide('no'));
+  $('undo').addEventListener('click', undo);
+  $('info').addEventListener('click', () => openDetails(deck[0]));
+  $('open-saved').addEventListener('click', openSaved);
+  $('open-settings').addEventListener('click', openSettings);
+  $('sheet-close').addEventListener('click', closeSheet);
+  $('sheet').addEventListener('click', e => { if (e.target === $('sheet')) closeSheet(); });
+  document.addEventListener('keydown', e => {
+    if (!$('sheet').hidden) { if (e.key === 'Escape') closeSheet(); return; }
+    if (/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+    if (e.key === 'ArrowRight') decide('yes');
+    else if (e.key === 'ArrowLeft') decide('no');
+    else if (e.key === 'ArrowUp') openDetails(deck[0]);
   });
 
-  $('proxyform').addEventListener('submit', e => {
-    e.preventDefault();
-    const v = $('proxy').value.trim().replace(/\/+$/, '');
-    if (v && !validProxy(v)) { $('proxymsg').textContent = 'Bitte eine Adresse in der Form https://name.workers.dev eintragen.'; return; }
-    try { v ? localStorage.setItem('jobsuche-proxy', v) : localStorage.removeItem('jobsuche-proxy'); }
-    catch (err) { $('proxymsg').textContent = 'Der Browser erlaubt kein Speichern.'; return; }
-    $('proxymsg').textContent = v ? 'Gespeichert.' : 'Entfernt.';
-    mode = 'direct'; cache.clear(); page = 1;
-    detectMode().then(search);
-  });
-
-  function restore() {
-    let qs = null;
-    try { qs = localStorage.getItem('jobsuche-letzte'); } catch (e) {}
-    if (!qs) return;
-    const p = new URLSearchParams(qs), f = $('form');
-    f.was.value = p.get('was') || '';
-    f.wo.value = p.get('wo') || '';
-    for (const [name, key] of [['umkreis', 'umkreis'], ['angebotsart', 'angebotsart'], ['befristung', 'befristung'], ['veroeffentlichtseit', 'veroeffentlichtseit']]) {
-      const v = p.get(key);
-      if (v != null && [...f[name].options].some(o => o.value === v)) f[name].value = v;
-    }
-    const az = (p.get('arbeitszeit') || '').split(';');
-    f.querySelectorAll('input[name="arbeitszeit"]').forEach(c => { c.checked = az.includes(c.value); });
-    $('ohne-za').checked = p.get('zeitarbeit') === 'false';
-    $('ohne-pav').checked = p.get('pav') === 'false';
-  }
-
-  restore();
-  detectMode().then(search);
+  renderChrome();
+  render();
+  detectBase().then(resetDeck);
 })();
 </script>
 </body>
