@@ -24,8 +24,8 @@ Die BA-API erlaubt keine Browser-Abfragen von fremden Webseiten (CORS). Für
 `jobs.micana.de` übernimmt das der Cloudflare-Worker in `proxy/`:
 
 1. Cloudflare-Konto anlegen, API-Token mit der Vorlage „Edit Cloudflare Workers“ erstellen.
-2. Im Repo unter Settings → Secrets and variables → Actions die Secrets
-   `CLOUDFLARE_API_TOKEN` und `CLOUDFLARE_ACCOUNT_ID` anlegen.
+2. Im Repo unter Settings → Secrets and variables → Actions das Secret
+   `CLOUDFLARE_API_TOKEN` anlegen.
 3. Unter Actions den Workflow „Worker-Proxy deployen“ starten. Die Adresse
    (`https://jobs-ba-api.<name>.workers.dev`) steht am Ende des Deploy-Logs.
 4. Adresse auf der Seite unter „Proxy-Adresse“ eintragen (gilt nur für diesen

@@ -1,7 +1,7 @@
 name: Worker-Proxy deployen
 
 # Veroeffentlicht proxy/worker.js bei Cloudflare Workers.
-# Braucht die Repo-Secrets CLOUDFLARE_API_TOKEN und CLOUDFLARE_ACCOUNT_ID.
+# Braucht das Repo-Secret CLOUDFLARE_API_TOKEN. Das Konto ermittelt Wrangler aus dem Token.
 on:
   workflow_dispatch:
   push:
@@ -34,6 +34,5 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: proxy
           command: deploy
