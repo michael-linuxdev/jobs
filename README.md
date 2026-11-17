@@ -5,7 +5,7 @@ Kartenstapel. Nach rechts wischen merkt eine Stelle, nach links verwirft sie.
 
 ## Berufsgruppen
 
-Die Profile und ihre Suchbegriffe stehen oben im Script von `index.html`
+Die Berufsgruppe wird im Filter gewählt. Die Profile und ihre Suchbegriffe stehen oben im Script von `index.html`
 (`PROFILES`): Erzieher & HEP, Social Media, Sachbearbeitung (Vertriebsinnendienst,
 Verlag, Journalismus), Nebenjobs (Minijobs) und IT. Jeder Suchbegriff wird einzeln
 abgefragt, die Treffer werden zusammengeführt und nach Datum sortiert.
