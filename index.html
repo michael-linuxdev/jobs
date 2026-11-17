@@ -395,6 +395,8 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
       loadDetails(job.refnr).then(d => {
         const text = String(d.stellenangebotsBeschreibung || d.stellenbeschreibung || '').replace(/\n{3,}/g, '\n\n').trim();
         ex.textContent = text.slice(0, 700);
+        if (d.homeofficemoeglich === true) foot.append(el('span', 'tag', 'Homeoffice'));
+        if (d.quereinstiegGeeignet === true) foot.append(el('span', 'tag', 'Quereinstieg'));
         const hash = d.arbeitgeberKundennummerHash || job.kundennummerHash;
         if (hash) loadLogo(hash).then(src => { if (!src) return; const img = el('img'); img.alt = ''; img.src = src; badge.replaceChildren(img); });
       }).catch(() => { ex.textContent = ''; });
@@ -565,6 +567,8 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
     arbeitszeitTeilzeitAbend: 'Teilzeit abends', arbeitszeitTeilzeitFlexibel: 'Teilzeit flexibel', arbeitszeitSchichtNachtWochenende: 'Schicht, Nacht, Wochenende',
     arbeitszeitHeimarbeitTelearbeit: 'Homeoffice', arbeitszeitMinijob: 'Minijob',
   };
+  const HOMEOFFICE = { NACH_VEREINBARUNG: 'Nach Vereinbarung', VOLLSTAENDIG: 'Vollständig', TEILWEISE: 'Teilweise' };
+  const FLAGS = { quereinstiegGeeignet: 'Quereinstieg möglich', istGeringfuegigeBeschaeftigung: 'Minijob', istArbeitnehmerUeberlassung: 'Zeitarbeit', istPrivateArbeitsvermittlung: 'Private Arbeitsvermittlung' };
   const human = v => { const t = String(v).replace(/_/g, ' ').toLowerCase(); return t.charAt(0).toUpperCase() + t.slice(1); };
   const empty = v => v == null || v === '' || /^KEINE_ANGABE/i.test(String(v));
   function factNodes(d) {
@@ -576,6 +580,7 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
     if (vertrag && Number(d.befristungInMonaten) > 0) vertrag += `, ${d.befristungInMonaten} Monate`;
     tile('Vertrag', vertrag);
     tile('Vergütung', empty(d.verguetungsangabe) ? (d.verguetung || d.gehalt || '') : human(d.verguetungsangabe));
+    if (d.homeofficemoeglich === true) tile('Homeoffice', empty(d.homeofficetyp) ? 'Möglich' : (HOMEOFFICE[d.homeofficetyp] || human(d.homeofficetyp)));
     tile('Beruf', d.hauptberuf);
     const start = d.eintrittszeitraum && d.eintrittszeitraum.von;
     tile('Start', fmtDate(start) || '');
@@ -586,7 +591,8 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
     const times = Object.keys(d).filter(k => /^arbeitszeit/.test(k) && d[k] === true)
       .map(k => WORKTIME[k] || k.replace(/^arbeitszeit/, '').replace(/([a-z])([A-Z])/g, '$1 $2'));
     const also = Object.keys(d).filter(k => /^alternativBeruf\d*$/.test(k) && typeof d[k] === 'string' && d[k]).map(k => d[k]);
-    for (const [label, list, cls] of [['Arbeitszeit', times, 'tag on'], ['Auch passend für', also, 'tag']]) {
+    const flags = Object.keys(FLAGS).filter(k => d[k] === true).map(k => FLAGS[k]);
+    for (const [label, list, cls] of [['Arbeitszeit', times, 'tag on'], ['Merkmale', flags, 'tag on'], ['Auch passend für', also, 'tag']]) {
       if (!list.length) continue;
       const g = el('div', 'group');
       g.append(el('span', 'group-label', label));
@@ -614,6 +620,8 @@ input[type="text"], select { font: inherit; color: var(--ink); background: var(-
       const text = d.stellenangebotsBeschreibung || d.stellenbeschreibung;
       desc.textContent = text || 'Für diese Stelle liefert die Arbeitsagentur keinen Beschreibungstext. Öffne die Anzeige über den Knopf oben.';
       facts.replaceChildren(...factNodes(d));
+      const ext = d.externeURL || d.externeUrl;
+      if (!job.externeUrl && /^https?:\/\//i.test(ext || '')) links.append(link(d.allianzpartnerName ? 'Originalanzeige bei ' + d.allianzpartnerName : 'Originalanzeige', ext));
       facts.hidden = !facts.children.length;
     }).catch(() => { desc.textContent = 'Die Details konnten nicht geladen werden. Öffne die Anzeige über den Knopf oben.'; });
   }
