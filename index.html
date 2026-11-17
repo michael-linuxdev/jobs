@@ -77,6 +77,7 @@ pre { font: .78rem/1.5 var(--font-mono); margin: 10px 0 0; padding: 10px; backgr
 .error h2 { margin: 0 0 6px; font: 600 1.05rem var(--font-display); color: var(--bad); }
 .error p { margin: 0 0 8px; max-width: 65ch; }
 .error code, .hint code { font: .82rem var(--font-mono); background: var(--bg); padding: 2px 6px; border-radius: 3px; }
+#proxyform { margin-top: 10px; }
 #results { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .job { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
 .job > button { all: unset; box-sizing: border-box; display: block; width: 100%; padding: 12px 14px; cursor: pointer; }
@@ -182,7 +183,22 @@ a { color: var(--accent); }
     <p id="err-help"></p>
   </section>
 
+  <p class="hint" id="fallback" hidden>Eingeschränkter Modus: Die BA lehnt die Schnittstellen-Abfrage des Proxys ab, die Treffer stammen aus der normalen Webseiten-Suche. Filter und Details können fehlen.</p>
+
   <ol id="results"></ol>
+
+  <details class="panel req" id="proxybox">
+    <summary>Proxy-Adresse</summary>
+    <form id="proxyform" autocomplete="off">
+      <label for="proxy">Adresse des Worker-Proxys (leer lassen für direkte Abfrage)
+        <input type="text" id="proxy" inputmode="url" placeholder="https://jobs-ba-api.NAME.workers.dev">
+      </label>
+      <div class="reqbar">
+        <button type="submit" class="ghost">Speichern und neu suchen</button>
+        <span class="hint" id="proxymsg" role="status"></span>
+      </div>
+    </form>
+  </details>
 
   <p class="hint">Daten: Jobsuche der Bundesagentur für Arbeit über <code>rest.arbeitsagentur.de</code>. Die Schnittstelle ist öffentlich erreichbar, aber von der BA nicht offiziell dokumentiert und kann sich ohne Ankündigung ändern.</p>
 </main>
@@ -196,6 +212,8 @@ a { color: var(--accent); }
   const DETAILS = HOST + '/jobboerse/jobsuche-service/pc/v4/jobdetails/';
   const LOGO = HOST + '/vermittlung/ag-darstellung-service/ct/v1/arbeitgeberlogo/';
   const SIZE = 25;
+  // Adresse des Cloudflare-Workers (proxy/worker.js), z. B. https://jobs-ba-api.NAME.workers.dev
+  const DEFAULT_PROXY = '';
 
   const $ = id => document.getElementById(id);
   const el = (tag, cls, text) => {
@@ -205,7 +223,15 @@ a { color: var(--accent); }
     return n;
   };
 
-  let mode = 'direct';          // 'direct' = Browser ruft die BA-API selbst, 'proxy' = über jobsuche.py
+  let mode = 'direct';          // 'proxy' = jobsuche.py, 'worker' = Cloudflare-Worker, 'direct' = Browser ruft die BA selbst
+  let base = '';                // Präfix für Proxy-Pfade
+  const validProxy = v => /^https:\/\/[a-z0-9.-]+(:\d+)?$/i.test(v);
+  function storedProxy() {
+    let v = '';
+    try { v = localStorage.getItem('jobsuche-proxy') || ''; } catch (e) {}
+    v = (v || DEFAULT_PROXY).replace(/\/+$/, '');
+    return validProxy(v) ? v : '';
+  }
   let page = 1, total = 0, lastCurl = '';
   const cache = new Map();      // refnr -> Detailantwort
 
@@ -216,15 +242,20 @@ a { color: var(--accent); }
         if (r.ok && (await r.json()).ok) mode = 'proxy';
       } catch (e) { /* kein Proxy vorhanden */ }
     }
-    $('mode').textContent = mode === 'proxy' ? 'über lokalen Proxy' : 'direkt zur BA-API';
+    if (mode !== 'proxy') {
+      const w = storedProxy();
+      if (w) { mode = 'worker'; base = w + '/'; } else { mode = 'direct'; base = ''; }
+    }
+    $('mode').textContent = { proxy: 'über lokalen Proxy', worker: 'über Worker-Proxy', direct: 'direkt zur BA-API' }[mode];
+    $('proxy').value = storedProxy();
   }
 
   function b64(refnr) { return btoa(unescape(encodeURIComponent(refnr))); }
 
   function get(directUrl, proxyUrl) {
-    return mode === 'proxy'
-      ? fetch(proxyUrl)
-      : fetch(directUrl, { headers: { 'X-API-Key': API_KEY } });
+    return mode === 'direct'
+      ? fetch(directUrl, { headers: { 'X-API-Key': API_KEY } })
+      : fetch(base + proxyUrl);
   }
 
   function params() {
@@ -285,7 +316,12 @@ a { color: var(--accent); }
       } else if (mode === 'direct') {
         showError('Der Browser konnte die BA-API nicht direkt abfragen',
           'Wahrscheinlich blockiert der Browser die Anfrage, weil die API fremden Webseiten keinen Zugriff erlaubt (CORS), oder es besteht keine Internetverbindung.',
-          'Abhilfe: „python3 jobsuche.py serve“ starten und diese Seite über http://localhost:8080 öffnen. Der mitgelieferte Proxy stellt die Anfragen dann serverseitig.');
+          'Abhilfe: unten unter „Proxy-Adresse“ die Adresse des Worker-Proxys eintragen. Lokal geht es auch mit „python3 jobsuche.py serve“ und http://localhost:8080.');
+        $('proxybox').open = true;
+      } else if (mode === 'worker') {
+        showError('Der Worker-Proxy ist nicht erreichbar', String(e.message || e),
+          'Prüfe unten die Proxy-Adresse und ob der Worker bei Cloudflare läuft.');
+        $('proxybox').open = true;
       } else {
         showError('Der lokale Proxy ist nicht erreichbar', String(e.message || e), 'Läuft „python3 jobsuche.py serve“ noch?');
       }
@@ -299,6 +335,7 @@ a { color: var(--accent); }
     total = Number(data.maxErgebnisse) || jobs.length;
     const pages = Math.max(1, Math.ceil(total / SIZE));
     $('count').replaceChildren(el('strong', null, total.toLocaleString('de-DE')), document.createTextNode(' Treffer'));
+    $('fallback').hidden = data.quelle !== 'html';
     $('pageinfo').textContent = `Seite ${page} von ${pages.toLocaleString('de-DE')}`;
     $('prev').disabled = page <= 1;
     $('next').disabled = page >= pages || jobs.length === 0;
@@ -420,6 +457,17 @@ a { color: var(--accent); }
     try { await navigator.clipboard.writeText(lastCurl); $('copied').textContent = 'Kopiert.'; }
     catch (e) { $('copied').textContent = 'Kopieren nicht möglich, bitte Text markieren.'; }
     setTimeout(() => { $('copied').textContent = ''; }, 2500);
+  });
+
+  $('proxyform').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = $('proxy').value.trim().replace(/\/+$/, '');
+    if (v && !validProxy(v)) { $('proxymsg').textContent = 'Bitte eine Adresse in der Form https://name.workers.dev eintragen.'; return; }
+    try { v ? localStorage.setItem('jobsuche-proxy', v) : localStorage.removeItem('jobsuche-proxy'); }
+    catch (err) { $('proxymsg').textContent = 'Der Browser erlaubt kein Speichern.'; return; }
+    $('proxymsg').textContent = v ? 'Gespeichert.' : 'Entfernt.';
+    mode = 'direct'; cache.clear(); page = 1;
+    detectMode().then(search);
   });
 
   function restore() {
