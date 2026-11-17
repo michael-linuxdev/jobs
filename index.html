@@ -52,7 +52,7 @@ svg.i { width: 1.25em; height: 1.25em; fill: none; stroke: currentColor; stroke-
 
 .app {
   height: 100%; max-width: 520px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px;
-  padding: calc(12px + env(safe-area-inset-top)) 16px calc(10px + env(safe-area-inset-bottom));
+  padding: calc(12px + env(safe-area-inset-top)) 16px 0;
 }
 header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .brand { display: flex; align-items: center; gap: 9px; font-weight: 800; font-size: 1.3rem; letter-spacing: -.03em; margin: 0; }
@@ -60,14 +60,10 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .brand em { color: var(--accent); font-style: normal; }
 .count { font-size: .84rem; color: var(--muted); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
-/* Filterleiste: Berufsgruppe, Ort und weitere Filter auf einer Ebene */
-.summary {
-  display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; min-width: 0;
-  background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 8px 12px 8px 8px;
-}
-.summary .job { display: inline-flex; align-items: center; gap: 7px; background: var(--accent); color: #fff; border-radius: 11px; padding: 7px 11px; font-weight: 700; font-size: .9rem; white-space: nowrap; }
-.summary .rest { flex: 1; min-width: 0; font-size: .88rem; color: var(--muted); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.summary .more { color: var(--accent); display: inline-flex; }
+.filter { position: relative; flex: none; width: 44px; height: 44px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; color: var(--ink); }
+.filter svg { width: 22px; height: 22px; }
+.filter b { position: absolute; top: -5px; right: -5px; background: var(--accent); color: #fff; border-radius: 999px; min-width: 1.6em; padding: 1px 5px; font-size: .72rem; text-align: center; }
+.meta { margin: 0; font-size: .9rem; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .view { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 12px; }
 .deck { position: relative; flex: 1; min-height: 0; }
@@ -137,7 +133,6 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .round.small svg { width: 20px; height: 20px; stroke-width: 2.2; }
 .round:disabled { opacity: .35; cursor: default; }
 .round:active:not(:disabled) { transform: scale(.93); }
-.hint { font-size: .78rem; color: var(--muted); text-align: center; margin: 0; }
 
 /* Merkliste */
 .saved-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
@@ -152,7 +147,7 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .saved .del { flex: none; border: 0; background: none; color: var(--muted); padding: 0 14px; display: grid; place-items: center; }
 
 /* Tab-Leiste */
-.tabs { flex: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 5px; }
+.tabs { flex: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: var(--surface); border-top: 1px solid var(--line); margin: 0 -16px; padding: 6px 12px calc(6px + env(safe-area-inset-bottom)); }
 .tab { border: 0; background: none; border-radius: 15px; padding: 9px 8px; font-weight: 700; font-size: .9rem; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 8px; }
 .tab[aria-current="page"] { background: color-mix(in srgb, var(--accent) 13%, var(--surface)); color: var(--accent); }
 .tab b { background: var(--accent); color: #fff; border-radius: 999px; min-width: 1.6em; padding: 1px 6px; font-size: .76rem; text-align: center; font-variant-numeric: tabular-nums; }
@@ -199,15 +194,14 @@ legend { padding: 0; margin-bottom: 8px; }
       <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="3" width="20" height="24" rx="6" fill="var(--accent)" opacity=".35" transform="rotate(9 17 15)"/><rect x="5" y="5" width="20" height="24" rx="6" fill="var(--accent)"/><path d="M15 21.5s-4.5-2.8-4.5-6.2a2.5 2.5 0 0 1 4.5-1.5 2.5 2.5 0 0 1 4.5 1.5c0 3.4-4.5 6.2-4.5 6.2z" fill="#fff"/></svg>
       <span>Job<em>stapel</em></span>
     </h1>
-    <span class="count" id="left" role="status"></span>
+    <button type="button" class="filter" id="open-filter" aria-label="Filter">
+      <svg class="i" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+      <b id="filter-count" hidden>0</b>
+    </button>
   </header>
 
   <section class="view" id="view-deck">
-    <button type="button" class="summary" id="open-filter" aria-label="Berufsgruppe und Filter ändern">
-      <span class="job" id="sum-job"></span>
-      <span class="rest" id="sum-rest"></span>
-      <span class="more"><svg class="i" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></span>
-    </button>
+    <p class="meta" id="meta" role="status"></p>
     <main class="deck" id="deck" aria-live="polite"></main>
     <div class="actions">
       <button type="button" class="round small" id="undo" aria-label="Letzte Entscheidung zurücknehmen" disabled>
@@ -223,7 +217,6 @@ legend { padding: 0; margin-bottom: 8px; }
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg>
       </button>
     </div>
-    <p class="hint" id="hint" hidden>Rechts wischen merkt die Stelle, links verwirft sie. Antippen zeigt Details.</p>
   </section>
 
   <section class="view" id="view-saved" hidden>
@@ -410,12 +403,8 @@ legend { padding: 0; margin-bottom: 8px; }
   let view = 'deck';
   function renderChrome() {
     document.documentElement.style.setProperty('--accent', profile.color);
-    $('sum-job').replaceChildren(icon(profile.icon), document.createTextNode(profile.name));
-    const ort = store.ort.trim();
-    const parts = [ort ? (store.umkreis === '0' ? ort : `${ort} · ${store.umkreis} km`) : 'Deutschlandweit'];
     const n = activeFilters();
-    if (n) parts.push(`${n} Filter`);
-    $('sum-rest').textContent = parts.join('  ·  ');
+    $('filter-count').textContent = String(n); $('filter-count').hidden = n === 0;
     $('view-deck').hidden = view !== 'deck';
     $('view-saved').hidden = view !== 'saved';
     for (const [id, v] of [['tab-deck', 'deck'], ['tab-saved', 'saved']]) {
@@ -427,8 +416,10 @@ legend { padding: 0; margin-bottom: 8px; }
     const liked = Object.keys(store.liked).length;
     $('saved-count').textContent = String(liked);
     $('saved-count').hidden = liked === 0;
-    $('left').textContent = view === 'deck' && deck.length ? `${deck.length}${exhausted ? '' : '+'} Stellen` : '';
-    $('hint').hidden = store.hinted || !deck.length;
+    const ort = store.ort.trim();
+    const parts = ort ? [ort, store.umkreis === '0' ? 'nur dort' : store.umkreis + ' km'] : ['Deutschlandweit'];
+    if (deck.length) parts.push(`${deck.length}${exhausted ? '' : '+'} offene Stellen`);
+    $('meta').textContent = parts.join(' · ');
   }
   function show(v) {
     view = v;
