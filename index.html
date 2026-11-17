@@ -163,6 +163,13 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .panel-body { overflow-y: auto; padding: 0 20px calc(22px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 16px; overscroll-behavior: contain; }
 .sub { color: var(--muted); margin: 0; }
 .desc { white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; max-width: 65ch; font-weight: 400; }
+.md { font-weight: 400; overflow-wrap: anywhere; max-width: 65ch; }
+.md > :first-child { margin-top: 0; } .md > :last-child { margin-bottom: 0; }
+.md h3 { font-size: 1.02rem; font-weight: 800; letter-spacing: -.01em; margin: 20px 0 6px; }
+.md p { margin: 0 0 10px; }
+.md ul { margin: 0 0 12px; padding-left: 1.15em; display: flex; flex-direction: column; gap: 4px; }
+.md li::marker { color: var(--accent); }
+.md strong { font-weight: 700; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; }
 .facts { display: flex; flex-direction: column; gap: 14px; }
 .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
@@ -458,8 +465,7 @@ legend { padding: 0; margin-bottom: 8px; }
 
     if (top) {
       loadDetails(job.refnr).then(d => {
-        const text = String(d.stellenangebotsBeschreibung || d.stellenbeschreibung || '').replace(/\n{3,}/g, '\n\n').trim();
-        ex.textContent = text.slice(0, 700);
+        ex.textContent = plainText(d.stellenangebotsBeschreibung || d.stellenbeschreibung, job.titel).slice(0, 700);
         if (d.homeofficemoeglich === true) foot.append(el('span', 'tag on', 'Homeoffice'));
         if (d.quereinstiegGeeignet === true) foot.append(el('span', 'tag on', 'Quereinstieg'));
         const hash = d.arbeitgeberKundennummerHash || job.kundennummerHash;
@@ -669,6 +675,76 @@ legend { padding: 0; margin-bottom: 8px; }
     return a;
   }
 
+  // ---------- Beschreibungstexte aufräumen ----------
+  // Die Texte kommen als Mischung aus Markdown und HTML-Zeichencodes. Sie werden hier in sauberes HTML übersetzt.
+  const decoder = document.createElement('textarea');
+  function clean(raw) {
+    decoder.innerHTML = String(raw || '');                 // löst &#160; und ähnliche Zeichencodes auf, führt nichts aus
+    // Maskierte Zeichen wie \* (z. B. in "Pfleger\*in") werden geschützt, damit sie nicht als Formatierung gelten.
+    return decoder.value.replace(/\\([\\()\[\]*_#.!+\-])/g, (_, c) => String.fromCharCode(0xE000 + c.charCodeAt(0)))
+      .replace(/\r/g, '').replace(/[\u00a0\t ]+/g, ' ').replace(/\*{2,3} *\*{2,3}/g, '')
+      .split('\n').map(l => l.trim()).join('\n');
+  }
+  const unesc = t => t.replace(/[\uE000-\uE0FF]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xE000));
+  function safeUrl(u) {
+    u = unesc(u).replace(/^https?:\/\/mailto:/i, 'mailto:');
+    return /^(https?:\/\/|mailto:)/i.test(u) ? u : '';
+  }
+  function inline(text, into) {
+    // Reihenfolge: [Text](Link), **fett**, nackte Links
+    const re = /\[([^\]]+)\]\(((?:\\.|[^)\s])+)\)|\*{2,3}([^*]+?)\*{2,3}|(https?:\/\/[^\s)<>]+[^\s)<>.,;:!?])/g;
+    let last = 0, m;
+    const plain = t => { t = unesc(t.replace(/\*{2,3}/g, '')); if (t) into.append(document.createTextNode(t)); };
+    while ((m = re.exec(text))) {
+      plain(text.slice(last, m.index));
+      last = re.lastIndex;
+      if (m[1] != null || m[4] != null) {
+        const url = safeUrl(m[2] || m[4]);
+        const label = m[1] != null ? unesc(m[1].replace(/\*/g, '')).trim() : m[4].replace(/^https?:\/\/(www\.)?/, '').replace(/[/?#].*$/, '');
+        if (!url) { plain(label); continue; }
+        const a = el('a', null, label || url);
+        a.href = url; if (!/^mailto:/i.test(url)) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+        into.append(a);
+      } else {
+        const b = el('strong'); inline(m[3], b); into.append(b);
+      }
+    }
+    plain(text.slice(last));
+  }
+  const norm = t => unesc(t).toLowerCase().replace(/\([^)]*\)|[^a-zäöüß0-9]/g, '');
+  function markdown(raw, title) {
+    const box = el('div', 'md');
+    let para = null, list = null;
+    const flush = () => { para = null; list = null; };
+    for (const line of clean(raw).split('\n')) {
+      if (!line || /^[#*_\-=·•\s]+$/.test(line)) { para = null; continue; }   // Leerzeile trennt Absätze, aber keine Listen
+      let m;
+      if ((m = line.match(/^#{1,6}\s*(.+)$/))) {
+        flush();
+        const text = m[1].replace(/^[*_\s]+|[*_\s:]+$/g, '');
+        if (!text || (title && norm(text) === norm(title))) continue;   // Überschrift, die nur den Stellentitel wiederholt
+        const h = el('h3'); inline(text, h); box.append(h);
+      } else if ((m = line.match(/^\*{2,3}([^*]{2,70}):\*{2,3}:?$/))) {
+        flush();                                                          // ganz fett gesetzte Zeile mit Doppelpunkt = Zwischenüberschrift
+        const h = el('h3'); inline(m[1], h); box.append(h);
+      } else if ((m = line.match(/^(?:[-•·▪◦–]|\*(?!\*))\s+(.+)$/))) {
+        para = null;
+        if (!list) { list = el('ul'); box.append(list); }
+        const li = el('li'); inline(m[1], li); list.append(li);
+      } else {
+        list = null;
+        if (!para) { para = el('p'); box.append(para); } else para.append(el('br'));
+        inline(line, para);
+      }
+    }
+    return box;
+  }
+  // Für den Kartenauszug: reiner Text ohne Markdown-Zeichen
+  function plainText(raw, title) {
+    return clean(raw).split('\n').map(l => unesc(l.replace(/^#{1,6}\s*/, '').replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1').replace(/\*{2,3}/g, '')).trim())
+      .filter(l => l && !/^[#_\-=·•\s]+$/.test(l) && !(title && norm(l) === norm(title))).join('\n');
+  }
+
   // Angaben der Schnittstelle in lesbare Kacheln übersetzen
   const WORKTIME = {
     arbeitszeitVollzeit: 'Vollzeit', arbeitszeitTeilzeitVormittag: 'Teilzeit vormittags', arbeitszeitTeilzeitNachmittag: 'Teilzeit nachmittags',
@@ -718,18 +794,20 @@ legend { padding: 0; margin-bottom: 8px; }
     const links = el('div', 'links');
     links.append(link('Zur Anzeige', 'https://www.arbeitsagentur.de/jobsuche/jobdetail/' + encodeURIComponent(job.refnr), true));
     if (job.externeUrl) links.append(link('Originalanzeige', job.externeUrl));
-    const desc = el('p', 'desc', 'Beschreibung wird geladen …');
+    const desc = el('div', 'md');
+    desc.append(el('p', 'sub', 'Beschreibung wird geladen …'));
     const facts = el('div', 'facts');
     facts.hidden = true;
     openSheet(job.titel, sub, facts, links, desc);
     loadDetails(job.refnr).then(d => {
       const text = d.stellenangebotsBeschreibung || d.stellenbeschreibung;
-      desc.textContent = text || 'Für diese Stelle gibt es hier keinen Beschreibungstext. Öffne die Anzeige über den Knopf oben.';
+      if (text) desc.replaceWith(markdown(text, job.titel));
+      else desc.replaceChildren(el('p', 'sub', 'Für diese Stelle gibt es hier keinen Beschreibungstext. Öffne die Anzeige über den Knopf oben.'));
       facts.replaceChildren(...factNodes(d));
       facts.hidden = !facts.children.length;
       const ext = d.externeURL || d.externeUrl;
       if (!job.externeUrl && /^https?:\/\//i.test(ext || '')) links.append(link(d.allianzpartnerName ? 'Original bei ' + d.allianzpartnerName : 'Originalanzeige', ext));
-    }).catch(() => { desc.textContent = 'Die Details konnten nicht geladen werden. Öffne die Anzeige über den Knopf oben.'; });
+    }).catch(() => { desc.replaceChildren(el('p', 'sub', 'Die Details konnten nicht geladen werden. Öffne die Anzeige über den Knopf oben.')); });
   }
 
   function openFilter() {
