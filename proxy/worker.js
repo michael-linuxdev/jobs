@@ -36,7 +36,7 @@ export default {
     const path = url.pathname.replace(/\/+$/, "");
     try {
       if (path === "" || path === "/api/ping") {
-        return json({ ok: true, service: "jobs-ba-api", version: "0.1.1" }, 200, cors);
+        return json({ ok: true, service: "jobs-ba-api", version: "0.1.2" }, 200, cors);
       }
       if (path === "/api/jobs") return await search(url, cors);
       if (path.startsWith("/api/jobdetails/")) {
