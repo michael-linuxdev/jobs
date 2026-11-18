@@ -217,10 +217,11 @@ textarea:focus { border-color: var(--accent); outline: none; }
 .md strong { font-weight: 700; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; }
 .facts { display: flex; flex-direction: column; gap: 14px; }
-.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
 .tile { background: color-mix(in srgb, var(--accent) 9%, var(--surface)); border-radius: 16px; padding: 10px 13px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .tile span, .group-label, legend, label { font-size: .76rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
-.tile strong { font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+.tile strong { font-weight: 700; line-height: 1.3; overflow-wrap: break-word; }
+.card h2, .panel-head h2, .saved h3, .tile strong, .org .who, .tag, .opt b { -webkit-hyphens: auto; hyphens: auto; }
 .group { display: flex; flex-direction: column; gap: 7px; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 
@@ -359,7 +360,10 @@ legend { padding: 0; margin-bottom: 8px; }
     { id: 'buero', name: 'Sachbearbeitung', color: '#a26400', icon: 'doc', exclude: [],
       terms: ['Sachbearbeiter Vertriebsinnendienst', 'Vertriebsassistent', 'Kaufmännischer Mitarbeiter Vertrieb', 'Sachbearbeiter Auftragsabwicklung', 'Medienkaufmann', 'Verlag', 'Redakteur', 'Journalist', 'Lektor', 'Redaktionsassistent'] },
     { id: 'neben', name: 'Nebenjobs', color: '#17905b', icon: 'clock', exclude: [], terms: [], minijob: true },
+    // include: Eine Stelle erscheint nur, wenn Titel oder Berufsbezeichnung eines dieser Wörter enthält.
+    // Die Jobsuche findet sonst auch Stellen, die den Suchbegriff nur irgendwo im Text nennen.
     { id: 'it', name: 'IT', color: '#2563c9', icon: 'screen', exclude: [],
+      include: ['IT', 'EDV', 'Admin', 'System', 'Netzwerk', 'Informat', 'Security', 'Cloud', 'DevOps', 'Microsoft', 'M365', 'Infrastruktur', 'Software', 'Support', 'Helpdesk', 'Linux', 'Windows', 'Server', 'Daten', 'Data', 'Digital'],
       terms: ['Systemadministrator', 'IT-Administrator', 'IT-Leiter', 'System Engineer', 'Security Engineer', 'IT-Sicherheit', 'Microsoft 365', 'Cloud Engineer', 'Netzwerkadministrator', 'IT-Koordinator'] },
     // Breites Profil für den beruflichen Neustart mit handwerklicher und/oder sozialer Stärke, quer durch alle Branchen:
     // Einstiegs- und Helferstellen, Haus- und Betriebstechnik, Fahren und Logistik, Betreuung ohne Fachabschluss,
@@ -404,7 +408,7 @@ legend { padding: 0; margin-bottom: 8px; }
   const cleanProfile = p => ({
     id: String(p.id || 'p' + Date.now().toString(36)), name: String(p.name || 'Beruf').slice(0, 40),
     color: COLORS.includes(p.color) ? p.color : COLORS[0], icon: ICONSET[p.icon] ? p.icon : 'star',
-    terms: cleanList(p.terms), exclude: cleanList(p.exclude), minijob: !!p.minijob,
+    terms: cleanList(p.terms), exclude: cleanList(p.exclude), include: cleanList(p.include), minijob: !!p.minijob,
     arbeitszeit: (Array.isArray(p.arbeitszeit) ? p.arbeitszeit : []).filter(c => AZ.some(a => a[0] === c)),   // Vorgabe, solange im Filter keine Arbeitszeit gewählt ist
   });
   if (!Array.isArray(store.profiles) || !store.profiles.length) store.profiles = DEFAULT_PROFILES;
@@ -414,6 +418,8 @@ legend { padding: 0; margin-bottom: 8px; }
     for (const d of DEFAULT_PROFILES) if (!known.includes(d.id) && !store.profiles.some(x => x && x.id === d.id)) store.profiles.push(d);
   }
   store.known = DEFAULT_PROFILES.map(d => d.id);
+  // Vorgaben, die später Muss-Wörter bekommen haben, einmalig nachrüsten
+  for (const x of store.profiles) { const d = x && DEFAULT_PROFILES.find(y => y.id === x.id); if (d && d.include && x.include === undefined) x.include = d.include; }
   store.profiles = store.profiles.map(cleanProfile);
   const PROFILES = store.profiles;                    // dieselbe Liste; Änderungen werden mit save() gespeichert
   const pic = p => ICONSET[p.icon] || ICONSET.star;
@@ -462,8 +468,18 @@ legend { padding: 0; margin-bottom: 8px; }
   const history = [];
 
   const fmtDate = s => { const d = new Date(s); return !s || isNaN(d) ? '' : d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }); };
+  const startText = s => { const d = new Date(s); return !s || isNaN(d) ? '' : d.getTime() <= Date.now() ? 'ab sofort' : fmtDate(s); };
   const isNew = s => { const d = new Date(s); return !isNaN(d) && Date.now() - d.getTime() < 3 * 864e5; };
   const time = j => { const d = new Date(j.aktuelleVeroeffentlichungsdatum); return isNaN(d) ? 0 : d.getTime(); };
+
+  // Kurze Wörter wie „IT“ nur als ganzes Wort werten (sonst träfe es „Mitarbeiter“), längere als Wortteil.
+  const hasWord = (text, w) => w.length <= 3 ? new RegExp('(^|[^A-Za-zÄÖÜäöüß])' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '($|[^A-Za-zÄÖÜäöüß])').test(text) : text.toLowerCase().includes(w.toLowerCase());
+  function fits(job, p) {
+    const all = `${job.titel} · ${job.beruf || ''} · ${job.arbeitgeber}`;
+    if (p.exclude.some(w => hasWord(all, w))) return false;
+    if (p.include.length && !p.include.some(w => hasWord(`${job.titel} · ${job.beruf || ''}`, w))) return false;
+    return true;
+  }
 
   function slim(job, term) {
     const o = job.arbeitsort || {};
@@ -472,7 +488,7 @@ legend { padding: 0; margin-bottom: 8px; }
       arbeitgeber: job.arbeitgeber || '', plz: o.plz || '', ort: o.ort || '',
       entfernung: Number(o.entfernung) > 0 ? Math.round(Number(o.entfernung)) : 0,
       aktuelleVeroeffentlichungsdatum: job.aktuelleVeroeffentlichungsdatum || '', eintrittsdatum: job.eintrittsdatum || '',
-      kundennummerHash: job.kundennummerHash || '', externeUrl: /^https?:\/\//i.test(job.externeUrl || '') ? job.externeUrl : '',
+      beruf: job.beruf || '', kundennummerHash: job.kundennummerHash || '', externeUrl: /^https?:\/\//i.test(job.externeUrl || '') ? job.externeUrl : '',
       term, profil: profile.id,
       fresh: !!sinceDay && String(job.aktuelleVeroeffentlichungsdatum || '').slice(0, 10) >= sinceDay,
     };
@@ -515,8 +531,7 @@ legend { padding: 0; margin-bottom: 8px; }
         for (const raw of list) {
           const job = slim(raw, term);
           if (!job.refnr || inDeck.has(job.refnr) || store.seen[job.refnr] || store.liked[job.refnr]) continue;
-          const title = job.titel.toLowerCase();
-          if (profile.exclude.some(w => title.includes(w.toLowerCase()))) continue;   // Ausschlusswörter im Titel
+          if (!fits(job, profile)) continue;            // Ausschluss- und Muss-Wörter
           inDeck.add(job.refnr);
           batch.push(job);
         }
@@ -593,7 +608,7 @@ legend { padding: 0; margin-bottom: 8px; }
     body.append(org, ex);
     const foot = el('div', 'foot');
     if (job.aktuelleVeroeffentlichungsdatum) foot.append(el('span', 'tag', 'online seit ' + fmtDate(job.aktuelleVeroeffentlichungsdatum)));
-    if (job.eintrittsdatum) foot.append(el('span', 'tag', 'Start ' + fmtDate(job.eintrittsdatum)));
+    if (job.eintrittsdatum) foot.append(el('span', 'tag', 'Start ' + startText(job.eintrittsdatum)));
     c.append(hero, body, foot, el('span', 'stamp yes', 'Merken'), el('span', 'stamp no', 'Weg'));
 
     if (top) {
@@ -824,11 +839,11 @@ legend { padding: 0; margin-bottom: 8px; }
     lastFocus = document.activeElement;
     $('sheet-title').textContent = title;
     $('sheet-body').replaceChildren(...nodes);
-    $('sheet-body').scrollTop = 0;
     $('panel').classList.remove('settle');
     $('panel').style.transform = ''; $('sheet').style.backgroundColor = '';
     $('sheet').hidden = false;
-    $('sheet-close').focus();
+    $('sheet-body').scrollTop = 0;                    // erst nach dem Einblenden, vorher bleibt die alte Position stehen
+    $('sheet-close').focus({ preventScroll: true });
   }
   function closeSheet() {
     $('sheet').hidden = true;
@@ -995,7 +1010,8 @@ legend { padding: 0; margin-bottom: 8px; }
     tile('Vergütung', empty(d.verguetungsangabe) ? (d.verguetung || d.gehalt || '') : human(d.verguetungsangabe));
     if (d.homeofficemoeglich === true) tile('Homeoffice', empty(d.homeofficetyp) ? 'Möglich' : (HOMEOFFICE[d.homeofficetyp] || human(d.homeofficetyp)));
     tile('Beruf', d.hauptberuf);
-    tile('Start', fmtDate(d.eintrittszeitraum && d.eintrittszeitraum.von) || '');
+    const start = startText(d.eintrittszeitraum && d.eintrittszeitraum.von);
+    tile('Start', start === 'ab sofort' ? 'Ab sofort' : start);
     tile('Online seit', fmtDate(d.datumErsteVeroeffentlichung));
     if (d.aenderungsdatum && fmtDate(d.aenderungsdatum) !== fmtDate(d.datumErsteVeroeffentlichung)) tile('Zuletzt geändert', fmtDate(d.aenderungsdatum));
     if (tiles.children.length) out.push(tiles);
@@ -1028,12 +1044,29 @@ legend { padding: 0; margin-bottom: 8px; }
     const facts = el('div', 'facts');
     facts.hidden = true;
     const saved = store.liked[job.refnr];
-    openSheet(job.titel, sub, ...(saved ? [trackNodes(saved)] : []), facts, links, desc);
+    const hide = el('div', 'links');
+    hide.hidden = true;
+    const hideBy = (label, word) => {
+      const b = button(label, () => {
+        if (!profile.exclude.includes(word)) profile.exclude.push(word);
+        const gone = deck.filter(j => !fits(j, profile));
+        for (const j of gone) { store.seen[j.refnr] = 1; inDeck.delete(j.refnr); }
+        deck = deck.filter(j => fits(j, profile));
+        save(); closeSheet(); $('deck').dataset.key = ''; render();
+        if (deck.length < 6) loadMore();
+      });
+      b.classList.add('quiet'); hide.append(b);
+    };
+    const canHide = !saved && view === 'deck' && job === deck[0];
+    if (canHide && job.arbeitgeber) { hideBy('Arbeitgeber nicht mehr zeigen', job.arbeitgeber); hide.hidden = false; }
+    openSheet(job.titel, sub, ...(saved ? [trackNodes(saved)] : []), facts, links, hide, desc);
     loadDetails(job.refnr).then(d => {
       const text = d.stellenangebotsBeschreibung || d.stellenbeschreibung;
       if (text) desc.replaceWith(markdown(text, job.titel));
       else desc.replaceChildren(el('p', 'sub', 'Für diese Stelle gibt es hier keinen Beschreibungstext. Öffne die Anzeige über den Knopf oben.'));
       facts.replaceChildren(...factNodes(d));
+      const main = String(d.hauptberuf || job.beruf || '').replace(/\/in\b|\/-?frau\b/g, '').trim();
+      if (main && canHide && !hasWord(job.titel, main)) { hideBy(`Beruf „${main}“ nicht mehr zeigen`, main); hide.hidden = false; }
       facts.hidden = !facts.children.length;
       const ext = d.externeURL || d.externeUrl;
       if (!job.externeUrl && /^https?:\/\//i.test(ext || '')) links.append(link(d.allianzpartnerName ? 'Original bei ' + d.allianzpartnerName : 'Originalanzeige', ext));
@@ -1397,12 +1430,13 @@ legend { padding: 0; margin-bottom: 8px; }
 
   function openProfileEdit(p) {
     const isNew = !p;
-    const d = p || { name: '', color: COLORS[PROFILES.length % COLORS.length], icon: 'star', terms: [], exclude: [], minijob: false, arbeitszeit: [] };
+    const d = p || { name: '', color: COLORS[PROFILES.length % COLORS.length], icon: 'star', terms: [], exclude: [], include: [], minijob: false, arbeitszeit: [] };
     const form = el('form');
     let n = 0;
     const field = (text, node, id) => { const l = el('label', null, text); node.id = id; l.htmlFor = id; l.append(node); return l; };
     const name = el('input'); name.type = 'text'; name.value = d.name; name.maxLength = 40; name.required = true; name.placeholder = 'z. B. Buchhaltung'; name.autocomplete = 'off';
     const terms = el('textarea'); terms.rows = 5; terms.value = d.terms.join('\n'); terms.placeholder = 'Ein Suchbegriff pro Zeile, z. B.\nBuchhalter\nFinanzbuchhalter\nLohnbuchhalter';
+    const incl = el('textarea'); incl.rows = 3; incl.value = d.include.join('\n'); incl.placeholder = 'Leer = alle Treffer zeigen. Ein Wort pro Zeile, z. B.\nBuchhalt\nFinanz';
     const excl = el('textarea'); excl.rows = 3; excl.value = d.exclude.join('\n'); excl.placeholder = 'Ein Wort pro Zeile, z. B.\nAusbildung\nPraktikum';
     const swatches = (legend, items, current, cls) => {
       const fs = el('fieldset'); fs.append(el('legend', null, legend));
@@ -1422,11 +1456,12 @@ legend { padding: 0; margin-bottom: 8px; }
     const row = el('div', 'links'); row.append(ok, button('Abbrechen', openProfiles));
     form.append(field('Name', name, 'pe-name'), field('Suchbegriffe', terms, 'pe-terms'),
       el('p', 'small', 'Jeder Begriff wird einzeln gesucht, die Treffer werden zusammengeführt. Ohne Begriffe erscheinen alle Stellen im Umkreis.'),
-      field('Titel mit diesen Wörtern ausblenden', excl, 'pe-excl'), colorSet, iconSet, mjSet, row);
+      field('Nur zeigen, wenn Titel oder Beruf eines dieser Wörter enthält', incl, 'pe-incl'),
+      field('Ausblenden, wenn Titel, Beruf oder Arbeitgeber eines dieser Wörter enthält', excl, 'pe-excl'), colorSet, iconSet, mjSet, row);
     form.addEventListener('submit', e => {
       e.preventDefault();
       const lines = t => t.value.split(/[\n,;]+/);
-      const next = cleanProfile({ id: p ? p.id : '', name: name.value.trim(), color: (colorBoxes.find(c => c.checked) || {}).value, icon: (iconBoxes.find(c => c.checked) || {}).value, terms: lines(terms), exclude: lines(excl), minijob: mj.checked, arbeitszeit: d.arbeitszeit });
+      const next = cleanProfile({ id: p ? p.id : '', name: name.value.trim(), color: (colorBoxes.find(c => c.checked) || {}).value, icon: (iconBoxes.find(c => c.checked) || {}).value, terms: lines(terms), exclude: lines(excl), include: lines(incl), minijob: mj.checked, arbeitszeit: d.arbeitszeit });
       if (p) Object.assign(p, next); else PROFILES.push(next);
       profile = p || next; store.profil = profile.id;
       save(); closeSheet(); renderChrome(); resetDeck();

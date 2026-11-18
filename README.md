@@ -5,7 +5,9 @@ Kartenstapel. Nach rechts wischen merkt eine Stelle, nach links verwirft sie.
 
 ## Berufsgruppen
 
-Die Berufsgruppe wird im Filter gewählt. Unter „Berufe bearbeiten“ lassen sich Suchbegriffe und Ausschlusswörter ändern und eigene Berufe anlegen (gespeichert im Browser). Neue Berufe entstehen über einen Assistenten mit sechs Auswahlfragen
+Die Berufsgruppe wird im Filter gewählt. Unter „Berufe bearbeiten“ lassen sich Suchbegriffe und Ausschlusswörter ändern und eigene Berufe anlegen (gespeichert im Browser). Je Beruf gibt es Muss-Wörter (`include`: Titel oder Berufsbezeichnung muss eines enthalten) und Ausschlusswörter
+(`exclude`: Titel, Beruf oder Arbeitgeber); im Detailblatt lassen sich Arbeitgeber und Beruf mit einem Tipp ausschließen.
+Neue Berufe entstehen über einen Assistenten mit sechs Auswahlfragen
 (`FIELDS`, `LIKES`, `LEVELS`, `TIMES`, `AVOID` im Script), ganz ohne Freitext. Die Profile und ihre Suchbegriffe stehen oben im Script von `index.html`
 (`PROFILES`): Erzieher & HEP, Social Media, Sachbearbeitung (Vertriebsinnendienst,
 Verlag, Journalismus), Nebenjobs (Minijobs), IT und „Neustart 50+“ (breites Profil für den Umstieg mit
