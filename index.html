@@ -171,6 +171,19 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 textarea { font: 500 1rem/1.4 var(--font); letter-spacing: 0; text-transform: none; color: var(--ink); background: var(--bg); border: 1.5px solid transparent; border-radius: 14px; padding: 11px 13px; width: 100%; resize: vertical; }
 .track textarea { background: var(--surface); }
 textarea:focus { border-color: var(--accent); outline: none; }
+.dots { display: flex; gap: 6px; }
+.dots i { flex: 1; height: 5px; border-radius: 3px; background: var(--line); }
+.dots i.on { background: var(--accent); }
+.ask { margin: 0; font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.2; text-wrap: balance; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt { display: flex; align-items: center; gap: 13px; width: 100%; text-align: left; background: var(--bg); border: 1.5px solid transparent; border-radius: 16px; padding: 13px 15px; min-height: 54px; }
+.opt svg.i { width: 24px; height: 24px; color: var(--c, var(--accent)); }
+.opt b { display: block; font-weight: 700; }
+.opt small { display: block; font-size: .82rem; font-weight: 400; color: var(--muted); margin-top: 1px; }
+.opt[aria-pressed="true"] { border-color: var(--c, var(--accent)); background: color-mix(in srgb, var(--c, var(--accent)) 12%, var(--surface)); }
+.fchip.term { background: var(--bg); }
+.fchip.term[aria-pressed="false"] { text-decoration: line-through; opacity: .6; }
+.fchip.term[aria-pressed="true"] { background: var(--accent); color: #fff; }
 .btn.quiet { border-color: transparent; background: var(--bg); align-self: flex-start; font-size: .9rem; padding: 9px 15px; }
 .btn.danger { color: var(--no); }
 .pick.sw { padding: 5px; } .pick.sw .dot { width: 28px; height: 28px; border-radius: 50%; display: block; }
@@ -329,7 +342,11 @@ legend { padding: 0; margin-bottom: 8px; }
     book: '<path d="M4 5c3-1 5-1 8 1 3-2 5-2 8-1v13c-3-1-5-1-8 1-3-2-5-2-8-1z"/><path d="M12 6v13"/>',
     leaf: '<path d="M5 19c0-9 5-14 15-14 0 10-5 15-14 15"/><path d="M5 19c3-5 6-8 10-10"/>',
     heart: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
-    star: '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.900-.8z"/>',
+    box: '<path d="M3 8l9-5 9 5v8l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
+    cross: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8"/>',
+    fork: '<path d="M7 3v7a2 2 0 0 0 4 0V3M9 3v18M17 3c-2 2-2 6 0 8v10"/>',
+    spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/>',
+    star: '<path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8L3.5 9.7l5.9-.8z"/>',
   };
   const COLORS = ['#d4482b', '#b22f82', '#a26400', '#17905b', '#2563c9', '#6b4bd6', '#0e8a9a', '#59616f'];
   // Vorgaben für Berufe: Hinter jedem stecken mehrere Suchbegriffe, die einzeln abgefragt und zusammengeführt werden.
@@ -439,7 +456,7 @@ legend { padding: 0; margin-bottom: 8px; }
 
   // ---------- Stapel ----------
   let profile = PROFILES.find(p => p.id === store.profil);
-  let deck = [], inDeck = new Set(), pageNo = 0, exhausted = false, loading = false, failed = '', run = 0;
+  let deck = [], inDeck = new Set(), pageNo = 0, exhausted = false, loading = false, failed = '', failedStatus = 0, rawTotal = 0, run = 0;
   const history = [];
 
   const fmtDate = s => { const d = new Date(s); return !s || isNaN(d) ? '' : d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }); };
@@ -486,11 +503,12 @@ legend { padding: 0; margin-bottom: 8px; }
       for (let i = 0; i < terms.length && my === run; i += 6) results.push(...await Promise.allSettled(terms.slice(i, i + 6).map(query)));
       if (my !== run) return;
       const ok = results.filter(r => r.status === 'fulfilled').map(r => r.value);
-      if (!ok.length) { failed = String(results[0].reason?.message || results[0].reason || 'unbekannt'); pageNo--; break; }
+      if (!ok.length) { failed = String(results[0].reason?.message || results[0].reason || 'unbekannt'); failedStatus = Number(results[0].reason?.status) || 0; pageNo--; break; }
       let full = false;
       const batch = [];
       for (const { term, data } of ok) {
         const list = data.stellenangebote || [];
+        rawTotal += list.length;
         if (list.length >= SIZE && (Number(data.maxErgebnisse) || 0) > pageNo * SIZE) full = true;
         for (const raw of list) {
           const job = slim(raw, term);
@@ -512,7 +530,7 @@ legend { padding: 0; margin-bottom: 8px; }
 
   function resetDeck() {
     run++;
-    deck = []; inDeck = new Set(); pageNo = 0; exhausted = false; loading = false; failed = ''; history.length = 0;
+    deck = []; inDeck = new Set(); pageNo = 0; exhausted = false; loading = false; failed = ''; failedStatus = 0; rawTotal = 0; history.length = 0;
     loadMore();
   }
 
@@ -620,6 +638,14 @@ legend { padding: 0; margin-bottom: 8px; }
       return;
     }
     if (loading) { d.replaceChildren(state('Stellen werden geladen', `Einen Moment, die Jobsuche für ${profile.name} läuft.`)); return; }
+    // Die Jobsuche kennt kleine Ortsteile oft nicht: Dann kommt gar nichts zurück (oder ein Fehler 400).
+    const ort = store.ort.trim();
+    if (ort && ((failed && failedStatus === 400) || (!failed && rawTotal === 0))) {
+      d.replaceChildren(state(`Nichts gefunden für „${ort}“`,
+        'Kleine Ortsteile kennt die Jobsuche oft nicht. Trag die Postleitzahl oder die nächste größere Gemeinde ein. Stimmt der Ort, hilft ein größerer Umkreis.',
+        button('Ort ändern', openFilter, true)));
+      return;
+    }
     if (failed) { d.replaceChildren(state('Keine Verbindung zur Jobsuche', 'Die Arbeitsagentur antwortet gerade nicht (' + failed + ').', button('Erneut versuchen', () => loadMore(), true))); return; }
     d.replaceChildren(state('Alles durchgesehen', 'Für ' + profile.name + ' gibt es mit diesen Filtern gerade keine weiteren Stellen.',
       button('Filter ändern', openFilter, true),
@@ -1039,6 +1065,7 @@ legend { padding: 0; margin-bottom: 8px; }
     const ort = el('input'); ort.type = 'text'; ort.value = store.ort; ort.autocomplete = 'off'; ort.placeholder = 'deutschlandweit';
     const um = select(store.umkreis, [['0', 'nur dort'], ['10', '10 km'], ['25', '25 km'], ['50', '50 km'], ['100', '100 km'], ['200', '200 km']]);
     const where = el('div', 'two'); where.append(field('Ort oder PLZ', ort), field('Umkreis', um));
+    const whereHint = el('p', 'small', 'Bei kleinen Ortsteilen lieber die Postleitzahl eintragen.'); whereHint.style.marginTop = '-10px';
     const [azSet, azBoxes] = picks('Arbeitszeit', 'checkbox', 'az', AZ.map(([v, t]) => ({ value: v, text: t, on: store.az.includes(v) })));
     const befr = select(store.befristung, [['', 'egal'], ['2', 'nur unbefristet'], ['1', 'nur befristet']]);
     const seit = select(store.seit, [['', 'jederzeit'], ['1', 'seit gestern'], ['7', 'letzte 7 Tage'], ['14', 'letzte 14 Tage'], ['28', 'letzte 4 Wochen']]);
@@ -1048,7 +1075,7 @@ legend { padding: 0; margin-bottom: 8px; }
     const clear = button('Filter zurücksetzen', () => { azBoxes.forEach(c => { c.checked = false; }); befr.value = ''; seit.value = ''; hideBoxes.forEach(c => { c.checked = true; }); });
     clear.className = 'textbtn';
     const row = el('div', 'submitbar'); row.append(ok, clear);
-    form.append(jobSet, editJobs, where, azSet, when, hideSet, row);
+    form.append(jobSet, editJobs, where, whereHint, azSet, when, hideSet, row);
     form.addEventListener('submit', e => {
       e.preventDefault();
       const chosen = jobBoxes.find(c => c.checked);
@@ -1172,7 +1199,177 @@ legend { padding: 0; margin-bottom: 8px; }
       ul.append(li);
     }
     const back = button('Zurück zum Filter', openFilter); back.classList.add('quiet');
-    openSheet('Berufe', ul, button('Neuen Beruf anlegen', () => openProfileEdit(null), true), back);
+    openSheet('Berufe', ul, button('Neuen Beruf anlegen', () => openWizard(), true), back);
+  }
+
+  // ---------- Assistent „Neuer Beruf“: Fragen mit Auswahl statt Freitext ----------
+  const FIELDS = [
+    { id: 'handwerk', name: 'Handwerk und Bau', icon: 'wrench', color: '#a26400', jobs: [
+      ['Maler und Lackierer', ['Maler', 'Lackierer']], ['Tischler und Holz', ['Tischler', 'Schreiner', 'Holzmechaniker']],
+      ['Maurer und Hochbau', ['Maurer', 'Hochbaufacharbeiter', 'Betonbauer']], ['Dach und Zimmerei', ['Dachdecker', 'Zimmerer', 'Klempner']],
+      ['Innenausbau', ['Trockenbauer', 'Fliesenleger', 'Bodenleger']], ['Sanitär, Heizung, Klima', ['Anlagenmechaniker SHK', 'Heizungsbauer', 'Installateur']],
+      ['Tiefbau und Straßenbau', ['Tiefbauer', 'Straßenbauer', 'Baumaschinenführer']], ['Hausmeister und Haustechnik', ['Hausmeister', 'Haustechniker', 'Objektbetreuer']]] },
+    { id: 'technik', name: 'Metall, Elektro, Technik', icon: 'spark', color: '#2563c9', jobs: [
+      ['Elektro', ['Elektriker', 'Elektroniker', 'Elektroinstallateur']], ['Metall und Schweißen', ['Schlosser', 'Metallbauer', 'Schweißer']],
+      ['Maschinen und Anlagen', ['Industriemechaniker', 'Mechatroniker', 'Instandhalter']], ['Kfz und Landtechnik', ['Kfz-Mechatroniker', 'Land- und Baumaschinenmechatroniker', 'Karosseriebauer']],
+      ['Zerspanung und CNC', ['Zerspanungsmechaniker', 'CNC-Fräser', 'CNC-Dreher']], ['Service und Montage', ['Servicetechniker', 'Monteur', 'Kundendiensttechniker']]] },
+    { id: 'produktion', name: 'Produktion und Lager', icon: 'box', color: '#59616f', jobs: [
+      ['Produktion', ['Produktionsmitarbeiter', 'Maschinenbediener', 'Anlagenführer']], ['Montage und Fertigung', ['Montagemitarbeiter', 'Fertigungsmitarbeiter', 'Produktionshelfer']],
+      ['Lager und Versand', ['Lagerist', 'Lagermitarbeiter', 'Fachkraft für Lagerlogistik', 'Kommissionierer']], ['Gabelstapler', ['Staplerfahrer']],
+      ['Qualitätskontrolle', ['Qualitätsprüfer', 'Qualitätskontrolleur']], ['Lebensmittel', ['Bäcker', 'Fleischer', 'Fachkraft Lebensmitteltechnik']]] },
+    { id: 'fahren', name: 'Fahren und Transport', icon: 'truck', color: '#0e8a9a', jobs: [
+      ['Lkw', ['Berufskraftfahrer', 'Lkw-Fahrer', 'Kraftfahrer']], ['Bus', ['Busfahrer']],
+      ['Ausliefern und Zustellen', ['Auslieferungsfahrer', 'Kurierfahrer', 'Zusteller']], ['Personen fahren', ['Fahrdienst', 'Taxifahrer', 'Krankentransport']],
+      ['Touren planen', ['Disponent']], ['Baumaschinen und Kran', ['Baumaschinenführer', 'Kranführer']]] },
+    { id: 'pflege', name: 'Pflege und Gesundheit', icon: 'cross', color: '#d4482b', jobs: [
+      ['Pflegefachkraft', ['Pflegefachkraft', 'Altenpfleger', 'Gesundheits- und Krankenpfleger']], ['Pflegehilfe', ['Pflegehelfer', 'Pflegeassistent']],
+      ['Betreuung im Alltag', ['Betreuungskraft', 'Alltagsbegleiter']], ['Arzt- und Zahnarztpraxis', ['Medizinische Fachangestellte', 'Zahnmedizinische Fachangestellte']],
+      ['Therapie', ['Physiotherapeut', 'Ergotherapeut']], ['Rettungsdienst', ['Rettungssanitäter', 'Notfallsanitäter']]] },
+    { id: 'sozial', name: 'Erziehung und Soziales', icon: 'people', color: '#b22f82', jobs: [
+      ['Kita und Hort', ['Erzieher', 'Pädagogische Fachkraft', 'Kinderpfleger']], ['Menschen mit Behinderung', ['Heilerziehungspfleger', 'Betreuungsfachkraft Eingliederungshilfe']],
+      ['Schulbegleitung', ['Schulbegleiter', 'Integrationshelfer']], ['Sozialarbeit', ['Sozialarbeiter', 'Sozialpädagoge']],
+      ['Anleiten in Werkstätten', ['Arbeitserzieher', 'Arbeitsanleiter', 'Gruppenleiter Werkstatt für behinderte Menschen']], ['Jugend und Familie', ['Jugendhilfe', 'Familienhelfer', 'Sozialbetreuer']]] },
+    { id: 'buero', name: 'Büro und Verwaltung', icon: 'doc', color: '#6b4bd6', jobs: [
+      ['Sachbearbeitung', ['Sachbearbeiter', 'Kaufmännischer Mitarbeiter', 'Bürokaufmann']], ['Buchhaltung', ['Buchhalter', 'Finanzbuchhalter', 'Lohnbuchhalter']],
+      ['Assistenz und Sekretariat', ['Assistenz', 'Sekretär', 'Teamassistenz']], ['Personal', ['Personalsachbearbeiter', 'Personalreferent']],
+      ['Einkauf und Auftragsabwicklung', ['Einkäufer', 'Vertriebsinnendienst', 'Auftragsabwicklung']], ['Öffentliche Verwaltung', ['Verwaltungsfachangestellte', 'Sachbearbeiter Verwaltung']],
+      ['Empfang und Telefon', ['Empfangsmitarbeiter', 'Telefonist']]] },
+    { id: 'verkauf', name: 'Verkauf und Kundenservice', icon: 'cart', color: '#17905b', jobs: [
+      ['Verkauf im Laden', ['Verkäufer', 'Kaufmann im Einzelhandel', 'Kassierer']], ['Fachberatung', ['Fachberater', 'Kundenberater']],
+      ['Außendienst', ['Außendienstmitarbeiter', 'Vertriebsmitarbeiter']], ['Kundenservice am Telefon', ['Kundenservice', 'Kundenbetreuer', 'Callcenter-Agent']],
+      ['Filial- und Marktleitung', ['Filialleiter', 'Marktleiter', 'Stellvertretender Marktleiter']], ['Bäckerei und Fleischerei', ['Bäckereifachverkäufer', 'Fleischereifachverkäufer']]] },
+    { id: 'gastro', name: 'Gastronomie und Hotel', icon: 'fork', color: '#a26400', jobs: [
+      ['Küche', ['Koch', 'Beikoch', 'Küchenhilfe']], ['Service', ['Servicekraft', 'Restaurantfachmann', 'Kellner']],
+      ['Hotel', ['Hotelfachmann', 'Rezeptionist', 'Housekeeping']], ['Kantine und Großküche', ['Küchenkraft', 'Mitarbeiter Kantine']]] },
+    { id: 'reinigung', name: 'Reinigung und Hauswirtschaft', icon: 'heart', color: '#0e8a9a', jobs: [
+      ['Gebäudereinigung', ['Reinigungskraft', 'Gebäudereiniger']], ['Hauswirtschaft', ['Hauswirtschafter', 'Hauswirtschaftshelfer']],
+      ['Wäscherei', ['Wäschereimitarbeiter', 'Textilreiniger']], ['Hausmeisterdienste', ['Hausmeister', 'Hausmeisterhelfer']]] },
+    { id: 'it', name: 'IT und Medien', icon: 'screen', color: '#2563c9', jobs: [
+      ['Systeme und Netzwerke', ['Systemadministrator', 'IT-Administrator', 'Netzwerkadministrator']], ['Support', ['IT-Support', 'Helpdesk', 'Fachinformatiker Systemintegration']],
+      ['Software entwickeln', ['Softwareentwickler', 'Fachinformatiker Anwendungsentwicklung', 'Webentwickler']], ['IT-Sicherheit', ['Security Engineer', 'IT-Sicherheit']],
+      ['Marketing und Social Media', ['Social Media Manager', 'Online Marketing Manager', 'Content Manager']], ['Gestaltung', ['Mediengestalter', 'Grafikdesigner']],
+      ['Redaktion', ['Redakteur', 'Journalist', 'Lektor']]] },
+    { id: 'gruen', name: 'Garten, Landwirtschaft, Umwelt', icon: 'leaf', color: '#17905b', jobs: [
+      ['Garten und Landschaft', ['Gärtner', 'Garten- und Landschaftsbau', 'Grünpflege']], ['Landwirtschaft', ['Landwirt', 'Tierwirt', 'Landwirtschaftshelfer']],
+      ['Forst', ['Forstwirt']], ['Bauhof und Gemeinde', ['Bauhof', 'Straßenwärter', 'Kommunalarbeiter']],
+      ['Wasser und Entsorgung', ['Fachkraft Abwassertechnik', 'Müllwerker', 'Fachkraft Kreislaufwirtschaft']]] },
+  ];
+  const LIKES = [
+    ['Mit den Händen arbeiten', ['Hausmeister', 'Monteur', 'Bauhelfer']], ['Mit Menschen arbeiten', ['Betreuungskraft', 'Kundenberater', 'Verkäufer']],
+    ['Anderen etwas zeigen und anleiten', ['Ausbilder', 'Arbeitsanleiter', 'Trainer']], ['Unterwegs sein', ['Fahrer', 'Zusteller', 'Servicetechniker']],
+    ['Planen und organisieren', ['Disponent', 'Sachbearbeiter', 'Arbeitsvorbereitung']], ['Draußen arbeiten', ['Gärtner', 'Bauhof', 'Grünpflege']],
+    ['Aufpassen und prüfen', ['Sicherheitsmitarbeiter', 'Pförtner', 'Qualitätsprüfer']],
+  ];
+  const LEVELS = [
+    ['Als Fachkraft in meinem Beruf', 'Nur Stellen, die zu den gewählten Tätigkeiten passen', []],
+    ['Auch als Helfer oder Quereinsteiger', 'Offen für einen Neuanfang, auch ohne passenden Abschluss', ['Quereinsteiger', 'Helfer']],
+    ['Mit Verantwortung', 'Vorarbeiter, Meister, Teamleitung', ['Meister', 'Teamleiter', 'Vorarbeiter']],
+  ];
+  const TIMES = [['Vollzeit', ['vz'], false], ['Teilzeit', ['tz'], false], ['Vollzeit oder Teilzeit', ['vz', 'tz'], false], ['Minijob', [], true], ['Egal', [], false]];
+  const AVOID = [
+    ['Ausbildung und Praktikum', ['Ausbildung', 'Azubi', 'Praktik', 'Werkstudent']], ['Minijob und Aushilfe', ['Minijob', 'geringfügig', 'Aushilfe']],
+    ['Schicht- und Nachtarbeit', ['Schicht', 'Nacht']], ['Montage und Reisen', ['Montage', 'Reise', 'Fernverkehr']],
+    ['Leitungsstellen', ['Leiter', 'Leitung', 'Meister']], ['Helferstellen', ['Helfer', 'Hilfskraft']],
+  ];
+
+  function openWizard(w) {
+    w = w || { step: 0, field: null, jobs: new Set(), likes: new Set(), level: 0, time: 2, avoid: new Set(), off: new Set() };
+    const STEPS = 7;
+    const go = step => openWizard({ ...w, step });
+    const nodes = [];
+    const dots = el('div', 'dots');
+    for (let i = 0; i < STEPS; i++) dots.append(el('i', i <= w.step ? 'on' : ''));
+    nodes.push(dots);
+    const ask = (q, hint) => { nodes.push(el('p', 'ask', q)); if (hint) nodes.push(el('p', 'small', hint)); };
+    const opts = el('div', 'opts');
+    const opt = (title, sub, pressed, onTap, iconPaths, color) => {
+      const b = el('button', 'opt'); b.type = 'button'; b.setAttribute('aria-pressed', String(!!pressed));
+      if (color) b.style.setProperty('--c', color);
+      if (iconPaths) b.append(icon(iconPaths));
+      const t = el('span'); t.append(el('b', null, title)); if (sub) t.append(el('small', null, sub));
+      b.append(t); b.addEventListener('click', onTap); opts.append(b); return b;
+    };
+    const toggle = (set, key) => () => { set.has(key) ? set.delete(key) : set.add(key); openWizard(w); };
+    const nav = (nextLabel, canNext) => {
+      const bar = el('div', 'submitbar');
+      const next = button(nextLabel, () => go(w.step + 1), true); next.disabled = !canNext;
+      bar.append(next);
+      if (w.step > 0) { const back = button('Zurück', () => go(w.step - 1)); back.className = 'textbtn'; bar.append(back); }
+      return bar;
+    };
+    const field = FIELDS.find(f => f.id === w.field);
+
+    // Vorschlag aus den Antworten zusammensetzen
+    const proposal = () => {
+      const terms = [];
+      const add = list => { for (const t of list) if (!terms.includes(t)) terms.push(t); };
+      if (field) for (const [name, list] of field.jobs) if (w.jobs.has(name)) add(list);
+      LIKES.forEach(([name, list], i) => { if (w.likes.has(i)) add(list); });
+      add(LEVELS[w.level][2]);
+      const exclude = [];
+      AVOID.forEach(([name, list], i) => { if (w.avoid.has(i)) for (const x of list) if (!exclude.includes(x)) exclude.push(x); });
+      const picked = field ? field.jobs.map(j => j[0]).filter(n => w.jobs.has(n)) : [];
+      let name = picked.length === 1 ? picked[0] : picked.length === 2 && (picked[0] + ' & ' + picked[1]).length <= 38 ? picked[0] + ' & ' + picked[1] : field ? field.name : 'Neuer Beruf';
+      for (let n = 2; PROFILES.some(x => x.name === name); n++) name = name.replace(/ \d+$/, '') + ' ' + n;
+      return { name, terms: terms.slice(0, 40), exclude };
+    };
+
+    if (w.step === 0) {
+      ask('In welchem Bereich hast du zuletzt gearbeitet oder gelernt?', 'Wähle den Bereich, der am nächsten dran ist.');
+      for (const f of FIELDS) opt(f.name, '', w.field === f.id, () => openWizard({ ...w, field: f.id, jobs: w.field === f.id ? w.jobs : new Set(), off: new Set(), step: 1 }), ICONSET[f.icon], f.color);
+      nodes.push(opts);
+      const manual = button('Ohne Fragen selbst anlegen', () => openProfileEdit(null)); manual.className = 'textbtn';
+      nodes.push(manual);
+    } else if (w.step === 1) {
+      ask('Welche Tätigkeiten passen zu dir?', 'Mehrere sind möglich. Je mehr du wählst, desto mehr Stellen siehst du.');
+      const all = field.jobs.every(j => w.jobs.has(j[0]));
+      opt('Alles aus diesem Bereich', '', all, () => { all ? w.jobs.clear() : field.jobs.forEach(j => w.jobs.add(j[0])); openWizard(w); });
+      for (const [name, list] of field.jobs) opt(name, list.join(', '), w.jobs.has(name), toggle(w.jobs, name));
+      nodes.push(opts, nav('Weiter', w.jobs.size > 0));
+    } else if (w.step === 2) {
+      ask('Was würdest du außerdem gern machen?', 'Das erweitert die Suche um Stellen aus anderen Bereichen. Du kannst die Frage auch überspringen.');
+      LIKES.forEach(([name, list], i) => opt(name, list.join(', '), w.likes.has(i), toggle(w.likes, i)));
+      nodes.push(opts, nav(w.likes.size ? 'Weiter' : 'Überspringen', true));
+    } else if (w.step === 3) {
+      ask('Auf welcher Stufe suchst du?');
+      LEVELS.forEach(([name, sub], i) => opt(name, sub, w.level === i, () => openWizard({ ...w, level: i, step: 4 })));
+      nodes.push(opts, nav('Weiter', true));
+    } else if (w.step === 4) {
+      ask('Wie viel möchtest du arbeiten?');
+      TIMES.forEach(([name], i) => opt(name, '', w.time === i, () => openWizard({ ...w, time: i, step: 5 })));
+      nodes.push(opts, nav('Weiter', true));
+    } else if (w.step === 5) {
+      ask('Was soll nicht dabei sein?', 'Stellen mit diesen Wörtern im Titel werden ausgeblendet. Du kannst die Frage auch überspringen.');
+      AVOID.forEach(([name, list], i) => opt(name, list.join(', '), w.avoid.has(i), toggle(w.avoid, i)));
+      nodes.push(opts, nav(w.avoid.size ? 'Weiter' : 'Überspringen', true));
+    } else {
+      const pr = proposal();
+      const active = pr.terms.filter(t => !w.off.has(t));
+      ask(`Dein Beruf „${pr.name}“`, `${active.length} Suchbegriffe. Tippe einen an, um ihn wegzulassen.`);
+      const chips = el('div', 'chips');
+      for (const t of pr.terms) {
+        const b = el('button', 'fchip term', t); b.type = 'button'; b.setAttribute('aria-pressed', String(!w.off.has(t)));
+        b.addEventListener('click', toggle(w.off, t)); chips.append(b);
+      }
+      nodes.push(chips);
+      const facts = [TIMES[w.time][0] === 'Egal' ? 'Arbeitszeit egal' : TIMES[w.time][0]];
+      if (pr.exclude.length) facts.push('ohne: ' + pr.exclude.join(', '));
+      nodes.push(el('p', 'small', facts.join(' · ')));
+      const bar = el('div', 'submitbar');
+      const create = button('Beruf anlegen und Stellen zeigen', () => {
+        const next = cleanProfile({ name: pr.name, color: field.color, icon: field.icon, terms: active, exclude: pr.exclude, minijob: TIMES[w.time][2], arbeitszeit: TIMES[w.time][1] });
+        PROFILES.push(next); profile = next; store.profil = next.id;
+        save(); closeSheet(); renderChrome(); resetDeck();
+      }, true);
+      create.disabled = active.length === 0;
+      const back = button('Zurück', () => go(5)); back.className = 'textbtn';
+      bar.append(create, back);
+      nodes.push(bar, el('p', 'small', 'Name, Farbe und Begriffe kannst du später unter „Berufe bearbeiten“ ändern.'));
+    }
+    const keep = $('sheet-body').scrollTop, same = !$('sheet').hidden && $('sheet-title').dataset.step === String(w.step);
+    openSheet('Neuer Beruf · ' + (w.step < STEPS - 1 ? `Frage ${w.step + 1} von ${STEPS - 1}` : 'Vorschlag'), ...nodes);
+    $('sheet-title').dataset.step = String(w.step);
+    if (same) $('sheet-body').scrollTop = keep;        // beim An- und Abwählen nicht nach oben springen
   }
 
   function openProfileEdit(p) {
