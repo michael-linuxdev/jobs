@@ -397,6 +397,8 @@ legend { padding: 0; margin-bottom: 8px; }
 
   // ---------- Speicher (nur in diesem Browser) ----------
   const store = { ort: 'Dresden', umkreis: '25', profil: 'sozial', profiles: null, known: null, visit: 0, prevVisit: 0, liked: {}, seen: {}, az: [], befristung: '', seit: '', ohneZeitarbeit: true, ohnePav: true, hinted: false };
+  let firstStart = false;
+  try { firstStart = !localStorage.getItem(KEY) && !localStorage.getItem('jobstapel.onboarded'); } catch (e) {}
   try { Object.assign(store, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
   const cleanList = v => (Array.isArray(v) ? v : []).map(x => String(x).trim()).filter(Boolean).slice(0, 40);
   const cleanProfile = p => ({
@@ -1218,7 +1220,7 @@ legend { padding: 0; margin-bottom: 8px; }
       ['Lager und Versand', ['Lagerist', 'Lagermitarbeiter', 'Fachkraft für Lagerlogistik', 'Kommissionierer']], ['Gabelstapler', ['Staplerfahrer']],
       ['Qualitätskontrolle', ['Qualitätsprüfer', 'Qualitätskontrolleur']], ['Lebensmittel', ['Bäcker', 'Fleischer', 'Fachkraft Lebensmitteltechnik']]] },
     { id: 'fahren', name: 'Fahren und Transport', icon: 'truck', color: '#0e8a9a', jobs: [
-      ['Lkw', ['Berufskraftfahrer', 'Lkw-Fahrer', 'Kraftfahrer']], ['Bus', ['Busfahrer']],
+      ['Lkw fahren', ['Berufskraftfahrer', 'Lkw-Fahrer', 'Kraftfahrer']], ['Bus fahren', ['Busfahrer']],
       ['Ausliefern und Zustellen', ['Auslieferungsfahrer', 'Kurierfahrer', 'Zusteller']], ['Personen fahren', ['Fahrdienst', 'Taxifahrer', 'Krankentransport']],
       ['Touren planen', ['Disponent']], ['Baumaschinen und Kran', ['Baumaschinenführer', 'Kranführer']]] },
     { id: 'pflege', name: 'Pflege und Gesundheit', icon: 'cross', color: '#d4482b', jobs: [
@@ -1273,8 +1275,8 @@ legend { padding: 0; margin-bottom: 8px; }
   ];
 
   function openWizard(w) {
-    w = w || { step: 0, field: null, jobs: new Set(), likes: new Set(), level: 0, time: 2, avoid: new Set(), off: new Set() };
-    const STEPS = 7;
+    w = Object.assign({ step: 0, field: null, jobs: new Set(), likes: new Set(), level: 0, time: 2, avoid: new Set(), off: new Set(), first: false, plz: '', umkreis: '25' }, w);
+    const STEPS = w.first ? 8 : 7;                    // beim Erststart kommt die Frage nach dem Ort dazu
     const go = step => openWizard({ ...w, step });
     const nodes = [];
     const dots = el('div', 'dots');
@@ -1315,10 +1317,12 @@ legend { padding: 0; margin-bottom: 8px; }
     };
 
     if (w.step === 0) {
+      if (w.first) nodes.push(el('p', 'small', 'Willkommen bei Jobstapel. Ein paar kurze Fragen, dann siehst du passende Stellen aus deiner Gegend.'));
       ask('In welchem Bereich hast du zuletzt gearbeitet oder gelernt?', 'Wähle den Bereich, der am nächsten dran ist.');
       for (const f of FIELDS) opt(f.name, '', w.field === f.id, () => openWizard({ ...w, field: f.id, jobs: w.field === f.id ? w.jobs : new Set(), off: new Set(), step: 1 }), ICONSET[f.icon], f.color);
       nodes.push(opts);
-      const manual = button('Ohne Fragen selbst anlegen', () => openProfileEdit(null)); manual.className = 'textbtn';
+      const manual = w.first ? button('Überspringen und mit Beispielberufen starten', closeSheet) : button('Ohne Fragen selbst anlegen', () => openProfileEdit(null));
+      manual.className = 'textbtn';
       nodes.push(manual);
     } else if (w.step === 1) {
       ask('Welche Tätigkeiten passen zu dir?', 'Mehrere sind möglich. Je mehr du wählst, desto mehr Stellen siehst du.');
@@ -1342,6 +1346,15 @@ legend { padding: 0; margin-bottom: 8px; }
       ask('Was soll nicht dabei sein?', 'Stellen mit diesen Wörtern im Titel werden ausgeblendet. Du kannst die Frage auch überspringen.');
       AVOID.forEach(([name, list], i) => opt(name, list.join(', '), w.avoid.has(i), toggle(w.avoid, i)));
       nodes.push(opts, nav(w.avoid.size ? 'Weiter' : 'Überspringen', true));
+    } else if (w.first && w.step === 6) {
+      ask('Wo suchst du?', 'Trag deine Postleitzahl ein. Bei kleinen Orten klappt die Postleitzahl besser als der Ortsname.');
+      const plz = el('input'); plz.type = 'text'; plz.id = 'wiz-plz'; plz.inputMode = 'numeric'; plz.maxLength = 40; plz.autocomplete = 'postal-code'; plz.value = w.plz; plz.placeholder = 'z. B. 02997';
+      const l = el('label', null, 'Postleitzahl'); l.htmlFor = plz.id; l.append(plz);
+      nodes.push(l, el('span', 'group-label', 'Umkreis'));
+      for (const [v, t] of [['10', '10 km'], ['25', '25 km'], ['50', '50 km'], ['100', '100 km']]) opt(t, '', w.umkreis === v, () => openWizard({ ...w, umkreis: v }));
+      const bar = nav('Weiter', w.plz.trim().length >= 3);
+      plz.addEventListener('input', () => { w.plz = plz.value; bar.querySelector('.btn.fill').disabled = plz.value.trim().length < 3; });
+      nodes.push(opts, bar);
     } else {
       const pr = proposal();
       const active = pr.terms.filter(t => !w.off.has(t));
@@ -1353,21 +1366,23 @@ legend { padding: 0; margin-bottom: 8px; }
       }
       nodes.push(chips);
       const facts = [TIMES[w.time][0] === 'Egal' ? 'Arbeitszeit egal' : TIMES[w.time][0]];
+      if (w.first) facts.unshift(`${w.plz.trim()} · ${w.umkreis} km`);
       if (pr.exclude.length) facts.push('ohne: ' + pr.exclude.join(', '));
       nodes.push(el('p', 'small', facts.join(' · ')));
       const bar = el('div', 'submitbar');
       const create = button('Beruf anlegen und Stellen zeigen', () => {
         const next = cleanProfile({ name: pr.name, color: field.color, icon: field.icon, terms: active, exclude: pr.exclude, minijob: TIMES[w.time][2], arbeitszeit: TIMES[w.time][1] });
         PROFILES.push(next); profile = next; store.profil = next.id;
+        if (w.first) { store.ort = w.plz.trim(); store.umkreis = w.umkreis; }
         save(); closeSheet(); renderChrome(); resetDeck();
       }, true);
       create.disabled = active.length === 0;
-      const back = button('Zurück', () => go(5)); back.className = 'textbtn';
+      const back = button('Zurück', () => go(STEPS - 2)); back.className = 'textbtn';
       bar.append(create, back);
       nodes.push(bar, el('p', 'small', 'Name, Farbe und Begriffe kannst du später unter „Berufe bearbeiten“ ändern.'));
     }
     const keep = $('sheet-body').scrollTop, same = !$('sheet').hidden && $('sheet-title').dataset.step === String(w.step);
-    openSheet('Neuer Beruf · ' + (w.step < STEPS - 1 ? `Frage ${w.step + 1} von ${STEPS - 1}` : 'Vorschlag'), ...nodes);
+    openSheet((w.first ? 'Los geht’s' : 'Neuer Beruf') + ' · ' + (w.step < STEPS - 1 ? `Frage ${w.step + 1} von ${STEPS - 1}` : 'Vorschlag'), ...nodes);
     $('sheet-title').dataset.step = String(w.step);
     if (same) $('sheet-body').scrollTop = keep;        // beim An- und Abwählen nicht nach oben springen
   }
@@ -1603,6 +1618,8 @@ legend { padding: 0; margin-bottom: 8px; }
   render();
   detectBase().then(resetDeck);
   installHint();
+  // Erststart: zuerst der Assistent (am Handy liegt der Installationshinweis darüber, bis er geschlossen wird)
+  if (firstStart) { flag('jobstapel.onboarded', '1'); openWizard({ first: true }); }
 })();
 </script>
 </body>
