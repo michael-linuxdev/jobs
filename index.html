@@ -344,6 +344,15 @@ legend { padding: 0; margin-bottom: 8px; }
     { id: 'neben', name: 'Nebenjobs', color: '#17905b', icon: 'clock', exclude: [], terms: [], minijob: true },
     { id: 'it', name: 'IT', color: '#2563c9', icon: 'screen', exclude: [],
       terms: ['Systemadministrator', 'IT-Administrator', 'IT-Leiter', 'System Engineer', 'Security Engineer', 'IT-Sicherheit', 'Microsoft 365', 'Cloud Engineer', 'Netzwerkadministrator', 'IT-Koordinator'] },
+    // Breites Profil für den beruflichen Neustart mit handwerklicher und/oder sozialer Stärke, quer durch alle Branchen:
+    // Einstiegs- und Helferstellen, Haus- und Betriebstechnik, Fahren und Logistik, Betreuung ohne Fachabschluss,
+    // Anleiten (Handwerk + Soziales zugleich) und Service. Voll- und Teilzeit, Mini- und Aushilfsjobs ausgeblendet.
+    { id: 'neustart', name: 'Neustart 50+', color: '#0e8a9a', icon: 'wrench', arbeitszeit: ['vz', 'tz'],
+      exclude: ['Minijob', 'geringfügig', 'Aushilfe', 'Werkstudent', 'Praktik', 'Ferienjob', 'Schüler', 'Student'],
+      terms: ['Quereinsteiger', 'Helfer', 'Hausmeister', 'Haustechniker', 'Instandhaltung', 'Monteur', 'Servicetechniker', 'Produktionsmitarbeiter', 'Maschinenbediener',
+        'Lagermitarbeiter', 'Kraftfahrer', 'Fahrer', 'Busfahrer', 'Zusteller', 'Bauhof', 'Garten- und Landschaftsbau', 'Reinigungskraft', 'Hauswirtschaft', 'Küchenhilfe',
+        'Betreuungskraft', 'Alltagsbegleiter', 'Schulbegleiter', 'Integrationshelfer', 'Pflegehelfer', 'Sozialbetreuer', 'Arbeitsanleiter', 'Arbeitserzieher',
+        'Gruppenleiter Werkstatt für behinderte Menschen', 'Ausbilder', 'Verkäufer', 'Kundenservice', 'Servicekraft', 'Sicherheitsmitarbeiter', 'Pförtner'] },
   ];
   // Bewerbungsstufen in der Merkliste
   const STATUS = [['gemerkt', 'Gemerkt', '#59616f'], ['beworben', 'Beworben', '#2563c9'], ['gespraech', 'Gespräch', '#a26400'], ['zusage', 'Zusage', '#17905b'], ['absage', 'Absage', '#d0453f']];
@@ -370,15 +379,22 @@ legend { padding: 0; margin-bottom: 8px; }
   };
 
   // ---------- Speicher (nur in diesem Browser) ----------
-  const store = { ort: 'Dresden', umkreis: '25', profil: 'sozial', profiles: null, visit: 0, prevVisit: 0, liked: {}, seen: {}, az: [], befristung: '', seit: '', ohneZeitarbeit: true, ohnePav: true, hinted: false };
+  const store = { ort: 'Dresden', umkreis: '25', profil: 'sozial', profiles: null, known: null, visit: 0, prevVisit: 0, liked: {}, seen: {}, az: [], befristung: '', seit: '', ohneZeitarbeit: true, ohnePav: true, hinted: false };
   try { Object.assign(store, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
-  const cleanList = v => (Array.isArray(v) ? v : []).map(x => String(x).trim()).filter(Boolean).slice(0, 30);
+  const cleanList = v => (Array.isArray(v) ? v : []).map(x => String(x).trim()).filter(Boolean).slice(0, 40);
   const cleanProfile = p => ({
     id: String(p.id || 'p' + Date.now().toString(36)), name: String(p.name || 'Beruf').slice(0, 40),
     color: COLORS.includes(p.color) ? p.color : COLORS[0], icon: ICONSET[p.icon] ? p.icon : 'star',
     terms: cleanList(p.terms), exclude: cleanList(p.exclude), minijob: !!p.minijob,
+    arbeitszeit: (Array.isArray(p.arbeitszeit) ? p.arbeitszeit : []).filter(c => AZ.some(a => a[0] === c)),   // Vorgabe, solange im Filter keine Arbeitszeit gewählt ist
   });
   if (!Array.isArray(store.profiles) || !store.profiles.length) store.profiles = DEFAULT_PROFILES;
+  else {
+    // Später hinzugekommene Vorgaben einmalig ergänzen; selbst gelöschte kommen nicht wieder.
+    const known = Array.isArray(store.known) ? store.known : ['sozial', 'social', 'buero', 'neben', 'it'];
+    for (const d of DEFAULT_PROFILES) if (!known.includes(d.id) && !store.profiles.some(x => x && x.id === d.id)) store.profiles.push(d);
+  }
+  store.known = DEFAULT_PROFILES.map(d => d.id);
   store.profiles = store.profiles.map(cleanProfile);
   const PROFILES = store.profiles;                    // dieselbe Liste; Änderungen werden mit save() gespeichert
   const pic = p => ICONSET[p.icon] || ICONSET.star;
@@ -451,19 +467,23 @@ legend { padding: 0; margin-bottom: 8px; }
     let tries = 0;
     while (my === run && !exhausted && deck.length < 6 && tries++ < 4) {
       pageNo++;
-      const results = await Promise.allSettled((profile.terms.length ? profile.terms : ['']).map(async term => {
+      const terms = profile.terms.length ? profile.terms : [''];
+      const az = profile.minijob ? ['mj'] : store.az.length ? store.az : profile.arbeitszeit;
+      const query = async term => {
         const p = new URLSearchParams({ angebotsart: '1', page: String(pageNo), size: String(SIZE) });
         if (store.ohneZeitarbeit) p.set('zeitarbeit', 'false');
         if (store.ohnePav) p.set('pav', 'false');
-        if (store.az.length) p.set('arbeitszeit', store.az.join(';'));
+        if (az.length) p.set('arbeitszeit', az.join(';'));
         if (store.befristung) p.set('befristung', store.befristung);
         if (store.seit) p.set('veroeffentlichtseit', store.seit);
         if (term) p.set('was', term);
         if (store.ort.trim()) { p.set('wo', store.ort.trim()); p.set('umkreis', store.umkreis); }
-        if (profile.minijob) p.set('arbeitszeit', 'mj');
         const data = await (await api('api/jobs?' + p)).json();
         return { term, data };
-      }));
+      };
+      // Viele Suchbegriffe nicht alle gleichzeitig abfragen, sondern in Sechsergruppen
+      const results = [];
+      for (let i = 0; i < terms.length && my === run; i += 6) results.push(...await Promise.allSettled(terms.slice(i, i + 6).map(query)));
       if (my !== run) return;
       const ok = results.filter(r => r.status === 'fulfilled').map(r => r.value);
       if (!ok.length) { failed = String(results[0].reason?.message || results[0].reason || 'unbekannt'); pageNo--; break; }
@@ -1157,7 +1177,7 @@ legend { padding: 0; margin-bottom: 8px; }
 
   function openProfileEdit(p) {
     const isNew = !p;
-    const d = p || { name: '', color: COLORS[PROFILES.length % COLORS.length], icon: 'star', terms: [], exclude: [], minijob: false };
+    const d = p || { name: '', color: COLORS[PROFILES.length % COLORS.length], icon: 'star', terms: [], exclude: [], minijob: false, arbeitszeit: [] };
     const form = el('form');
     let n = 0;
     const field = (text, node, id) => { const l = el('label', null, text); node.id = id; l.htmlFor = id; l.append(node); return l; };
@@ -1186,7 +1206,7 @@ legend { padding: 0; margin-bottom: 8px; }
     form.addEventListener('submit', e => {
       e.preventDefault();
       const lines = t => t.value.split(/[\n,;]+/);
-      const next = cleanProfile({ id: p ? p.id : '', name: name.value.trim(), color: (colorBoxes.find(c => c.checked) || {}).value, icon: (iconBoxes.find(c => c.checked) || {}).value, terms: lines(terms), exclude: lines(excl), minijob: mj.checked });
+      const next = cleanProfile({ id: p ? p.id : '', name: name.value.trim(), color: (colorBoxes.find(c => c.checked) || {}).value, icon: (iconBoxes.find(c => c.checked) || {}).value, terms: lines(terms), exclude: lines(excl), minijob: mj.checked, arbeitszeit: d.arbeitszeit });
       if (p) Object.assign(p, next); else PROFILES.push(next);
       profile = p || next; store.profil = profile.id;
       save(); closeSheet(); renderChrome(); resetDeck();

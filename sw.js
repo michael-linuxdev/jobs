@@ -1,7 +1,7 @@
 // Service Worker: hält die App-Dateien vor, damit sie sofort und auch ohne Netz startet.
 // Bei JEDER Änderung an index.html, Manifest oder Icons CACHE hochzählen, sonst sehen Geräte die neue Version nicht.
 // Eine neue Version wartet, bis der Nutzer „Jetzt aktualisieren“ tippt.
-const CACHE = 'jobstapel-v3';
+const CACHE = 'jobstapel-v4';
 const ASSETS = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon.svg', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png'];
 
 async function install() {

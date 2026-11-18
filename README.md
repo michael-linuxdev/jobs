@@ -7,7 +7,8 @@ Kartenstapel. Nach rechts wischen merkt eine Stelle, nach links verwirft sie.
 
 Die Berufsgruppe wird im Filter gewählt. Unter „Berufe bearbeiten“ lassen sich Suchbegriffe und Ausschlusswörter ändern und eigene Berufe anlegen (gespeichert im Browser). Die Profile und ihre Suchbegriffe stehen oben im Script von `index.html`
 (`PROFILES`): Erzieher & HEP, Social Media, Sachbearbeitung (Vertriebsinnendienst,
-Verlag, Journalismus), Nebenjobs (Minijobs) und IT. Jeder Suchbegriff wird einzeln
+Verlag, Journalismus), Nebenjobs (Minijobs), IT und „Neustart 50+“ (breites Profil für den Umstieg mit
+handwerklicher oder sozialer Stärke: 34 Suchbegriffe quer durch die Branchen, Voll- und Teilzeit). Jeder Suchbegriff wird einzeln
 abgefragt, die Treffer werden zusammengeführt und nach Datum sortiert.
 
 Gemerkte und verworfene Stellen liegen nur im Browser (`localStorage`). Unter „Gemerkt“ → „Sichern“ lassen sie sich
