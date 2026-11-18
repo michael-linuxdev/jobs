@@ -10,7 +10,9 @@ Die Berufsgruppe wird im Filter gewählt. Unter „Berufe bearbeiten“ lassen s
 Verlag, Journalismus), Nebenjobs (Minijobs) und IT. Jeder Suchbegriff wird einzeln
 abgefragt, die Treffer werden zusammengeführt und nach Datum sortiert.
 
-Gemerkte und verworfene Stellen liegen nur im Browser (`localStorage`).
+Gemerkte und verworfene Stellen liegen nur im Browser (`localStorage`). Unter „Gemerkt“ → „Sichern“ lassen sie sich
+als Datei oder Code exportieren und auf einem anderen Gerät übernehmen. Gemerkte Stellen, die bei der
+Arbeitsagentur nicht mehr abrufbar sind (Fehler 404/410), werden als „Nicht mehr online“ markiert.
 
 ## Dateien
 

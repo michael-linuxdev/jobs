@@ -141,7 +141,13 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .round:active:not(:disabled) { transform: scale(.93); }
 
 /* Merkliste */
-.saved-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.saved-head { display: flex; align-items: center; gap: 12px; }
+.saved-head .count { flex: 1; }
+.saved-head .btn { align-self: center; background: var(--surface); }
+.saved li.gone h3, .saved li.gone .sub { opacity: .55; }
+.code { font: 500 .78rem/1.4 ui-monospace, Menlo, Consolas, monospace; word-break: break-all; }
+.file { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.result { font-weight: 700; margin: 0; }
 .saved-head h2 { margin: 0; font-size: 1.5rem; font-weight: 800; letter-spacing: -.03em; }
 .saved-scroll { flex: 1; min-height: 0; overflow-y: auto; margin: 0 -16px; padding: 2px 16px 8px; overscroll-behavior: contain; position: relative; }
 .saved { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
@@ -214,8 +220,11 @@ fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap
 legend { padding: 0; margin-bottom: 8px; }
 .pick { flex-direction: row; align-items: center; gap: 7px; font-size: .9rem; letter-spacing: 0; text-transform: none; color: var(--ink); font-weight: 600; background: var(--bg); border: 1.5px solid transparent; border-radius: 999px; padding: 8px 13px; cursor: pointer; }
 .pick input { position: absolute; opacity: 0; width: 0; height: 0; }
-.pick:has(input:checked) { background: var(--c, var(--accent)); color: #fff; }
+.pick:has(input:checked) { background: color-mix(in srgb, var(--c, var(--accent)) 14%, var(--surface)); border-color: var(--c, var(--accent)); color: var(--c, var(--accent)); }
 .pick:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.submitbar { position: sticky; bottom: 0; z-index: 1; display: flex; flex-direction: column; gap: 4px; margin: 0 -20px; padding: 12px 20px 10px; background: linear-gradient(transparent, var(--surface) 18px); }
+.submitbar .btn.fill { justify-content: center; width: 100%; padding: 15px 18px; font-size: 1.05rem; font-weight: 800; box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 40%, transparent); }
+.textbtn { align-self: center; border: 0; background: none; color: var(--muted); font-weight: 600; font-size: .88rem; padding: 8px 12px; text-decoration: underline; text-underline-offset: 3px; }
 .small { font-size: .82rem; color: var(--muted); margin: 0; font-weight: 400; }
 /* Installationshinweis und Update-Meldung */
 .nag { flex: none; display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: 0; border-radius: 14px; padding: 9px 13px; font-size: .86rem; background: color-mix(in srgb, var(--accent) 13%, var(--surface)); color: var(--ink); }
@@ -277,7 +286,7 @@ legend { padding: 0; margin-bottom: 8px; }
   </section>
 
   <section class="view" id="view-saved" hidden>
-    <div class="saved-head"><h2>Gemerkt</h2><span class="count" id="saved-info"></span></div>
+    <div class="saved-head"><h2>Gemerkt</h2><span class="count" id="saved-info"></span><button type="button" class="btn quiet" id="open-backup">Sichern</button></div>
     <div class="fbar" id="saved-filter" hidden></div>
     <div class="saved-scroll" id="saved-scroll"></div>
   </section>
@@ -513,7 +522,7 @@ legend { padding: 0; margin-bottom: 8px; }
   }
   function show(v) {
     view = v;
-    if (v === 'saved') renderSaved();
+    if (v === 'saved') { renderSaved(); checkSaved(); }
     renderChrome();
     const hash = v === 'saved' ? '#gemerkt' : '';
     if (location.hash !== hash) { try { window.history.replaceState(null, '', hash || location.pathname + location.search); } catch (e) {} }
@@ -694,9 +703,11 @@ legend { padding: 0; margin-bottom: 8px; }
       main.type = 'button';
       main.append(el('h3', null, job.titel), el('span', 'sub', [job.arbeitgeber, [job.plz, job.ort].filter(Boolean).join(' ')].filter(Boolean).join(' · ')));
       const line = el('span', 'stline');
+      if (job.gone) li.classList.add('gone');
       const pill = el('span', 'st', st[1] + (job.statusAt && st[0] !== 'gemerkt' ? ' · ' + fmtDate(job.statusAt) : ''));
       pill.style.setProperty('--s', st[2]);
       line.append(pill);
+      if (job.gone) { const g = el('span', 'st', 'Nicht mehr online'); g.style.setProperty('--s', '#59616f'); line.append(g); }
       if (job.note) line.append(el('span', 'note', job.note));
       main.append(line);
       main.addEventListener('click', () => openDetails(job));
@@ -707,7 +718,34 @@ legend { padding: 0; margin-bottom: 8px; }
       li.append(bar, main, del);
       ul.append(li);
     }
-    box.replaceChildren(ul);
+    const stale = all.filter(j => j.gone && statusOf(j)[0] === 'gemerkt');
+    const nodes = [ul];
+    if (stale.length) {
+      const clear = button(stale.length === 1 ? '1 abgelaufene Stelle entfernen' : `${stale.length} abgelaufene Stellen entfernen`, () => {
+        for (const j of stale) { delete store.liked[j.refnr]; store.seen[j.refnr] = 1; }
+        save(); renderSaved(); renderCounts();
+      });
+      clear.classList.add('quiet'); clear.style.marginTop = '12px';
+      nodes.push(clear);
+    }
+    box.replaceChildren(...nodes);
+  }
+
+  // Prüft höchstens einmal am Tag je Stelle, ob sie bei der Arbeitsagentur noch online ist (Fehler 404/410 = entfernt).
+  let checking = false;
+  async function checkSaved() {
+    if (checking) return;
+    checking = true;
+    const due = Object.values(store.liked).filter(j => !j.checked || Date.now() - j.checked > 864e5).slice(0, 40);
+    let changed = false;
+    const work = async job => {
+      try { await loadDetails(job.refnr); if (job.gone) { job.gone = false; changed = true; } job.checked = Date.now(); }
+      catch (e) { if (e.status === 404 || e.status === 410) { if (!job.gone) changed = true; job.gone = true; job.checked = Date.now(); } }
+    };
+    for (let i = 0; i < due.length; i += 3) await Promise.all(due.slice(i, i + 3).map(work));
+    checking = false;
+    if (due.length) save();
+    if (changed && view === 'saved') renderSaved();
   }
 
   // Bewerbungsstufe und Notiz für eine gemerkte Stelle (im Detailblatt)
@@ -951,7 +989,12 @@ legend { padding: 0; margin-bottom: 8px; }
       facts.hidden = !facts.children.length;
       const ext = d.externeURL || d.externeUrl;
       if (!job.externeUrl && /^https?:\/\//i.test(ext || '')) links.append(link(d.allianzpartnerName ? 'Original bei ' + d.allianzpartnerName : 'Originalanzeige', ext));
-    }).catch(() => { desc.replaceChildren(el('p', 'sub', 'Die Details konnten nicht geladen werden. Öffne die Anzeige über den Knopf oben.')); });
+    }).catch(e => {
+      const gone = e && (e.status === 404 || e.status === 410);
+      if (gone && saved && !saved.gone) { saved.gone = true; saved.checked = Date.now(); save(); if (view === 'saved') renderSaved(); }
+      desc.replaceChildren(el('p', 'sub', gone ? 'Diese Stelle ist bei der Arbeitsagentur nicht mehr online. Vermutlich ist sie besetzt oder zurückgezogen.'
+        : 'Die Details konnten nicht geladen werden. Öffne die Anzeige über den Knopf oben.'));
+    });
   }
 
   function openFilter() {
@@ -982,8 +1025,9 @@ legend { padding: 0; margin-bottom: 8px; }
     const when = el('div', 'two'); when.style.gridTemplateColumns = '1fr 1fr'; when.append(field('Befristung', befr), field('Veröffentlicht', seit));
     const [hideSet, hideBoxes] = picks('Ausblenden', 'checkbox', 'hide', [{ value: 'za', text: 'Zeitarbeit', on: store.ohneZeitarbeit }, { value: 'pav', text: 'Private Vermittler', on: store.ohnePav }]);
     const ok = button('Stellen anzeigen', () => {}, true); ok.type = 'submit';
-    const clear = button('Zurücksetzen', () => { azBoxes.forEach(c => { c.checked = false; }); befr.value = ''; seit.value = ''; hideBoxes.forEach(c => { c.checked = true; }); });
-    const row = el('div', 'links'); row.append(ok, clear);
+    const clear = button('Filter zurücksetzen', () => { azBoxes.forEach(c => { c.checked = false; }); befr.value = ''; seit.value = ''; hideBoxes.forEach(c => { c.checked = true; }); });
+    clear.className = 'textbtn';
+    const row = el('div', 'submitbar'); row.append(ok, clear);
     form.append(jobSet, editJobs, where, azSet, when, hideSet, row);
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -999,7 +1043,98 @@ legend { padding: 0; margin-bottom: 8px; }
     const seen = Object.keys(store.seen).length;
     const reset = button(`Verworfene wieder zeigen (${seen})`, () => { store.seen = {}; save(); closeSheet(); resetDeck(); });
     reset.disabled = seen === 0;
-    openSheet('Filter', form, reset, el('p', 'small', 'Daten: Jobsuche der Bundesagentur für Arbeit. Gemerkte und verworfene Stellen liegen nur in diesem Browser.'));
+    const backup = button('Merkliste sichern und übertragen', openBackup); backup.classList.add('quiet');
+    openSheet('Filter', form, reset, backup, el('p', 'small', 'Daten: Jobsuche der Bundesagentur für Arbeit. Gemerkte und verworfene Stellen liegen nur in diesem Browser.'));
+  }
+
+  // ---------- Sichern und übertragen: Merkliste, Stufen, Notizen und Berufe als Datei oder Code ----------
+  const CODE_PREFIX = 'JOBSTAPEL1:';
+  const str = (v, max) => String(v == null ? '' : v).slice(0, max);
+  function cleanJob(j) {
+    if (!j || !/^[\w.\-]{3,80}$/.test(String(j.refnr || ''))) return null;
+    return {
+      refnr: String(j.refnr), titel: str(j.titel, 300) || '(ohne Titel)', arbeitgeber: str(j.arbeitgeber, 200), plz: str(j.plz, 10), ort: str(j.ort, 100),
+      entfernung: Number(j.entfernung) > 0 ? Math.round(Number(j.entfernung)) : 0,
+      aktuelleVeroeffentlichungsdatum: str(j.aktuelleVeroeffentlichungsdatum, 30), eintrittsdatum: str(j.eintrittsdatum, 30),
+      kundennummerHash: str(j.kundennummerHash, 200), externeUrl: /^https?:\/\//i.test(j.externeUrl || '') ? str(j.externeUrl, 600) : '',
+      term: str(j.term, 80), profil: str(j.profil, 40), gemerkt: Number(j.gemerkt) || Date.now(),
+      status: STATUS.some(x => x[0] === j.status) ? j.status : 'gemerkt', statusAt: Number(j.statusAt) || 0, note: str(j.note, 500),
+      gone: !!j.gone, checked: Number(j.checked) || 0,
+    };
+  }
+  function exportData() {
+    return JSON.stringify({ app: 'jobstapel', version: 1, exportiert: new Date().toISOString(), liked: store.liked, seen: Object.keys(store.seen), profiles: PROFILES });
+  }
+  const toCode = json => CODE_PREFIX + btoa(unescape(encodeURIComponent(json)));
+  function parseImport(text) {
+    text = String(text || '').trim();
+    if (text.startsWith(CODE_PREFIX)) text = decodeURIComponent(escape(atob(text.slice(CODE_PREFIX.length).replace(/\s+/g, ''))));
+    const data = JSON.parse(text);
+    if (!data || data.app !== 'jobstapel' || typeof data.liked !== 'object') throw new Error('kein Jobstapel-Export');
+    return data;
+  }
+  // Zusammenführen: nichts Vorhandenes geht verloren; bei derselben Stelle gewinnt der jüngere Stand.
+  function mergeImport(data) {
+    let added = 0, updated = 0, jobs = 0;
+    const stamp = j => Math.max(Number(j.statusAt) || 0, Number(j.gemerkt) || 0);
+    for (const raw of Object.values(data.liked || {})) {
+      const job = cleanJob(raw);
+      if (!job) continue;
+      const have = store.liked[job.refnr];
+      if (!have) { store.liked[job.refnr] = job; added++; }
+      else if (stamp(job) > stamp(have)) { store.liked[job.refnr] = job; updated++; }
+      delete store.seen[job.refnr];
+    }
+    for (const r of Array.isArray(data.seen) ? data.seen.slice(0, 4000) : []) if (/^[\w.\-]{3,80}$/.test(r) && !store.liked[r]) store.seen[r] = 1;
+    for (const raw of Array.isArray(data.profiles) ? data.profiles.slice(0, 40) : []) {
+      if (!raw || !raw.id) continue;
+      const next = cleanProfile(raw), have = PROFILES.find(x => x.id === next.id);
+      if (have) Object.assign(have, next); else { PROFILES.push(next); jobs++; }
+    }
+    save();
+    return { added, updated, jobs };
+  }
+  function openBackup() {
+    const count = Object.keys(store.liked).length;
+    const intro = el('p', 'small', `Sichert ${count === 1 ? '1 gemerkte Stelle' : count + ' gemerkte Stellen'} mit Stufen und Notizen sowie deine Berufe. Damit ziehst du auch vom Browser in die installierte App oder auf ein anderes Gerät um.`);
+    const out = el('p', 'result'); out.setAttribute('role', 'status');
+    const code = el('textarea', 'code'); code.id = 'backup-code'; code.rows = 4; code.placeholder = 'Code hier einfügen';
+    const say = t => { out.textContent = t; };
+
+    const saveFile = button('Als Datei speichern', () => {
+      try {
+        const a = el('a'); a.href = URL.createObjectURL(new Blob([exportData()], { type: 'application/json' }));
+        a.download = `jobstapel-${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.append(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+        say('Datei wird gespeichert.');
+      } catch (e) { say('Speichern als Datei geht hier nicht. Nimm stattdessen den Code.'); }
+    }, true);
+    const copy = button('Code kopieren', async () => {
+      const text = toCode(exportData());
+      try { await navigator.clipboard.writeText(text); say('Code kopiert. Füge ihn auf dem anderen Gerät unter „Sichern“ ein.'); }
+      catch (e) { code.value = text; code.focus(); code.select(); say('Kopieren nicht möglich. Der Code steht unten im Feld, bitte von Hand kopieren.'); }
+    });
+    const exp = el('div', 'links'); exp.append(saveFile, copy);
+
+    const run = text => {
+      try {
+        const r = mergeImport(parseImport(text));
+        say(`Übernommen: ${r.added} neue Stellen, ${r.updated} aktualisiert${r.jobs ? `, ${r.jobs} neue Berufe` : ''}.`);
+        code.value = '';
+        renderChrome(); if (view === 'saved') { renderSaved(); checkSaved(); }
+      } catch (e) { say('Das ist kein gültiger Jobstapel-Export. Nichts wurde geändert.'); }
+    };
+    const file = el('input', 'file'); file.type = 'file'; file.accept = 'application/json,.json'; file.id = 'backup-file';
+    file.addEventListener('change', () => { const f = file.files && file.files[0]; if (!f) return; f.text().then(run).catch(() => say('Die Datei konnte nicht gelesen werden.')); file.value = ''; });
+    const pickFile = el('label', 'btn', 'Datei auswählen'); pickFile.htmlFor = file.id; pickFile.style.cssText = 'flex-direction:row;letter-spacing:0;text-transform:none;font-size:.95rem;cursor:pointer';
+    const paste = button('Code übernehmen', () => { if (code.value.trim()) run(code.value); else say('Füge zuerst den Code ins Feld ein.'); });
+    const imp = el('div', 'links'); imp.append(pickFile, file, paste);
+    const codeLabel = el('label', null, 'Code'); codeLabel.htmlFor = code.id; codeLabel.append(code);
+
+    openSheet('Sichern und übertragen', intro, el('span', 'group-label', 'Sichern'), exp, out,
+      el('span', 'group-label', 'Wiederherstellen oder übernehmen'), codeLabel, imp,
+      el('p', 'small', 'Beim Übernehmen wird zusammengeführt: Vorhandenes bleibt, bei derselben Stelle gilt der jüngere Stand.'));
   }
 
   // ---------- Berufe verwalten: Suchbegriffe, Ausschlusswörter, eigene Berufe ----------
@@ -1179,7 +1314,7 @@ legend { padding: 0; margin-bottom: 8px; }
       inner.append(box, why);
       if (p.os === 'ios' && p.browser !== 'inapp') {
         const n = el('p', 'notice');
-        n.append('Wichtig auf iPhone und iPad: Was du hier im Browser merkst, wird ', el('b', null, 'nicht'), ' in die installierte App übernommen. Installiere deshalb zuerst.');
+        n.append('Wichtig auf iPhone und iPad: Was du hier im Browser merkst, wird ', el('b', null, 'nicht'), ' automatisch in die installierte App übernommen. Installiere deshalb zuerst. Bereits Gemerktes kannst du unter „Gemerkt“ → „Sichern“ per Code mitnehmen.');
         inner.append(n);
       }
     }
@@ -1228,6 +1363,7 @@ legend { padding: 0; margin-bottom: 8px; }
   $('undo').addEventListener('click', undo);
   $('info').addEventListener('click', () => openDetails(deck[0]));
   $('open-filter').addEventListener('click', openFilter);
+  $('open-backup').addEventListener('click', openBackup);
   $('tab-deck').addEventListener('click', () => show('deck'));
   $('tab-saved').addEventListener('click', () => show('saved'));
   $('sheet-close').addEventListener('click', closeSheet);
@@ -1245,7 +1381,7 @@ legend { padding: 0; margin-bottom: 8px; }
   for (const t of ['gesturestart', 'gesturechange', 'gestureend']) document.addEventListener(t, e => e.preventDefault(), { passive: false });
   document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
 
-  if (location.hash === '#gemerkt') { view = 'saved'; renderSaved(); }
+  if (location.hash === '#gemerkt') { view = 'saved'; renderSaved(); checkSaved(); }
   renderChrome();
   render();
   detectBase().then(resetDeck);
