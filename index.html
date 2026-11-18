@@ -184,6 +184,12 @@ textarea:focus { border-color: var(--accent); outline: none; }
 .fchip.term { background: var(--bg); }
 .fchip.term[aria-pressed="false"] { text-decoration: line-through; opacity: .6; }
 .fchip.term[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.unblock { display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; background: var(--bg); padding: 7px 10px 7px 13px; font-weight: 600; font-size: .88rem; text-align: left; }
+.unblock small { font-size: .7rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.unblock svg.i { width: 18px; height: 18px; color: var(--muted); }
+.toast { position: fixed; z-index: 30; left: 50%; transform: translateX(-50%); bottom: calc(76px + env(safe-area-inset-bottom)); width: min(92vw, 480px); display: flex; align-items: center; gap: 12px; background: var(--ink); color: var(--bg); border-radius: 16px; padding: 12px 12px 12px 16px; font-size: .9rem; font-weight: 600; box-shadow: var(--shadow); }
+.toast span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.toast button { flex: none; border: 0; border-radius: 999px; background: var(--bg); color: var(--ink); font-weight: 800; padding: 8px 14px; }
 .btn.quiet { border-color: transparent; background: var(--bg); align-self: flex-start; font-size: .9rem; padding: 9px 15px; }
 .btn.danger { color: var(--no); }
 .pick.sw { padding: 5px; } .pick.sw .dot { width: 28px; height: 28px; border-radius: 50%; display: block; }
@@ -409,6 +415,7 @@ legend { padding: 0; margin-bottom: 8px; }
     id: String(p.id || 'p' + Date.now().toString(36)), name: String(p.name || 'Beruf').slice(0, 40),
     color: COLORS.includes(p.color) ? p.color : COLORS[0], icon: ICONSET[p.icon] ? p.icon : 'star',
     terms: cleanList(p.terms), exclude: cleanList(p.exclude), include: cleanList(p.include), minijob: !!p.minijob,
+    noEmployer: cleanList(p.noEmployer), noBeruf: cleanList(p.noBeruf),       // per Tipp ausgeschlossene Arbeitgeber und Berufe
     arbeitszeit: (Array.isArray(p.arbeitszeit) ? p.arbeitszeit : []).filter(c => AZ.some(a => a[0] === c)),   // Vorgabe, solange im Filter keine Arbeitszeit gewählt ist
   });
   if (!Array.isArray(store.profiles) || !store.profiles.length) store.profiles = DEFAULT_PROFILES;
@@ -477,6 +484,8 @@ legend { padding: 0; margin-bottom: 8px; }
   function fits(job, p) {
     const all = `${job.titel} · ${job.beruf || ''} · ${job.arbeitgeber}`;
     if (p.exclude.some(w => hasWord(all, w))) return false;
+    const same = (a, b) => a.trim().toLowerCase() === b.trim().toLowerCase();
+    if (p.noEmployer.some(w => same(w, job.arbeitgeber)) || p.noBeruf.some(w => same(w, job.beruf || ''))) return false;
     if (p.include.length && !p.include.some(w => hasWord(`${job.titel} · ${job.beruf || ''}`, w))) return false;
     return true;
   }
@@ -543,6 +552,20 @@ legend { padding: 0; margin-bottom: 8px; }
     if (my !== run) return;
     loading = false;
     render();
+  }
+
+  // Sicherheitsnetz für „Zeitarbeit“ und „Private Vermittler“ ausblenden: Die Jobsuche filtert das selbst,
+  // lässt aber Stellen durch. Die Kennzeichen stehen erst in den Details, deshalb werden die nächsten Karten vorab geprüft.
+  function screen(job) {
+    if (!store.ohnePav && !store.ohneZeitarbeit) return;
+    loadDetails(job.refnr).then(d => {
+      const out = (store.ohnePav && d.istPrivateArbeitsvermittlung === true) || (store.ohneZeitarbeit && d.istArbeitnehmerUeberlassung === true);
+      const i = deck.indexOf(job);
+      if (!out || i < 0 || busy) return;
+      deck.splice(i, 1); store.seen[job.refnr] = 1; save();
+      render();
+      if (deck.length < 6) loadMore();
+    }).catch(() => {});
   }
 
   function resetDeck() {
@@ -652,6 +675,7 @@ legend { padding: 0; margin-bottom: 8px; }
     if (has) {
       // unterste Karte zuerst, damit die oberste zuletzt im DOM liegt
       d.replaceChildren(...deck.slice(0, 3).map((j, i) => card(j, i === 0)).reverse());
+      deck.slice(0, 4).forEach(screen);
       return;
     }
     if (loading) { d.replaceChildren(state('Stellen werden geladen', `Einen Moment, die Jobsuche für ${profile.name} läuft.`)); return; }
@@ -1046,27 +1070,28 @@ legend { padding: 0; margin-bottom: 8px; }
     const saved = store.liked[job.refnr];
     const hide = el('div', 'links');
     hide.hidden = true;
-    const hideBy = (label, word) => {
+    const hideBy = (label, list, word) => {
       const b = button(label, () => {
-        if (!profile.exclude.includes(word)) profile.exclude.push(word);
-        const gone = deck.filter(j => !fits(j, profile));
-        for (const j of gone) { store.seen[j.refnr] = 1; inDeck.delete(j.refnr); }
+        if (!list.includes(word)) list.push(word);
+        // Nur aus dem Stapel nehmen, nicht als verworfen merken: Nach „Rückgängig“ kommen die Stellen wieder.
+        for (const j of deck) if (!fits(j, profile)) inDeck.delete(j.refnr);
         deck = deck.filter(j => fits(j, profile));
         save(); closeSheet(); $('deck').dataset.key = ''; render();
         if (deck.length < 6) loadMore();
+        toast(`„${word}“ wird nicht mehr gezeigt`, 'Rückgängig', () => unblock(list, word));
       });
       b.classList.add('quiet'); hide.append(b);
     };
     const canHide = !saved && view === 'deck' && job === deck[0];
-    if (canHide && job.arbeitgeber) { hideBy('Arbeitgeber nicht mehr zeigen', job.arbeitgeber); hide.hidden = false; }
+    if (canHide && job.arbeitgeber) { hideBy('Arbeitgeber nicht mehr zeigen', profile.noEmployer, job.arbeitgeber); hide.hidden = false; }
     openSheet(job.titel, sub, ...(saved ? [trackNodes(saved)] : []), facts, links, hide, desc);
     loadDetails(job.refnr).then(d => {
       const text = d.stellenangebotsBeschreibung || d.stellenbeschreibung;
       if (text) desc.replaceWith(markdown(text, job.titel));
       else desc.replaceChildren(el('p', 'sub', 'Für diese Stelle gibt es hier keinen Beschreibungstext. Öffne die Anzeige über den Knopf oben.'));
       facts.replaceChildren(...factNodes(d));
-      const main = String(d.hauptberuf || job.beruf || '').replace(/\/in\b|\/-?frau\b/g, '').trim();
-      if (main && canHide && !hasWord(job.titel, main)) { hideBy(`Beruf „${main}“ nicht mehr zeigen`, main); hide.hidden = false; }
+      const main = String(job.beruf || '').trim();   // die Bezeichnung aus der Trefferliste, danach wird gefiltert
+      if (main && canHide && !hasWord(job.titel, main.replace(/\/.*$/, ''))) { hideBy(`Beruf „${main}“ nicht mehr zeigen`, profile.noBeruf, main); hide.hidden = false; }
       facts.hidden = !facts.children.length;
       const ext = d.externeURL || d.externeUrl;
       if (!job.externeUrl && /^https?:\/\//i.test(ext || '')) links.append(link(d.allianzpartnerName ? 'Original bei ' + d.allianzpartnerName : 'Originalanzeige', ext));
@@ -1076,6 +1101,24 @@ legend { padding: 0; margin-bottom: 8px; }
       desc.replaceChildren(el('p', 'sub', gone ? 'Diese Stelle ist bei der Arbeitsagentur nicht mehr online. Vermutlich ist sie besetzt oder zurückgezogen.'
         : 'Die Details konnten nicht geladen werden. Öffne die Anzeige über den Knopf oben.'));
     });
+  }
+
+  // Ausschluss zurücknehmen und Stapel neu laden
+  function unblock(list, word) {
+    const i = list.indexOf(word);
+    if (i >= 0) list.splice(i, 1);
+    save(); resetDeck();
+  }
+  // Kurze Meldung über der Navigation, optional mit Aktion
+  let toastTimer = 0;
+  function toast(text, action, fn) {
+    document.getElementById('toast')?.remove();
+    clearTimeout(toastTimer);
+    const t = el('div', 'toast'); t.id = 'toast'; t.setAttribute('role', 'status');
+    t.append(el('span', null, text));
+    if (action) { const b = el('button', null, action); b.type = 'button'; b.addEventListener('click', () => { t.remove(); fn(); }); t.append(b); }
+    document.body.append(t);
+    toastTimer = setTimeout(() => t.remove(), 8000);
   }
 
   function openFilter() {
@@ -1110,7 +1153,21 @@ legend { padding: 0; margin-bottom: 8px; }
     const clear = button('Filter zurücksetzen', () => { azBoxes.forEach(c => { c.checked = false; }); befr.value = ''; seit.value = ''; hideBoxes.forEach(c => { c.checked = true; }); });
     clear.className = 'textbtn';
     const row = el('div', 'submitbar'); row.append(ok, clear);
-    form.append(jobSet, editJobs, where, whereHint, azSet, when, hideSet, row);
+    const blocked = el('div', 'group');
+    const paintBlocked = () => {
+      const items = [...profile.noEmployer.map(w => [profile.noEmployer, w, 'Arbeitgeber']), ...profile.noBeruf.map(w => [profile.noBeruf, w, 'Beruf'])];
+      blocked.hidden = !items.length;
+      const row = el('div', 'chips');
+      for (const [list, w, kind] of items) {
+        const b = el('button', 'unblock'); b.type = 'button'; b.setAttribute('aria-label', `${kind} ${w} wieder zeigen`);
+        b.append(el('small', null, kind), document.createTextNode(w), icon(ICON.x));
+        b.addEventListener('click', () => { unblock(list, w); paintBlocked(); });
+        row.append(b);
+      }
+      blocked.replaceChildren(el('span', 'group-label', `Ausgeschlossen bei ${profile.name}`), row, el('p', 'small', 'Antippen zeigt die Stellen wieder.'));
+    };
+    paintBlocked();
+    form.append(jobSet, editJobs, where, whereHint, azSet, when, hideSet, blocked, row);
     form.addEventListener('submit', e => {
       e.preventDefault();
       const chosen = jobBoxes.find(c => c.checked);
@@ -1430,7 +1487,7 @@ legend { padding: 0; margin-bottom: 8px; }
 
   function openProfileEdit(p) {
     const isNew = !p;
-    const d = p || { name: '', color: COLORS[PROFILES.length % COLORS.length], icon: 'star', terms: [], exclude: [], include: [], minijob: false, arbeitszeit: [] };
+    const d = p || { name: '', color: COLORS[PROFILES.length % COLORS.length], icon: 'star', terms: [], exclude: [], include: [], noEmployer: [], noBeruf: [], minijob: false, arbeitszeit: [] };
     const form = el('form');
     let n = 0;
     const field = (text, node, id) => { const l = el('label', null, text); node.id = id; l.htmlFor = id; l.append(node); return l; };
@@ -1461,7 +1518,7 @@ legend { padding: 0; margin-bottom: 8px; }
     form.addEventListener('submit', e => {
       e.preventDefault();
       const lines = t => t.value.split(/[\n,;]+/);
-      const next = cleanProfile({ id: p ? p.id : '', name: name.value.trim(), color: (colorBoxes.find(c => c.checked) || {}).value, icon: (iconBoxes.find(c => c.checked) || {}).value, terms: lines(terms), exclude: lines(excl), include: lines(incl), minijob: mj.checked, arbeitszeit: d.arbeitszeit });
+      const next = cleanProfile({ id: p ? p.id : '', name: name.value.trim(), color: (colorBoxes.find(c => c.checked) || {}).value, icon: (iconBoxes.find(c => c.checked) || {}).value, terms: lines(terms), exclude: lines(excl), include: lines(incl), noEmployer: d.noEmployer, noBeruf: d.noBeruf, minijob: mj.checked, arbeitszeit: d.arbeitszeit });
       if (p) Object.assign(p, next); else PROFILES.push(next);
       profile = p || next; store.profil = profile.id;
       save(); closeSheet(); renderChrome(); resetDeck();
