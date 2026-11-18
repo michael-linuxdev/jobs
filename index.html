@@ -1263,7 +1263,7 @@ legend { padding: 0; margin-bottom: 8px; }
     ['Aufpassen und prüfen', ['Sicherheitsmitarbeiter', 'Pförtner', 'Qualitätsprüfer']],
   ];
   const LEVELS = [
-    ['Als Fachkraft in meinem Beruf', 'Nur Stellen, die zu den gewählten Tätigkeiten passen', []],
+    ['Als Fachkraft', 'Du hast den passenden Abschluss oder viel Erfahrung', []],
     ['Auch als Helfer oder Quereinsteiger', 'Offen für einen Neuanfang, auch ohne passenden Abschluss', ['Quereinsteiger', 'Helfer']],
     ['Mit Verantwortung', 'Vorarbeiter, Meister, Teamleitung', ['Meister', 'Teamleiter', 'Vorarbeiter']],
   ];
@@ -1275,7 +1275,7 @@ legend { padding: 0; margin-bottom: 8px; }
   ];
 
   function openWizard(w) {
-    w = Object.assign({ step: 0, field: null, jobs: new Set(), likes: new Set(), level: 0, time: 2, avoid: new Set(), off: new Set(), first: false, plz: '', umkreis: '25' }, w);
+    w = Object.assign({ step: 0, fields: new Set(), jobs: new Set(), likes: new Set(), level: 0, time: 2, avoid: new Set(), off: new Set(), first: false, plz: '', umkreis: '25' }, w);
     const STEPS = w.first ? 8 : 7;                    // beim Erststart kommt die Frage nach dem Ort dazu
     const go = step => openWizard({ ...w, step });
     const nodes = [];
@@ -1299,37 +1299,45 @@ legend { padding: 0; margin-bottom: 8px; }
       if (w.step > 0) { const back = button('Zurück', () => go(w.step - 1)); back.className = 'textbtn'; bar.append(back); }
       return bar;
     };
-    const field = FIELDS.find(f => f.id === w.field);
+    const chosen = FIELDS.filter(f => w.fields.has(f.id));          // gewählte Bereiche, in fester Reihenfolge
+    const chosenJobs = chosen.flatMap(f => f.jobs);
 
     // Vorschlag aus den Antworten zusammensetzen
     const proposal = () => {
       const terms = [];
       const add = list => { for (const t of list) if (!terms.includes(t)) terms.push(t); };
-      if (field) for (const [name, list] of field.jobs) if (w.jobs.has(name)) add(list);
+      for (const [name, list] of chosenJobs) if (w.jobs.has(name)) add(list);
       LIKES.forEach(([name, list], i) => { if (w.likes.has(i)) add(list); });
       add(LEVELS[w.level][2]);
       const exclude = [];
       AVOID.forEach(([name, list], i) => { if (w.avoid.has(i)) for (const x of list) if (!exclude.includes(x)) exclude.push(x); });
-      const picked = field ? field.jobs.map(j => j[0]).filter(n => w.jobs.has(n)) : [];
-      let name = picked.length === 1 ? picked[0] : picked.length === 2 && (picked[0] + ' & ' + picked[1]).length <= 38 ? picked[0] + ' & ' + picked[1] : field ? field.name : 'Neuer Beruf';
+      const picked = chosenJobs.map(j => j[0]).filter(n => w.jobs.has(n));
+      let name = picked.length === 1 ? picked[0] : picked.length === 2 && (picked[0] + ' & ' + picked[1]).length <= 38 ? picked[0] + ' & ' + picked[1] : chosen.length === 1 ? chosen[0].name : 'Meine Auswahl';
       for (let n = 2; PROFILES.some(x => x.name === name); n++) name = name.replace(/ \d+$/, '') + ' ' + n;
       return { name, terms: terms.slice(0, 40), exclude };
     };
 
     if (w.step === 0) {
       if (w.first) nodes.push(el('p', 'small', 'Willkommen bei Jobstapel. Ein paar kurze Fragen, dann siehst du passende Stellen aus deiner Gegend.'));
-      ask('In welchem Bereich hast du zuletzt gearbeitet oder gelernt?', 'Wähle den Bereich, der am nächsten dran ist.');
-      for (const f of FIELDS) opt(f.name, '', w.field === f.id, () => openWizard({ ...w, field: f.id, jobs: w.field === f.id ? w.jobs : new Set(), off: new Set(), step: 1 }), ICONSET[f.icon], f.color);
-      nodes.push(opts);
+      ask('In welchen Bereichen möchtest oder kannst du künftig arbeiten?', 'Mehrere sind möglich. Das kann dein bisheriger Beruf sein, muss es aber nicht.');
+      for (const f of FIELDS) opt(f.name, '', w.fields.has(f.id), toggle(w.fields, f.id), ICONSET[f.icon], f.color);
+      nodes.push(opts, nav('Weiter', w.fields.size > 0));
       const manual = w.first ? button('Überspringen und mit Beispielberufen starten', closeSheet) : button('Ohne Fragen selbst anlegen', () => openProfileEdit(null));
       manual.className = 'textbtn';
       nodes.push(manual);
     } else if (w.step === 1) {
-      ask('Welche Tätigkeiten passen zu dir?', 'Mehrere sind möglich. Je mehr du wählst, desto mehr Stellen siehst du.');
-      const all = field.jobs.every(j => w.jobs.has(j[0]));
-      opt('Alles aus diesem Bereich', '', all, () => { all ? w.jobs.clear() : field.jobs.forEach(j => w.jobs.add(j[0])); openWizard(w); });
-      for (const [name, list] of field.jobs) opt(name, list.join(', '), w.jobs.has(name), toggle(w.jobs, name));
-      nodes.push(opts, nav('Weiter', w.jobs.size > 0));
+      // Tätigkeiten aus abgewählten Bereichen nicht mitschleppen
+      for (const n of [...w.jobs]) if (!chosenJobs.some(j => j[0] === n)) w.jobs.delete(n);
+      ask('Welche Tätigkeiten kommen für dich in Frage?', 'Mehrere sind möglich. Je mehr du wählst, desto mehr Stellen siehst du.');
+      nodes.push(opts);
+      for (const f of chosen) {
+        const head = el('span', 'group-label', f.name); head.style.marginTop = '8px';
+        opts.append(head);
+        const all = f.jobs.every(j => w.jobs.has(j[0]));
+        opt('Alles aus diesem Bereich', '', all, () => { f.jobs.forEach(j => all ? w.jobs.delete(j[0]) : w.jobs.add(j[0])); openWizard(w); }, null, f.color);
+        for (const [name, list] of f.jobs) opt(name, list.join(', '), w.jobs.has(name), toggle(w.jobs, name), null, f.color);
+      }
+      nodes.push(nav('Weiter', w.jobs.size > 0));
     } else if (w.step === 2) {
       ask('Was würdest du außerdem gern machen?', 'Das erweitert die Suche um Stellen aus anderen Bereichen. Du kannst die Frage auch überspringen.');
       LIKES.forEach(([name, list], i) => opt(name, list.join(', '), w.likes.has(i), toggle(w.likes, i)));
@@ -1358,7 +1366,7 @@ legend { padding: 0; margin-bottom: 8px; }
     } else {
       const pr = proposal();
       const active = pr.terms.filter(t => !w.off.has(t));
-      ask(`Dein Beruf „${pr.name}“`, `${active.length} Suchbegriffe. Tippe einen an, um ihn wegzulassen.`);
+      ask(`Deine Suche „${pr.name}“`, `${active.length} Suchbegriffe. Tippe einen an, um ihn wegzulassen.`);
       const chips = el('div', 'chips');
       for (const t of pr.terms) {
         const b = el('button', 'fchip term', t); b.type = 'button'; b.setAttribute('aria-pressed', String(!w.off.has(t)));
@@ -1371,7 +1379,7 @@ legend { padding: 0; margin-bottom: 8px; }
       nodes.push(el('p', 'small', facts.join(' · ')));
       const bar = el('div', 'submitbar');
       const create = button('Beruf anlegen und Stellen zeigen', () => {
-        const next = cleanProfile({ name: pr.name, color: field.color, icon: field.icon, terms: active, exclude: pr.exclude, minijob: TIMES[w.time][2], arbeitszeit: TIMES[w.time][1] });
+        const next = cleanProfile({ name: pr.name, color: chosen[0].color, icon: chosen[0].icon, terms: active, exclude: pr.exclude, minijob: TIMES[w.time][2], arbeitszeit: TIMES[w.time][1] });
         PROFILES.push(next); profile = next; store.profil = next.id;
         if (w.first) { store.ort = w.plz.trim(); store.umkreis = w.umkreis; }
         save(); closeSheet(); renderChrome(); resetDeck();
