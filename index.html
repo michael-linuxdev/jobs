@@ -162,6 +162,8 @@ header { display: flex; align-items: center; justify-content: space-between; gap
 .fbar::-webkit-scrollbar { display: none; }
 .fchip { flex: none; border: 0; background: var(--surface); border-radius: 999px; padding: 7px 13px; font-weight: 600; font-size: .86rem; color: var(--muted); white-space: nowrap; }
 .fchip[aria-pressed="true"] { background: var(--s, var(--accent)); color: #fff; }
+.pay { font-size: .88rem; font-weight: 700; color: var(--accent); margin-top: 2px; overflow-wrap: anywhere; }
+.pay.none { color: var(--muted); font-weight: 500; }
 .stline { display: flex; align-items: center; gap: 8px; margin-top: 4px; min-width: 0; }
 .st { flex: none; font-size: .74rem; font-weight: 700; color: var(--s); background: color-mix(in srgb, var(--s) 13%, var(--surface)); border-radius: 999px; padding: 2px 9px; }
 .note { font-size: .82rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 400; }
@@ -223,11 +225,26 @@ textarea:focus { border-color: var(--accent); outline: none; }
 .md strong { font-weight: 700; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; }
 .facts { display: flex; flex-direction: column; gap: 14px; }
-.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
-.tile { background: color-mix(in srgb, var(--accent) 9%, var(--surface)); border-radius: 16px; padding: 10px 13px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.tile span, .group-label, legend, label { font-size: .76rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
-.tile strong { font-weight: 700; line-height: 1.3; overflow-wrap: break-word; }
-.card h2, .panel-head h2, .saved h3, .tile strong, .org .who, .tag, .opt b { -webkit-hyphens: auto; hyphens: auto; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 8px; }
+.tile { background: color-mix(in srgb, var(--accent) 9%, var(--surface)); border-radius: 16px; padding: 10px 13px 11px; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.tile.wide { grid-column: 1 / -1; background: var(--accent); color: #fff; padding: 13px 15px 14px; }
+.tile span, .group-label, legend, label { font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.tile.wide span { color: rgba(255, 255, 255, .8); }
+.tile strong { font-weight: 700; line-height: 1.25; overflow-wrap: break-word; }
+.tile.wide strong { font-size: 1.2rem; font-weight: 800; letter-spacing: -.01em; }
+.tile small { font-size: .78rem; font-weight: 400; line-height: 1.35; opacity: .85; margin-top: 5px; }
+.card h2, .panel-head h2, .saved h3, .tile strong, .org .who, .tag, .opt b, .rows dd { -webkit-hyphens: auto; hyphens: auto; }
+.rows { display: grid; grid-template-columns: max-content 1fr; gap: 0; margin: 0; font-size: .92rem; }
+.rows dt, .rows dd { padding: 9px 0; border-top: 1px solid var(--line); margin: 0; }
+.rows dt:first-of-type, .rows dt:first-of-type + dd { border-top: 0; padding-top: 2px; }
+.rows dt { color: var(--muted); padding-right: 18px; }
+.rows dd { font-weight: 600; overflow-wrap: break-word; min-width: 0; }
+.actions-row .btn.fill { flex: 1 1 auto; justify-content: center; padding: 13px 18px; font-size: 1rem; }
+.actions-row .btn:not(.fill) { justify-content: center; }
+.more summary { cursor: pointer; color: var(--muted); font-size: .86rem; font-weight: 600; list-style: none; text-decoration: underline; text-underline-offset: 3px; }
+.more summary::-webkit-details-marker { display: none; }
+.more .links { margin-top: 10px; }
+.more .btn.quiet { white-space: normal; text-align: left; border-radius: 16px; }
 .group { display: flex; flex-direction: column; gap: 7px; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 
@@ -637,6 +654,8 @@ legend { padding: 0; margin-bottom: 8px; }
     if (top) {
       loadDetails(job.refnr).then(d => {
         ex.textContent = plainText(d.stellenangebotsBeschreibung || d.stellenbeschreibung, job.titel).slice(0, 700);
+        const pay = salaryInfo(d.stellenangebotsBeschreibung || d.stellenbeschreibung || '');
+        if (pay) foot.append(el('span', 'tag on', pay.value.length > 34 ? pay.value.slice(0, 32).trimEnd() + ' …' : pay.value));
         if (d.homeofficemoeglich === true) foot.append(el('span', 'tag on', 'Homeoffice'));
         if (d.quereinstiegGeeignet === true) foot.append(el('span', 'tag on', 'Quereinstieg'));
         const hash = d.arbeitgeberKundennummerHash || job.kundennummerHash;
@@ -732,7 +751,10 @@ legend { padding: 0; margin-bottom: 8px; }
     const done = () => {
       busy = false;
       deck.shift();
-      if (action === 'yes') store.liked[job.refnr] = { ...job, gemerkt: Date.now() }; else store.seen[job.refnr] = 1;
+      if (action === 'yes') {
+        store.liked[job.refnr] = { ...job, gemerkt: Date.now() };
+        loadDetails(job.refnr).then(d => { const sv = store.liked[job.refnr]; if (sv) { sv.pay = payOf(d).slice(0, 120); save(); if (view === 'saved') renderSaved(); } }).catch(() => {});
+      } else store.seen[job.refnr] = 1;
       store.hinted = true;
       history.push({ job, action });
       if (history.length > 30) history.shift();
@@ -789,6 +811,7 @@ legend { padding: 0; margin-bottom: 8px; }
       const main = el('button', 'main');
       main.type = 'button';
       main.append(el('h3', null, job.titel), el('span', 'sub', [job.arbeitgeber, [job.plz, job.ort].filter(Boolean).join(' ')].filter(Boolean).join(' · ')));
+      if (job.pay !== undefined) main.append(el('span', 'pay' + (job.pay ? '' : ' none'), job.pay || 'Vergütung: keine Angabe'));
       const line = el('span', 'stline');
       if (job.gone) li.classList.add('gone');
       const pill = el('span', 'st', st[1] + (job.statusAt && st[0] !== 'gemerkt' ? ' · ' + fmtDate(job.statusAt) : ''));
@@ -823,10 +846,15 @@ legend { padding: 0; margin-bottom: 8px; }
   async function checkSaved() {
     if (checking) return;
     checking = true;
-    const due = Object.values(store.liked).filter(j => !j.checked || Date.now() - j.checked > 864e5).slice(0, 40);
+    const due = Object.values(store.liked).filter(j => !j.checked || Date.now() - j.checked > 864e5 || j.pay === undefined).slice(0, 40);
     let changed = false;
     const work = async job => {
-      try { await loadDetails(job.refnr); if (job.gone) { job.gone = false; changed = true; } job.checked = Date.now(); }
+      try {
+        const d = await loadDetails(job.refnr);
+        const pay = payOf(d).slice(0, 120);
+        if (job.gone || job.pay !== pay) changed = true;
+        job.gone = false; job.pay = pay; job.checked = Date.now();
+      }
       catch (e) { if (e.status === 404 || e.status === 410) { if (!job.gone) changed = true; job.gone = true; job.checked = Date.now(); } }
     };
     for (let i = 0; i < due.length; i += 3) await Promise.all(due.slice(i, i + 3).map(work));
@@ -1023,36 +1051,93 @@ legend { padding: 0; margin-bottom: 8px; }
   const FLAGS = { quereinstiegGeeignet: 'Quereinstieg möglich', istGeringfuegigeBeschaeftigung: 'Minijob', istArbeitnehmerUeberlassung: 'Zeitarbeit', istPrivateArbeitsvermittlung: 'Private Arbeitsvermittlung' };
   const human = v => { const t = String(v).replace(/_/g, ' ').toLowerCase(); return t.charAt(0).toUpperCase() + t.slice(1); };
   const empty = v => v == null || v === '' || /^KEINE_ANGABE/i.test(String(v));
+  // Vergütung aus dem Anzeigentext herauslesen: Entgelt-/Besoldungsgruppe, Tarifvertrag, Euro-Beträge.
+  // Das ist eine Schätzung nach Mustern; der gefundene Satz wird deshalb als Beleg mit angezeigt.
+  const PAY_KEY = /gehalt|vergütung|verguetung|verdienst|lohn|entgelt|brutto|bezahlung|besoldung|einkommen|tarif|eingruppierung/i;
+  const PAY_EXTRA = /prämie|praemie|bonus|zuschuss|gutschein|weihnachtsgeld|urlaubsgeld|jobrad|jobticket|vermögenswirksam|sonderzahlung/i;
+  const PAY_TARIF = /(TVöD(?:[- ](?:VKA|Bund|SuE|K|P|V|B))?|TV[- ]?L|TV[- ]?H|TV[- ]?V|TV[- ]?N|TV[- ]Ärzte|AVR(?:[- ][A-Za-zÄÖÜäöü]+)?|KAVO|BAT[- ]KF|DRK[- ]?Tarifvertrag|Haustarif(?:vertrag)?|IG[- ]Metall|ERA|Tarifvertrag|tariflich\w*|übertariflich\w*)/;
+  const PAY_GROUP = /(?:Entgeltgruppe|Entgeltgr\.|Vergütungsgruppe|Besoldungsgruppe|Eingruppierung|Gehaltsgruppe|Lohngruppe|Tarifgruppe|\bEG|\bE|\bS)[\s.:]*(?:(?:erfolgt|ist|in|nach|bis|zu|die|der|bis zur)\s+){0,3}(?:(?:Entgeltgruppe|EG)[\s.:]*)?((?:[AESP]\s?)?\d{1,2}(?:\s?[a-c](?![A-Za-zäöüß]))?)(?!\d)(?:\s*(?:-|–|bis|\/|oder|und)\s*((?:[AESP]\s?)?\d{1,2}(?:\s?[a-c](?![A-Za-zäöüß]))?)(?!\d))?/;
+  const PAY_NUM = '(?:\\d{1,3}(?:[.\\u00a0 ]\\d{3})+(?:,\\d{1,2})?|\\d{4,6}(?:,\\d{1,2})?|\\d{1,3},\\d{2}|\\d{2,3})';
+  const PAY_CUR = '(?:€|EUR|Euro)';
+  const PAY_MONEY = new RegExp(`(?:(?:ab|bis zu|von|ca\\.?|circa|mindestens|mind\\.|zwischen)\\s+)?(?:${PAY_CUR}\\s*)?${PAY_NUM}(?:\\s*${PAY_CUR})?(?:\\s*(?:-|–|bis|und)\\s*(?:${PAY_CUR}\\s*)?${PAY_NUM})?(?:\\s*${PAY_CUR})?(?:\\s*brutto)?(?:\\s*(?:pro|je|im|/|p\\.\\s?)\\s*(?:Monat|Jahr|Stunde|Std\\.?|Woche))?`, 'g');
+  function salaryInfo(raw) {
+    const sentences = plainText(raw).split(/\n|(?<=[.!?;])\s+(?=[A-ZÄÖÜ])/).map(t => t.replace(/^·\s*/, '').trim()).filter(Boolean);
+    let group = '', money = '', tarif = '', quote = '';
+    for (const sn of sentences) {
+      if (!PAY_KEY.test(sn)) continue;
+      const t = sn.match(PAY_TARIF);
+      if (!group) {
+        const g = sn.match(PAY_GROUP);
+        // „E 9“ oder „S 8b“ ohne das Wort Entgeltgruppe nur werten, wenn im Satz auch ein Tarifwort steht
+        if (g && (/gruppe|gr\.|eingruppierung|\bEG/i.test(g[0]) || t)) {
+          const tidy = v => v.replace(/\s+/g, ' ').replace(/^([AESP]) ?/, '$1 ').trim();
+          const a = tidy(g[1]), b = g[2] ? tidy(g[2]) : '';
+          const kind = /besoldung/i.test(g[0]) || /^A/.test(a) ? 'Besoldungsgruppe ' : /^S/.test(a) || /\bS[\s.:]*$/.test(g[0].slice(0, g[0].indexOf(g[1]))) ? '' : 'Entgeltgruppe ';
+          group = kind + (kind === '' && !/^[AESP]/.test(a) ? 'S ' : '') + a + (b ? '–' + b : '');
+          quote = quote || sn;
+        }
+      }
+      if (!money && !(PAY_EXTRA.test(sn) && !/gehalt|lohn|vergütung|entgelt|verdienst/i.test(sn))) {
+        for (const m of sn.matchAll(PAY_MONEY)) {
+          if (!/€|EUR|Euro/.test(m[0])) continue;
+          money = m[0].replace(/\s+/g, ' ').trim().slice(0, 60);
+          if (/^von /.test(money) && !/ bis /.test(money)) money = money.slice(4);          // „Gehalt von 3.200 – 3.800 €“
+          if (!/Monat|Jahr|Stunde|Std|Woche/.test(money)) money += /jahresgehalt|jährlich|p\.\s?a\./i.test(sn) ? ' im Jahr' : /monatsgehalt|monatlich/i.test(sn) ? ' im Monat' : /stundenlohn|stündlich/i.test(sn) ? ' pro Stunde' : '';
+          quote = quote || sn; break;
+        }
+      }
+      if (!tarif && t) { tarif = /^(tariflich|übertariflich|Tarifvertrag)/i.test(t[1]) ? (/übertarif/i.test(t[1]) ? 'übertariflich' : 'nach Tarif') : t[1]; quote = quote || sn; }
+      if (group && money) break;
+    }
+    const named = tarif && !/^(nach Tarif|übertariflich)$/.test(tarif);
+    const parts = [];
+    if (group) parts.push(group + (named ? ' ' + tarif : ''));
+    if (money) parts.push(money);
+    if (!parts.length && tarif) parts.push(named ? 'nach ' + tarif : tarif.charAt(0).toUpperCase() + tarif.slice(1));
+    if (!parts.length) return null;
+    return { value: parts.join(' · '), quote: quote.length > 170 ? quote.slice(0, 167).trimEnd() + ' …' : quote };
+  }
+
+  // Vergütung einer Stelle als kurzer Text; leer = keine Angabe gefunden
+  const payOf = d => (salaryInfo(d.stellenangebotsBeschreibung || d.stellenbeschreibung || '') || {}).value || String(d.verguetung || d.gehalt || '');
+
   function factNodes(d) {
     const out = [];
+    // 1) Das Wichtigste groß: Vergütung, Start, Vertrag, Homeoffice
     const tiles = el('div', 'tiles');
-    const tile = (label, value) => { if (empty(value)) return; const t = el('div', 'tile'); t.append(el('span', null, label), el('strong', null, String(value))); tiles.append(t); };
-
+    const tile = (label, value, note, wide) => {
+      if (empty(value)) return;
+      const t = el('div', 'tile' + (wide ? ' wide' : ''));
+      t.append(el('span', null, label), el('strong', null, String(value)));
+      if (note) t.append(el('small', null, note));
+      tiles.append(t);
+    };
+    const pay = salaryInfo(d.stellenangebotsBeschreibung || d.stellenbeschreibung || '');
+    const payType = empty(d.verguetungsangabe) ? '' : human(d.verguetungsangabe);
+    if (pay) tile('Vergütung', pay.value, 'Aus dem Anzeigentext: „' + pay.quote + '“', true);
+    else if (d.verguetung || d.gehalt) tile('Vergütung', d.verguetung || d.gehalt, payType, true);
+    else tile('Vergütung', 'Keine Angabe');
+    const start = startText(d.eintrittszeitraum && d.eintrittszeitraum.von);
+    tile('Start', start === 'ab sofort' ? 'Ab sofort' : start);
     let vertrag = empty(d.vertragsdauer) ? '' : human(d.vertragsdauer);
     if (vertrag && Number(d.befristungInMonaten) > 0) vertrag += `, ${d.befristungInMonaten} Monate`;
     tile('Vertrag', vertrag);
-    tile('Vergütung', empty(d.verguetungsangabe) ? (d.verguetung || d.gehalt || '') : human(d.verguetungsangabe));
     if (d.homeofficemoeglich === true) tile('Homeoffice', empty(d.homeofficetyp) ? 'Möglich' : (HOMEOFFICE[d.homeofficetyp] || human(d.homeofficetyp)));
-    tile('Beruf', d.hauptberuf);
-    const start = startText(d.eintrittszeitraum && d.eintrittszeitraum.von);
-    tile('Start', start === 'ab sofort' ? 'Ab sofort' : start);
-    tile('Online seit', fmtDate(d.datumErsteVeroeffentlichung));
-    if (d.aenderungsdatum && fmtDate(d.aenderungsdatum) !== fmtDate(d.datumErsteVeroeffentlichung)) tile('Zuletzt geändert', fmtDate(d.aenderungsdatum));
     if (tiles.children.length) out.push(tiles);
 
+    // 2) Der Rest als ruhige Liste
+    const rows = el('dl', 'rows');
+    const row = (label, value) => { if (!empty(value)) rows.append(el('dt', null, label), el('dd', null, String(value))); };
     const times = Object.keys(d).filter(k => /^arbeitszeit/.test(k) && d[k] === true)
       .map(k => WORKTIME[k] || k.replace(/^arbeitszeit/, '').replace(/([a-z])([A-Z])/g, '$1 $2'));
+    row('Arbeitszeit', times.join(', '));
+    row('Beruf', d.hauptberuf);
     const flags = Object.keys(FLAGS).filter(k => d[k] === true).map(k => FLAGS[k]);
-    const also = Object.keys(d).filter(k => /^alternativBeruf\d*$/.test(k) && typeof d[k] === 'string' && d[k]).map(k => d[k]);
-    for (const [label, list, cls] of [['Arbeitszeit', times, 'tag on'], ['Merkmale', flags, 'tag on'], ['Auch passend für', also, 'tag']]) {
-      if (!list.length) continue;
-      const g = el('div', 'group');
-      g.append(el('span', 'group-label', label));
-      const row = el('div', 'chips');
-      for (const t of list) row.append(el('span', cls, t));
-      g.append(row);
-      out.push(g);
-    }
+    row('Merkmale', flags.join(', '));
+    if (!pay && payType) row('Vergütungsart', payType);
+    const online = fmtDate(d.datumErsteVeroeffentlichung), changed = fmtDate(d.aenderungsdatum);
+    row('Online seit', online + (changed && changed !== online ? ` (geändert ${changed})` : ''));
+    if (rows.children.length) out.push(rows);
     return out;
   }
 
@@ -1069,7 +1154,9 @@ legend { padding: 0; margin-bottom: 8px; }
     facts.hidden = true;
     const saved = store.liked[job.refnr];
     const hide = el('div', 'links');
-    hide.hidden = true;
+    const hideBox = el('details', 'more');
+    hideBox.append(el('summary', null, 'Passt nicht zu dir?'), hide);
+    hideBox.hidden = true;
     const hideBy = (label, list, word) => {
       const b = button(label, () => {
         if (!list.includes(word)) list.push(word);
@@ -1083,15 +1170,16 @@ legend { padding: 0; margin-bottom: 8px; }
       b.classList.add('quiet'); hide.append(b);
     };
     const canHide = !saved && view === 'deck' && job === deck[0];
-    if (canHide && job.arbeitgeber) { hideBy('Arbeitgeber nicht mehr zeigen', profile.noEmployer, job.arbeitgeber); hide.hidden = false; }
-    openSheet(job.titel, sub, ...(saved ? [trackNodes(saved)] : []), facts, links, hide, desc);
+    if (canHide && job.arbeitgeber) { hideBy('Arbeitgeber nicht mehr zeigen', profile.noEmployer, job.arbeitgeber); hideBox.hidden = false; }
+    links.classList.add('actions-row');
+    openSheet(job.titel, sub, ...(saved ? [trackNodes(saved)] : []), facts, links, hideBox, desc);
     loadDetails(job.refnr).then(d => {
       const text = d.stellenangebotsBeschreibung || d.stellenbeschreibung;
       if (text) desc.replaceWith(markdown(text, job.titel));
       else desc.replaceChildren(el('p', 'sub', 'Für diese Stelle gibt es hier keinen Beschreibungstext. Öffne die Anzeige über den Knopf oben.'));
       facts.replaceChildren(...factNodes(d));
       const main = String(job.beruf || '').trim();   // die Bezeichnung aus der Trefferliste, danach wird gefiltert
-      if (main && canHide && !hasWord(job.titel, main.replace(/\/.*$/, ''))) { hideBy(`Beruf „${main}“ nicht mehr zeigen`, profile.noBeruf, main); hide.hidden = false; }
+      if (main && canHide && !hasWord(job.titel, main.replace(/\/.*$/, ''))) { hideBy(`Beruf „${main}“ nicht mehr zeigen`, profile.noBeruf, main); hideBox.hidden = false; }
       facts.hidden = !facts.children.length;
       const ext = d.externeURL || d.externeUrl;
       if (!job.externeUrl && /^https?:\/\//i.test(ext || '')) links.append(link(d.allianzpartnerName ? 'Original bei ' + d.allianzpartnerName : 'Originalanzeige', ext));
@@ -1198,7 +1286,7 @@ legend { padding: 0; margin-bottom: 8px; }
       kundennummerHash: str(j.kundennummerHash, 200), externeUrl: /^https?:\/\//i.test(j.externeUrl || '') ? str(j.externeUrl, 600) : '',
       term: str(j.term, 80), profil: str(j.profil, 40), gemerkt: Number(j.gemerkt) || Date.now(),
       status: STATUS.some(x => x[0] === j.status) ? j.status : 'gemerkt', statusAt: Number(j.statusAt) || 0, note: str(j.note, 500),
-      gone: !!j.gone, checked: Number(j.checked) || 0,
+      gone: !!j.gone, checked: Number(j.checked) || 0, pay: j.pay === undefined ? undefined : str(j.pay, 120),
     };
   }
   function exportData() {

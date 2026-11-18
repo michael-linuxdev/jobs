@@ -15,7 +15,8 @@ handwerklicher oder sozialer Stärke: 34 Suchbegriffe quer durch die Branchen, V
 abgefragt, die Treffer werden zusammengeführt und nach Datum sortiert.
 
 Gemerkte und verworfene Stellen liegen nur im Browser (`localStorage`). Unter „Gemerkt“ → „Sichern“ lassen sie sich
-als Datei oder Code exportieren und auf einem anderen Gerät übernehmen. Gemerkte Stellen, die bei der
+als Datei oder Code exportieren und auf einem anderen Gerät übernehmen. Die Vergütung (Entgeltgruppe, Tarif, Euro-Beträge) wird per Mustersuche aus dem Anzeigentext gelesen
+(`salaryInfo`) und im Detailblatt, auf der Karte und in der Merkliste gezeigt. Gemerkte Stellen, die bei der
 Arbeitsagentur nicht mehr abrufbar sind (Fehler 404/410), werden als „Nicht mehr online“ markiert.
 
 ## Dateien
